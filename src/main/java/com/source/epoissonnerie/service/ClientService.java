@@ -41,7 +41,7 @@ public class ClientService {
                 maj.setActif(client.isActif());
                 return repository.save(maj);
             });
-            return ResponseEntity.ok(clientOptional.get());
+            return clientOptional.map(ResponseEntity::ok).orElseThrow(()->new IllegalStateException("Le client est introuvable !"));
         }catch (Exception e){
             return ResponseEntity.notFound().build();
         }
