@@ -4,6 +4,8 @@ import com.source.epoissonnerie.entity.Administrateur;
 import com.source.epoissonnerie.entity.Client;
 import com.source.epoissonnerie.repository.ClientRepository;
 import lombok.Builder;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.Map;
@@ -13,30 +15,38 @@ import java.util.Optional;
 @Builder
 public class ClientService {
     public final ClientRepository repository;
-    public Client ajouter(Client client){
+    public ResponseEntity<Client>  ajouter(Client client){
         Administrateur administrateur = new Administrateur();
         administrateur.setId(1L);
         client.setAdministrateur(administrateur);
-        return repository.save(client);
+        Client save = repository.save(client);
+        return ResponseEntity.ok(save);
     }
-    public Client leClient(Long id) {
-        return repository.findById(id).orElseThrow(()->new IllegalStateException("Le client est introuvable !"));
+    public ResponseEntity<Client> leClient(Long id) {
+        Optional<Client> client = repository.findById(id);
+        try {
+            return client.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
     }
-    public Client modifier(Long id, Client client) {
+    public ResponseEntity<Client> modifier(Long id, Client client) {
         Optional<Client> clientOptional = repository.findById(id);
-        clientOptional.map(
-                maj -> {
-                   maj.setMdp(client.getMdp());
-                   maj.setNom(client.getNom());
-                   maj.setPrenom(client.getPrenom());
-                   maj.setTel(client.getTel());
-                   maj.setActif(client.isActif());
-                   return repository.save(maj);
-                }
-        );
-        return clientOptional.orElseThrow(()->new IllegalStateException("Le client est introuvable !"));
+        try {
+            clientOptional.map(maj -> {
+                maj.setMdp(client.getMdp());
+                maj.setNom(client.getNom());
+                maj.setPrenom(client.getPrenom());
+                maj.setTel(client.getTel());
+                maj.setActif(client.isActif());
+                return repository.save(maj);
+            });
+            return ResponseEntity.ok(clientOptional.get());
+        }catch (Exception e){
+            return ResponseEntity.notFound().build();
+        }
     }
-    public Client partiel(Long id, Map<String,Object> client){
+    public ResponseEntity<Client> partiel(Long id, Map<String,Object> client){
         Optional<Client> clientOptional = repository.findById(id);
         clientOptional.map(
                 maj -> {
@@ -61,10 +71,21 @@ public class ClientService {
                     return repository.save(maj);
                 }
         );
-        return clientOptional.orElseThrow(()->new IllegalStateException("Le client est introuvable !"));
+        return ResponseEntity.ok(clientOptional.orElseThrow(()->new IllegalStateException("Le client est introuvable !")));
     }
-    public void supprimer(Long id){
+    public ResponseEntity<Void> supprimer(Long id) {
         Optional<Client> client = repository.findById(id);
-        client.ifPresent(repository::delete);
+        try {
+            client.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+            if (client.isPresent()) {
+                repository.deleteById(id);
+                return ResponseEntity.noContent().build();
+            } else {
+                return ResponseEntity.notFound().build();
+            }
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
     }
+
 }
