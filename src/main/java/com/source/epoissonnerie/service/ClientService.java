@@ -75,18 +75,14 @@ public class ClientService {
         return ResponseEntity.ok(clientOptional.orElseThrow(()->new IllegalStateException("Le client est introuvable !")));
     }
     public ResponseEntity<Void> supprimer(Long id) {
-        Optional<Client> client = repository.findById(id);
+        Optional<Client> clientOptional = repository.findById(id);
         try {
-            client.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
-            if (client.isPresent()) {
-                repository.deleteById(id);
-                return ResponseEntity.noContent().build();
-            } else {
-                return ResponseEntity.notFound().build();
-            }
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+           clientOptional.ifPresent(repository::delete);
         }
+        catch (Exception e) {
+            ResponseEntity.status(500).build();
+        }
+        return ResponseEntity.notFound().build();
     }
     public ResponseEntity<List<Client>>filtreClient(String nom, String prenom){
         Optional<List<Client>> clientOptional = repository.findByNomAndPrenom(nom,prenom);

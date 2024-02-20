@@ -33,7 +33,11 @@ public class ClientController {
     }
     @DeleteMapping(value = "/supprimer/{id}")
     public ResponseEntity<Void> supprimer(@PathVariable Long id){
-        return service.supprimer(id);
+       try {
+           return service.supprimer(id);
+       }catch (Exception e){
+           return ResponseEntity.internalServerError().build();
+       }
     }
     @GetMapping(value = "/filtre")
     public ResponseEntity<List<Client>> filtreClient(@RequestParam String nom,@RequestParam String prenom){

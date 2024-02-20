@@ -31,6 +31,8 @@ public class Panier {
     @Column(nullable = false)
     private double prix_total;
 
+    private int quantite;
+
     @OneToOne
     @JoinColumn(name = "client")
     private Client client;

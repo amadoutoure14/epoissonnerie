@@ -20,11 +20,9 @@ public class Collection {
     private Long id;
 
     @NotNull
-    @Min(value = 3,message = "le nom est trop court")
     private String nom;
 
     @NotNull
-    @Min(value = 20,message = "la description est trop courte")
     private String description;
 
     private boolean publier;

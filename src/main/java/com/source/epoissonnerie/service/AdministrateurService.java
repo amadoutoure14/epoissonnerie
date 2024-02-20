@@ -24,20 +24,33 @@ public class AdministrateurService {
     private final ClientService clientService;
     private final CommentaireRepository commentaireRepository;
     private final EvaluationRepository evaluationRepository;
-    public Administrateur ajouter(Administrateur admin){
-        return administratreurRepository.save(admin);
+    public ResponseEntity<Administrateur> ajouter(Administrateur admin){
+        try {
+            return ResponseEntity.ok(administratreurRepository.save(admin));
+        }catch (Exception e){
+            return ResponseEntity.internalServerError().build();
+        }
     }
 
-    public Vendeur activerVendeur(Long id){
+    public  ResponseEntity<Vendeur> activerVendeur(Long id){
         Vendeur vendeur = vendeurRepository.findById(id).orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND, "Le vendeur est introuvable"));
         vendeur.setActif(true);
-        return vendeurRepository.save(vendeur);
+        try {
+            return ResponseEntity.ok(vendeurRepository.save(vendeur));
+        }
+        catch (Exception e){
+            return ResponseEntity.internalServerError().build();
+        }
 
     }
-    public Vendeur desactiverVendeur(Long id){
+    public ResponseEntity<Vendeur> desactiverVendeur(Long id){
         Vendeur vendeur = vendeurRepository.findById(id).orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND, "Le vendeur est introuvable"));
         vendeur.setActif(false);
-        return vendeurRepository.save(vendeur);
+        try{
+            return ResponseEntity.ok(vendeurRepository.save(vendeur));
+        }catch (Exception e){
+            return ResponseEntity.internalServerError().build();
+        }
     }
     public List<Vendeur> vendeurList(){
         return vendeurRepository.findAll();
@@ -51,15 +64,23 @@ public class AdministrateurService {
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-    public Client activerClient(Long id){
+    public ResponseEntity<Client> activerClient(Long id){
         Client client = clientRepository.findById(id).orElseThrow(()->new ResponseStatusException(HttpStatus.NOT_FOUND, "Le client est introuvable"));
         client.setActif(true);
-        return clientRepository.save(client);
+       try{
+           return ResponseEntity.ok(clientRepository.save(client));
+       }catch (Exception e){
+           return ResponseEntity.internalServerError().build();
+       }
     }
-    public Client deactiverClient(Long id){
+    public ResponseEntity<Client> deactiverClient(Long id){
         Client client = clientRepository.findById(id).orElseThrow(()->new ResponseStatusException(HttpStatus.NOT_FOUND,"Le client est introuvable"));
         client.setActif(false);
-        return clientRepository.save(client);
+        try{
+            return ResponseEntity.ok(clientRepository.save(client));
+        }catch (Exception e){
+            return ResponseEntity.internalServerError().build();
+        }
     }
     public void supprimerClient(Long id){
         clientService.supprimer(id);
