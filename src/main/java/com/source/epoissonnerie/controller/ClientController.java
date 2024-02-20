@@ -7,6 +7,7 @@ import lombok.Builder;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -34,5 +35,8 @@ public class ClientController {
     public ResponseEntity<Void> supprimer(@PathVariable Long id){
         return service.supprimer(id);
     }
-    
+    @GetMapping(value = "/filtre")
+    public ResponseEntity<List<Client>> filtreClient(@RequestParam String nom,@RequestParam String prenom){
+        return service.filtreClient(nom,prenom);
+    }
 }

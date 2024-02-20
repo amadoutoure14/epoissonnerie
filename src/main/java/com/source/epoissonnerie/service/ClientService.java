@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -87,5 +88,11 @@ public class ClientService {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
-
+    public ResponseEntity<List<Client>>filtreClient(String nom, String prenom){
+        Optional<List<Client>> clientOptional = repository.findByNomAndPrenom(nom,prenom);
+       return clientOptional
+               .map(ResponseEntity::ok)
+               .orElse(ResponseEntity.notFound()
+                       .build());
+    }
 }

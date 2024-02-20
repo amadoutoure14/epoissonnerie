@@ -31,6 +31,7 @@ public class Poisson {
     @NotNull
     @Min(value = 1)
     private int quantite;
+    private String description;
 
     @NotNull
     @Column(nullable = false)

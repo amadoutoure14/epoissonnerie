@@ -18,7 +18,7 @@ public class VendeurController {
     public final VendeurService service;
     @PostMapping(value = "/ajouter")
     @ResponseStatus(HttpStatus.CREATED)
-    public Vendeur ajouter(@Valid @RequestBody Vendeur vendeur){
+    public ResponseEntity<Vendeur> ajouter(@Valid @RequestBody Vendeur vendeur){
         return service.ajouter(vendeur);
     }
     @GetMapping("{id}")
@@ -33,12 +33,15 @@ public class VendeurController {
     }
     @PutMapping(value = "/modifier/{id}")
     @ResponseStatus(HttpStatus.ACCEPTED)
-    public Vendeur modifier(@Valid @PathVariable Long id, @RequestBody Vendeur vendeur){
+    public ResponseEntity<Vendeur> modifier(@Valid @PathVariable Long id, @RequestBody Vendeur vendeur){
         return service.modifier(id, vendeur);
     }
     @PatchMapping(value = "/partiel/{id}")
-    @ResponseStatus(HttpStatus.ACCEPTED)
-    public Vendeur modifierPartiel(@Valid @PathVariable Long id, @RequestBody Map<String, Object> updates){
+    public ResponseEntity<Vendeur> modifierPartiel(@Valid @PathVariable Long id, @RequestBody Map<String, Object> updates){
         return service.Partiel(id, updates);
+    }
+    @GetMapping("/filtre")
+    public ResponseEntity<Vendeur> filtreVendeur(@Valid @RequestParam String nom, @RequestParam String prenom){
+        return service.filtreVendeur(nom, prenom);
     }
 }

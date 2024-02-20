@@ -4,6 +4,7 @@ import com.source.epoissonnerie.entity.Administrateur;
 import com.source.epoissonnerie.entity.Vendeur;
 import com.source.epoissonnerie.repository.VendeurRepository;
 import lombok.Builder;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -11,15 +12,22 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import static org.hibernate.sql.ast.SqlTreeCreationLogger.LOGGER;
+
 @Service
 @Builder
 public class VendeurService {
     public final VendeurRepository repository;
-    public Vendeur  ajouter(Vendeur vendeur){
+    public final PoissonService poissonService;
+    public ResponseEntity<Vendeur> ajouter(Vendeur vendeur){
         Administrateur administrateur = new Administrateur();
         administrateur.setId(1L);
         vendeur.setAdministrateur(administrateur);
-        return repository.save(vendeur);
+        try{
+            return ResponseEntity.ok(repository.save(vendeur));
+        }catch (Exception e){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
     }
     public ResponseEntity<Vendeur> unVendeur(Long id) {
         Vendeur vendeur = repository.findById(id).orElseThrow(()->new IllegalStateException("Le vendeur est introuvable !"));
@@ -29,7 +37,7 @@ public class VendeurService {
         return repository.findAll();
     }
 
-    public Vendeur modifier(Long id, Vendeur vendeur){
+    public ResponseEntity<Vendeur> modifier(Long id, Vendeur vendeur){
         Optional<Vendeur> optional  = repository.findById(id);
         optional.map(
                 maj -> {
@@ -37,16 +45,19 @@ public class VendeurService {
                     maj.setNom(vendeur.getNom());
                     maj.setPrenom(vendeur.getPrenom());
                     maj.setMdp(vendeur.getMdp());
-                    return repository.save(maj);
+                   try {
+                       return repository.save(maj);
+                   }catch (Exception e) {
+                       return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+                   }
                 }
         );
-        return optional.orElseThrow(()->new IllegalStateException("Le vendeur est introuvable !"));
+        return ResponseEntity.notFound().build();
     }
 
-    public Vendeur Partiel(Long id, Map<String, Object> vendeur){
+    public ResponseEntity<Vendeur> Partiel(Long id, Map<String, Object> vendeur){
         Optional<Vendeur> optionalVendeur = repository.findById(id);
-        optionalVendeur.map(
-                maj -> {
+        optionalVendeur.map(maj -> {
                     vendeur.forEach(
                             (key,value) -> {
                                 switch (key){
@@ -65,13 +76,31 @@ public class VendeurService {
                                 }
                             }
                     );
-                    return repository.save(maj);
-                }
-        );
-        return optionalVendeur.orElseThrow(()->new IllegalStateException("Le vendeur est introuvable !"));
+            try {
+                return ResponseEntity.ok(repository.save(maj));
+            } catch (Exception e) {
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+            }
+        });
+        return ResponseEntity.notFound().build();
     }
     public void supprimer(Long id){
         Optional<Vendeur> vendeur = repository.findById(id);
         vendeur.ifPresent(repository::delete);
     }
+    public ResponseEntity<Vendeur> filtreVendeur(String nom, String prenom) {
+        try {
+            if (nom == null || prenom == null) {
+                return ResponseEntity.badRequest().build();
+            }
+            return repository.findByNomAndPrenom(nom, prenom)
+                    .map(ResponseEntity::ok)
+                    .orElseThrow(() -> new IllegalStateException("le vendeur n'existe pas!"));
+
+        } catch (Exception e) {
+            LOGGER.error("une erreur s'est produite lors du filtrage des vendeurs", e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
 }

@@ -6,10 +6,13 @@ import com.source.epoissonnerie.entity.Vendeur;
 import com.source.epoissonnerie.repository.*;
 import lombok.Builder;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
+
+import static org.hibernate.sql.results.LoadingLogger.LOGGER;
 
 @Service
 @Builder
@@ -40,7 +43,13 @@ public class AdministrateurService {
         return vendeurRepository.findAll();
     }
     public void supprimerVendeur(Long id){
-        vendeurService.supprimer(id);
+        try{
+            vendeurService.supprimer(id);
+            ResponseEntity.noContent().build();
+        }catch (Exception e){
+            LOGGER.error("une erreur s'est produite lors du filtrage des vendeurs", e);
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
     public Client activerClient(Long id){
         Client client = clientRepository.findById(id).orElseThrow(()->new ResponseStatusException(HttpStatus.NOT_FOUND, "Le client est introuvable"));
@@ -58,4 +67,5 @@ public class AdministrateurService {
     public List<Client> clientList() {
         return clientRepository.findAll();
     }
+
 }
