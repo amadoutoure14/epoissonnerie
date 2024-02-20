@@ -7,7 +7,6 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -43,31 +42,49 @@ public class CommentaireService {
            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
        }
     }
-    public ResponseEntity<Commentaire> partiel(Long id,Map<String,Object> commentaire) {
+    public ResponseEntity<Commentaire> partiel(Long id, Map<String,Object> commentaire) {
         Optional<Commentaire> optionalCommentaire = repository.findById(id);
-        optionalCommentaire.map(
-                maj -> {
-                    commentaire.forEach(
-                            (key, value) -> {
-                                if (key.equals("contenu")) {
-                                    maj.setContenu((String) value);
-                                }
-                            }
-                    );
-                    return ResponseEntity.ok(repository.save(maj));
-                }
-        );
-        return ResponseEntity.notFound().build();
+      try {
+          optionalCommentaire.map(
+                  maj -> {
+                      commentaire.forEach(
+                              (key, value) -> {
+                                  if (key.equals("contenu")) {
+                                      maj.setContenu((String) value);
+                                  }
+                              }
+                      );
+                      return ResponseEntity.ok(repository.save(maj));
+                  }
+          );
+          return ResponseEntity.notFound().build();
+      }catch (DataIntegrityViolationException | IllegalArgumentException ex) {
+          return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                  .build();
+      } catch (Exception ex) {
+          return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+      }
     }
     public ResponseEntity<Void> supprimer(Long id) {
         Optional<Commentaire> optionalCommentaire = repository.findById(id);
-        optionalCommentaire.ifPresent(repository::delete);
-        return ResponseEntity.noContent().build();
+        try {
+            optionalCommentaire.ifPresent(repository::delete);
+            return ResponseEntity.noContent().build();
+        }catch (DataIntegrityViolationException | IllegalArgumentException ex) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .build();
+        } catch (Exception ex) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
     }
-    public ResponseEntity<List<Commentaire>> liste(Long id) {
-        Optional<Commentaire> optionalCommentaire = repository.findById(id);
-        return optionalCommentaire.map(
-                commentaire -> ResponseEntity.ok(repository.findAll())
-        ).orElse(ResponseEntity.notFound().build());
+    public ResponseEntity<List<Commentaire>> liste() {
+        try{
+            return ResponseEntity.ok(repository.findAll());
+        }catch (DataIntegrityViolationException | IllegalArgumentException ex) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .build();
+        } catch (Exception ex) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
     }
 }
