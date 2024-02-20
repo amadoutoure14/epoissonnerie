@@ -23,10 +23,6 @@ public class CommandeController {
     public ResponseEntity<List<Commande>> liste(){
         return service.liste();
     }
-    @GetMapping(value = "/filtre")
-    public ResponseEntity<List<Commande>> filtre(@RequestParam String nom){
-        return service.filtre(nom);
-    }
     @PutMapping(value ="/modifier/{id}")
     public ResponseEntity<Commande> modifier(@PathVariable Long id, @RequestBody Commande commande){
         return service.modifier(id,commande);

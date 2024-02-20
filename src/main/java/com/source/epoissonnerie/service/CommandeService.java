@@ -14,6 +14,7 @@ import java.util.Optional;
 @Service
 @Builder
 public class CommandeService {
+
     private final CommandeRepository repository;
     public ResponseEntity<Commande> ajouter(Commande commande) {
         return ResponseEntity.ok(repository.save(commande));
@@ -30,14 +31,7 @@ public class CommandeService {
             return ResponseEntity.status(500).build();
         }
     }
-    public ResponseEntity<List<Commande>> filtre(String nom){
-        try {
-            return ResponseEntity.ok(repository.findByNom(nom));
-        }
-        catch (Exception e){
-            return ResponseEntity.status(500).build();
-        }
-    }
+
     public ResponseEntity<Commande> modifier(Long id,Commande commande){
         Optional<Commande> optionalCommande = repository.findById(id);
         try {
