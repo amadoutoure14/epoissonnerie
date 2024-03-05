@@ -2,11 +2,15 @@ package com.source.epoissonnerie.services;
 
 import com.source.epoissonnerie.entites.Role;
 import com.source.epoissonnerie.entites.Utilisateur;
+import com.source.epoissonnerie.entites.Validation;
 import com.source.epoissonnerie.repository.UtilisateurRepository;
 import lombok.Builder;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.time.Instant;
+import java.util.Map;
 
 @Service
 @Builder
@@ -21,5 +25,13 @@ public class UtilisateurService {
         utilisateur = this.repository.save(utilisateur);
         this.validationService.enregistrer(utilisateur);
         return ResponseEntity.ok(utilisateur);
+    }
+    public void activation(Map<String,String> activation){
+        Validation validation = this.validationService.lireCode(activation.get("code"));
+        if (Instant.now().isAfter(validation.getExpiration())){
+            throw new RuntimeException("Votre code a expiré");
+        }
+        Utilisateur utilisateurActiver = this.repository.findById(validation.getUtilisateur().getId()).orElseThrow(() -> new RuntimeException("L'utilisateur est introuvable!"));
+        utilisateurActiver.setActif(true);
     }
 }
