@@ -1,8 +1,6 @@
 package com.source.epoissonnerie.services;
 
 import com.source.epoissonnerie.entites.Validation;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
