@@ -1,6 +1,6 @@
-package com.source.epoissonnerie.service;
+package com.source.epoissonnerie.services;
 
-import com.source.epoissonnerie.entity.Panier;
+import com.source.epoissonnerie.entites.Panier;
 import com.source.epoissonnerie.repository.PanierRepository;
 import lombok.Builder;
 import org.springframework.dao.DataIntegrityViolationException;

@@ -1,7 +1,7 @@
 package com.source.epoissonnerie.controller;
 
-import com.source.epoissonnerie.entity.Vendeur;
-import com.source.epoissonnerie.service.VendeurService;
+import com.source.epoissonnerie.entites.Vendeur;
+import com.source.epoissonnerie.services.VendeurService;
 import jakarta.validation.Valid;
 import lombok.Builder;
 import org.springframework.http.HttpStatus;
@@ -16,7 +16,7 @@ import java.util.Map;
 @Builder
 public class VendeurController {
     public final VendeurService service;
-    @PostMapping(value = "/ajouter")
+    @PostMapping(value = "/inscription")
     public ResponseEntity<Vendeur> ajouter(@Valid @RequestBody Vendeur vendeur){
         return service.ajouter(vendeur);
     }

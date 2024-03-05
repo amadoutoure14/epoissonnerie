@@ -1,4 +1,4 @@
-package com.source.epoissonnerie.entity;
+package com.source.epoissonnerie.entites;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;

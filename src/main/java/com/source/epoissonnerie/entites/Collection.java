@@ -1,8 +1,7 @@
-package com.source.epoissonnerie.entity;
+package com.source.epoissonnerie.entites;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -13,20 +12,24 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "Evaluation")
-public class Evaluation {
+@Table(name = "Collection")
+public class Collection {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @NotNull
-    @Size(min = 1,max = 6)
-    private int note = 0;
+    private String nom;
+
+    @NotNull
+    private String description;
+
+    private boolean publier;
 
     @ManyToOne
-    @JoinColumn(name = "client")
-    private Client client;
+    @JoinColumn(name = "vendeur")
+    private Vendeur vendeur;
 
-    @OneToMany(mappedBy = "evaluation",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "collection",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     private List<Poisson> poissons;
 }

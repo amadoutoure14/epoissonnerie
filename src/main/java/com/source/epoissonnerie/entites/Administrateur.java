@@ -1,4 +1,4 @@
-package com.source.epoissonnerie.entity;
+package com.source.epoissonnerie.entites;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;

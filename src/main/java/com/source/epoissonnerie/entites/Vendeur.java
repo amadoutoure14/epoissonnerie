@@ -1,4 +1,4 @@
-package com.source.epoissonnerie.entity;
+package com.source.epoissonnerie.entites;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -44,8 +44,6 @@ public class Vendeur {
     @Column(length = 200)
     private String mdp;
 
-    @Column(length = 100)
-    private String role;
 
     @OneToMany(mappedBy = "vendeur",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     private List<Collection> collections;
@@ -61,7 +59,6 @@ public class Vendeur {
     @PrePersist
     public void PrePersist() {
         this.date = LocalDate.now();
-        this.role="vendeur";
         administrateur.setId(administrateur.getId());
     }
 }

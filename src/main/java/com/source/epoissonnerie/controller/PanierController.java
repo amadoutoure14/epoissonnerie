@@ -1,7 +1,7 @@
 package com.source.epoissonnerie.controller;
 
-import com.source.epoissonnerie.entity.Panier;
-import com.source.epoissonnerie.service.PanierService;
+import com.source.epoissonnerie.entites.Panier;
+import com.source.epoissonnerie.services.PanierService;
 import jakarta.validation.Valid;
 import lombok.Builder;
 import org.springframework.http.ResponseEntity;

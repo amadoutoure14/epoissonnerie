@@ -1,7 +1,7 @@
-package com.source.epoissonnerie.service;
+package com.source.epoissonnerie.services;
 
-import com.source.epoissonnerie.entity.Administrateur;
-import com.source.epoissonnerie.entity.Client;
+import com.source.epoissonnerie.entites.Administrateur;
+import com.source.epoissonnerie.entites.Client;
 import com.source.epoissonnerie.repository.ClientRepository;
 import lombok.Builder;
 import org.springframework.http.HttpStatus;

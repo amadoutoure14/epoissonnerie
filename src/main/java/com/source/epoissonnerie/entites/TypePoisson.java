@@ -1,4 +1,4 @@
-package com.source.epoissonnerie.entity;
+package com.source.epoissonnerie.entites;
 import lombok.AllArgsConstructor;
 @AllArgsConstructor
 public enum TypePoisson {

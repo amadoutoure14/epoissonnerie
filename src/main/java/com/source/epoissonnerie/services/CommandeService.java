@@ -1,7 +1,7 @@
-package com.source.epoissonnerie.service;
+package com.source.epoissonnerie.services;
 
-import com.source.epoissonnerie.entity.Commande;
-import com.source.epoissonnerie.entity.Poisson;
+import com.source.epoissonnerie.entites.Commande;
+import com.source.epoissonnerie.entites.Poisson;
 import com.source.epoissonnerie.repository.CommandeRepository;
 import lombok.Builder;
 import org.springframework.http.ResponseEntity;

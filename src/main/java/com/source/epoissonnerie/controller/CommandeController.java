@@ -1,7 +1,7 @@
 package com.source.epoissonnerie.controller;
 
-import com.source.epoissonnerie.entity.Commande;
-import com.source.epoissonnerie.service.CommandeService;
+import com.source.epoissonnerie.entites.Commande;
+import com.source.epoissonnerie.services.CommandeService;
 import jakarta.validation.Valid;
 import lombok.Builder;
 import org.springframework.http.ResponseEntity;

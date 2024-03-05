@@ -1,4 +1,4 @@
-package com.source.epoissonnerie.entity;
+package com.source.epoissonnerie.entites;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
@@ -37,8 +37,6 @@ public class Client {
 
     private boolean actif;
 
-    private String role;
-
     @OneToOne(mappedBy = "client")
     private Panier panier;
 
@@ -56,7 +54,6 @@ public class Client {
     @PrePersist
     public void PrePersist() {
         this.date = LocalDate.now();
-        this.role = "client";
         administrateur.setId(administrateur.getId());
     }
 

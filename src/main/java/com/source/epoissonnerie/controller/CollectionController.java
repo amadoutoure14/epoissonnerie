@@ -1,9 +1,10 @@
 package com.source.epoissonnerie.controller;
 
-import com.source.epoissonnerie.entity.Collection;
-import com.source.epoissonnerie.service.CollectionService;
+import com.source.epoissonnerie.entites.Collection;
+import com.source.epoissonnerie.services.CollectionService;
 import jakarta.validation.Valid;
 import lombok.Builder;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,7 +13,7 @@ import java.util.Map;
 import java.util.Optional;
 
 @RestController
-@RequestMapping(value ="/collection")
+@RequestMapping(value ="/collection",consumes = MediaType.APPLICATION_JSON_VALUE)
 @Builder
 public class CollectionController {
     public final CollectionService service;

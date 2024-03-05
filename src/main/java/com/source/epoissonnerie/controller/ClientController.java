@@ -1,9 +1,10 @@
 package com.source.epoissonnerie.controller;
 
-import com.source.epoissonnerie.entity.Client;
-import com.source.epoissonnerie.service.ClientService;
+import com.source.epoissonnerie.entites.Client;
+import com.source.epoissonnerie.services.ClientService;
 import jakarta.validation.Valid;
 import lombok.Builder;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,10 +13,10 @@ import java.util.Map;
 
 @RestController
 @Builder
-@RequestMapping(value = "/client")
+@RequestMapping(value = "/client",consumes = MediaType.APPLICATION_JSON_VALUE)
 public class ClientController {
     public final ClientService service;
-    @PostMapping(value = "/ajouter")
+    @PostMapping(value = "/inscription")
     public ResponseEntity<Client> ajouter(@Valid @RequestBody Client client){
         return service.ajouter(client);
     }

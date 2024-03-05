@@ -1,6 +1,6 @@
-package com.source.epoissonnerie.service;
+package com.source.epoissonnerie.services;
 
-import com.source.epoissonnerie.entity.Commentaire;
+import com.source.epoissonnerie.entites.Commentaire;
 import com.source.epoissonnerie.repository.CommentaireRepository;
 import lombok.Builder;
 import org.springframework.dao.DataIntegrityViolationException;

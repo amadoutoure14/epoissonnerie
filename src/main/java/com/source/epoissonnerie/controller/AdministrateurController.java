@@ -1,18 +1,19 @@
 package com.source.epoissonnerie.controller;
-import com.source.epoissonnerie.entity.Administrateur;
-import com.source.epoissonnerie.entity.Client;
-import com.source.epoissonnerie.entity.Vendeur;
-import com.source.epoissonnerie.service.AdministrateurService;
+import com.source.epoissonnerie.entites.Administrateur;
+import com.source.epoissonnerie.entites.Client;
+import com.source.epoissonnerie.entites.Vendeur;
+import com.source.epoissonnerie.services.AdministrateurService;
 import jakarta.validation.Valid;
 import lombok.Builder;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
 @Builder
-@RequestMapping(value = "/admin")
+@RequestMapping(value = "/admin",consumes = MediaType.APPLICATION_JSON_VALUE)
 public class AdministrateurController {
     public final AdministrateurService service;
     @PostMapping(value = "/ajouter")

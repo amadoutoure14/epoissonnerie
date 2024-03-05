@@ -1,7 +1,7 @@
-package com.source.epoissonnerie.service;
+package com.source.epoissonnerie.services;
 
-import com.source.epoissonnerie.entity.Administrateur;
-import com.source.epoissonnerie.entity.Vendeur;
+import com.source.epoissonnerie.entites.Administrateur;
+import com.source.epoissonnerie.entites.Vendeur;
 import com.source.epoissonnerie.repository.VendeurRepository;
 import lombok.Builder;
 import org.springframework.http.HttpStatus;
@@ -17,8 +17,8 @@ import static org.hibernate.sql.ast.SqlTreeCreationLogger.LOGGER;
 @Service
 @Builder
 public class VendeurService {
-    public final VendeurRepository repository;
-    public final PoissonService poissonService;
+    private final VendeurRepository repository;
+    private final PoissonService poissonService;
     public ResponseEntity<Vendeur> ajouter(Vendeur vendeur){
         Administrateur administrateur = new Administrateur();
         administrateur.setId(1L);

@@ -1,7 +1,7 @@
 package com.source.epoissonnerie.controller;
 
-import com.source.epoissonnerie.entity.Poisson;
-import com.source.epoissonnerie.service.PoissonService;
+import com.source.epoissonnerie.entites.Poisson;
+import com.source.epoissonnerie.services.PoissonService;
 import lombok.Builder;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

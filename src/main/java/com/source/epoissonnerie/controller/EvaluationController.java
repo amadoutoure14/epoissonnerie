@@ -1,7 +1,7 @@
 package com.source.epoissonnerie.controller;
 
-import com.source.epoissonnerie.entity.Evaluation;
-import com.source.epoissonnerie.service.EvaluationService;
+import com.source.epoissonnerie.entites.Evaluation;
+import com.source.epoissonnerie.services.EvaluationService;
 import jakarta.validation.Valid;
 import lombok.Builder;
 import org.springframework.http.ResponseEntity;
