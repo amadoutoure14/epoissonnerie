@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
+import java.util.Optional;
 import java.util.Random;
 
 @Service
@@ -21,7 +22,6 @@ public class ValidationService {
     public void enregistrer(Utilisateur utilisateur){
 
         Validation validation = new Validation();
-
         validation.setUtilisateur(utilisateur);
 
         Instant creation = Instant.now();
