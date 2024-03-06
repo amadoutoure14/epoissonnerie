@@ -12,35 +12,35 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping(value = "/vendeur")
+@RequestMapping(path = "vendeur")
 @Builder
 public class VendeurController {
     public final VendeurService service;
-    @PostMapping(value = "/inscription")
+    @PostMapping(path = "/inscription")
     public ResponseEntity<Vendeur> ajouter(@Valid @RequestBody Vendeur vendeur){
         return service.ajouter(vendeur);
     }
-    @GetMapping("/{id}")
+    @GetMapping(path="{id}")
     public ResponseEntity<Vendeur> unVendeur(@PathVariable Long id){
         return service.unVendeur(id);
     }
-    @GetMapping(value = "/listes")
+    @GetMapping(path = "listes")
     public List<Vendeur> liste() {
         return service.liste();
     }
-    @PutMapping(value = "/modifier/{id}")
+    @PutMapping(path = "modifier/{id}")
     public ResponseEntity<Vendeur> modifier(@Valid @PathVariable Long id, @RequestBody Vendeur vendeur){
         return service.modifier(id, vendeur);
     }
-    @PatchMapping(value = "/partiel/{id}")
+    @PatchMapping(path = "partiel/{id}")
     public ResponseEntity<Vendeur> modifierPartiel(@Valid @PathVariable Long id, @RequestBody Map<String, Object> updates){
         return service.Partiel(id, updates);
     }
-    @GetMapping("/filtre")
+    @GetMapping(path="filtre")
     public ResponseEntity<Vendeur> filtreVendeur(@Valid @RequestParam String nom, @RequestParam String prenom){
         return service.filtreVendeur(nom, prenom);
     }
-    @DeleteMapping(value = "/supprimer/{id}")
+    @DeleteMapping(path = "supprimer/{id}")
     public ResponseEntity<Void> supprimer(@PathVariable Long id){
         try{
             service.supprimer(id);

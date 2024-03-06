@@ -1,7 +1,9 @@
 package com.source.epoissonnerie.config;
 
+import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.env.Environment;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -9,9 +11,14 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
+import static org.springframework.http.HttpMethod.GET;
+import static org.springframework.http.HttpMethod.POST;
+
 @Configuration
 @EnableWebSecurity
+@AllArgsConstructor
 public class SecurityConfig {
+    Environment env;
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         return httpSecurity
@@ -19,9 +26,9 @@ public class SecurityConfig {
                 .authorizeHttpRequests(
                         authorize ->
                                 authorize
-                                        .requestMatchers(HttpMethod.POST, "vendeur/inscription").permitAll()
-                                        .requestMatchers(HttpMethod.POST, "client/inscription").permitAll()
-                                        .requestMatchers(HttpMethod.POST, "utilisateur/inscription").permitAll()
+                                        .requestMatchers(POST, "vendeur/inscription").permitAll()
+                                        .requestMatchers(POST, "client/inscription").permitAll()
+                                        .requestMatchers(POST, "utilisateur/inscription").permitAll()
                                         .anyRequest().authenticated()
                 )
                 .build();

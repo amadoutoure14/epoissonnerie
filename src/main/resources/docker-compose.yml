@@ -10,18 +10,18 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD:
     ports:
-      - 3308:3306
+      - "3308:3306"
   adminer:
     container_name: adminer-4.8.1-standalone
     image: adminer:4.8.1-standalone
     restart: always
     ports:
-      - 9090:8080
+      - "9090:8080"
   smtp4dev:
     image: rnwood/smtp4dev:v3
     restart: always
     ports:
       # Change the number before : to the port the web interface should be accessible on
-      - 9081:80
+      - "9081:80"
       # Change the number before : to the port the SMTP server should be accessible on
-      - 9025:25
+      - "9025:25"

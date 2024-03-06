@@ -13,36 +13,36 @@ import java.util.Map;
 import java.util.Optional;
 
 @RestController
-@RequestMapping(value ="/collection",consumes = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(path ="collection",consumes = MediaType.APPLICATION_JSON_VALUE)
 @Builder
 public class CollectionController {
     public final CollectionService service;
-    @PostMapping(value = "/ajouter")
+    @PostMapping(path = "ajouter")
     public ResponseEntity<Collection> ajouter(@Valid @RequestBody Collection collection){
         return service.ajouter(collection);
     }
-    @GetMapping(value = "/{id}")
+    @GetMapping(path = "{id}")
     public ResponseEntity<Collection> uneCollection(@PathVariable Long id){
         return service.uneCollection(id);
     }
-    @GetMapping(value = "/filtre")
+    @GetMapping(path = "filtre")
     public ResponseEntity<Optional<List<Collection>>> filtre(@RequestParam String nom){
         return service.filtre(nom);
     }
-    @GetMapping(value = "/liste")
+    @GetMapping(path = "liste")
     public ResponseEntity<List<Collection>> liste(){
         return service.liste();
     }
-    @PutMapping(value = "/modifier/{id}")
+    @PutMapping(path = "modifier/{id}")
     ResponseEntity<Collection> modifier(@PathVariable Long id, @RequestBody Collection collection){
         return service.modifier(id,collection);
     }
-    @PatchMapping(value = "/partiel/{id}")
+    @PatchMapping(path = "partiel/{id}")
     public ResponseEntity<Collection> partiel(@PathVariable Long id, @RequestBody Map<String, Object> collection){
         return service.partiel(id,collection);
     }
-    @DeleteMapping("/supprimer/{id}")
-    public ResponseEntity<Void> supprimer(Long id){
+    @DeleteMapping(path="supprimer/{id}")
+    public ResponseEntity<Void> supprimer(@PathVariable Long id){
         return service.supprimer(id);
     }
 }

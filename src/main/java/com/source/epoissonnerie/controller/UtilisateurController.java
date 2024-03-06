@@ -15,16 +15,16 @@ import java.util.Map;
 
 @RestController
 @Builder
-@RequestMapping(value = "/utilisateur",consumes = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(path = "utilisateur",consumes = MediaType.APPLICATION_JSON_VALUE)
 public class UtilisateurController {
     private final UtilisateurService service;
 
-    @PostMapping(value = "/inscription")
+    @PostMapping(path = "inscription")
     public ResponseEntity<Utilisateur> inscription(@Valid @RequestBody Utilisateur utilisateur){
         return service.inscription(utilisateur);
     }
     @PostMapping(path = "activaction")
     public void validation(@Valid @RequestBody Map<String, String> activation){
-        return ;
+        service.activation(activation);
     }
 }

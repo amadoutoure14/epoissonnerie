@@ -24,13 +24,6 @@ public class AdministrateurService {
     private final ClientService clientService;
     private final CommentaireRepository commentaireRepository;
     private final EvaluationRepository evaluationRepository;
-    public ResponseEntity<Administrateur> ajouter(Administrateur admin){
-        try {
-            return ResponseEntity.ok(administratreurRepository.save(admin));
-        }catch (Exception e){
-            return ResponseEntity.internalServerError().build();
-        }
-    }
 
     public  ResponseEntity<Vendeur> activerVendeur(Long id){
         Vendeur vendeur = vendeurRepository.findById(id).orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND, "Le vendeur est introuvable"));

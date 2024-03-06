@@ -33,5 +33,6 @@ public class UtilisateurService {
         }
         Utilisateur utilisateurActiver = this.repository.findById(validation.getUtilisateur().getId()).orElseThrow(() -> new RuntimeException("L'utilisateur est introuvable!"));
         utilisateurActiver.setActif(true);
+        this.repository.save(utilisateurActiver);
     }
 }

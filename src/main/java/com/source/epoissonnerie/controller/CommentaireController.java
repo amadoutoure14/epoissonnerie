@@ -11,27 +11,27 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping(value ="/commentaire")
+@RequestMapping(path ="commentaire")
 @Builder
 public class CommentaireController {
     public final CommentaireService service;
-    @PostMapping(value = "/ajouter")
+    @PostMapping(path = "ajouter")
     public ResponseEntity<Commentaire> ajouter(@Valid @RequestBody Commentaire commentaire){
         return service.ajouter(commentaire);
     }
-    @GetMapping(value = "/liste")
+    @GetMapping(path = "liste")
     public ResponseEntity<List<Commentaire>> liste(){
         return service.liste();
     }
-    @PutMapping(value = "/modifier/{id}")
+    @PutMapping(path = "modifier/{id}")
     public ResponseEntity<Commentaire> modifier(@Valid @PathVariable Long id,@RequestBody Commentaire commentaire){
         return service.modifier(id, commentaire);
     }
-    @PatchMapping(value = "/partiel/{id}")
+    @PatchMapping(path = "partiel/{id}")
     public ResponseEntity<Commentaire> partiel(@PathVariable Long id,@RequestBody Map<String,Object> commentaire){
         return service.partiel(id, commentaire);
     }
-    @DeleteMapping(value = "/supprimer/{id}")
+    @DeleteMapping(path = "supprimer/{id}")
     public ResponseEntity<Void> supprimer(@PathVariable Long id){
         return service.supprimer(id);
     }

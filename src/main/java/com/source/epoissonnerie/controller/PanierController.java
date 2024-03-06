@@ -12,30 +12,30 @@ import java.util.Map;
 
 @RestController
 @Builder
-@RequestMapping(value = "/controller")
+@RequestMapping(path = "controller")
 public class PanierController {
     private final PanierService service;
-    @PostMapping(value ="/ajouter")
+    @PostMapping(path ="ajouter")
     public ResponseEntity<Panier> ajouter(@Valid @RequestBody Panier panier) {
         return service.ajouter(panier);
     }
-    @GetMapping(value = "/{id}")
+    @GetMapping(path = "{id}")
     public ResponseEntity<Panier> lePanier(@PathVariable Long id) {
         return service.lePanier(id);
     }
-    @PutMapping(value = "/modifier/{id}")
+    @PutMapping(path = "modifier/{id}")
     public ResponseEntity<Panier> modifier(@PathVariable Long id, @RequestBody Panier panier) {
         return service.modifier(id, panier);
     }
-    @PatchMapping(value = "/partiel/{id}")
+    @PatchMapping(path = "partiel/{id}")
     public ResponseEntity<Panier> partiel(@PathVariable Long id, @RequestBody Map<String, Object> panier) {
         return service.partiel(id, panier);
     }
-    @DeleteMapping(value = "/supprimer/{id}")
+    @DeleteMapping(path = "supprimer/{id}")
     public ResponseEntity<Void> supprimer(@PathVariable Long id) {
         return service.supprimer(id);
     }
-    @GetMapping(value = "/liste")
+    @GetMapping(path = "iste")
     public ResponseEntity<List<Panier>> liste() {
         return service.liste();
     }
