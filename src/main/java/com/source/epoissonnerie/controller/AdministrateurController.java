@@ -14,39 +14,40 @@ import java.util.List;
 
 @RestController
 @Builder
-@RequestMapping(path = "admin",consumes = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(value = "/admin",consumes = MediaType.APPLICATION_JSON_VALUE)
 public class AdministrateurController {
     public final AdministrateurService service;
-    @GetMapping(path="vendeurs")
+
+    @GetMapping("/vendeurs")
     public List<Vendeur> listeVendeur(){
         return service.vendeurList();
     }
 
-    @PatchMapping(path="activerVendeur/{id}")
+    @PatchMapping("/activerVendeur/{id}")
     public ResponseEntity<Vendeur> activerVendeur(@PathVariable Long id){
         return service.activerVendeur(id);
     }
-    @PatchMapping(path="desactiverVendeur/{id}")
+    @PatchMapping("/desactiverVendeur/{id}")
     public ResponseEntity<Vendeur> desactiverVendeur(@PathVariable Long id){
         return service.desactiverVendeur(id);
     }
-    @DeleteMapping(path= "supprimeVendeur/{id}")
+    @DeleteMapping(value = "/supprimeVendeur/{id}")
     public void supprimerVendeur(@PathVariable Long id){
          service.supprimerVendeur(id);
     }
-    @PatchMapping(path="activerClient/{id}")
+    @PatchMapping(value = "/activerClient/{id}")
     public ResponseEntity<Client> activerClient(@PathVariable Long id){
         return service.activerClient(id);
     }
-    @PatchMapping(path = "deactiverClient/{id}")
+    @PatchMapping(value = "/deactiverClient/{id}")
     public ResponseEntity<Client> deactiverClient(@PathVariable Long id){
         return service.deactiverClient(id);
     }
-    @PatchMapping(path = "supprimerClient/{id}")
+    @PatchMapping(value = "/supprimerClient/{id}")
     public void supprimerClient(@PathVariable Long id){
         service.supprimerClient(id);
     }
-    @GetMapping(path = "clients")
+    @GetMapping(value = "/clients")
     public List<Client> listeClient(){
         return service.clientList();
     }

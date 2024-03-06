@@ -16,13 +16,6 @@ import java.util.Optional;
 @Builder
 public class ClientService {
     public final ClientRepository repository;
-    public ResponseEntity<Client>  ajouter(Client client){
-        Administrateur administrateur = new Administrateur();
-        administrateur.setId(1L);
-        client.setAdministrateur(administrateur);
-        Client save = repository.save(client);
-        return ResponseEntity.ok(save);
-    }
     public ResponseEntity<Client> leClient(Long id) {
         Optional<Client> client = repository.findById(id);
         try {

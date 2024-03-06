@@ -19,12 +19,12 @@ public class UtilisateurService {
     private final BCryptPasswordEncoder passwordEncoder;
     private final ValidationService validationService;
     public ResponseEntity<Utilisateur> inscription(Utilisateur utilisateur){
-        String MdpCrypte = this.passwordEncoder.encode(utilisateur.getMdp());
-        utilisateur.setMdp(MdpCrypte);
-        Role roleUtilisateur = new Role();
-        utilisateur = this.repository.save(utilisateur);
-        this.validationService.enregistrer(utilisateur);
-        return ResponseEntity.ok(utilisateur);
+        String MdpCrypte = this.passwordEncoder.encode(utilisateur.getMdp());//On prend et crypte le mot de passe du client
+        utilisateur.setMdp(MdpCrypte);//On remplace le mot de passe du client par le mot de passe crypte
+        Role roleUtilisateur = new Role();//On crée le role de l'utilisateur
+        utilisateur = this.repository.save(utilisateur);//On enregistre l'utilisateur dans la base de données
+        this.validationService.enregistrer(utilisateur);//On enregistre le code de validation dans la base de données
+        return ResponseEntity.ok(utilisateur);// On retourne une reponse http 200 et l'utilisateur
     }
     public void activation(Map<String,String> activation){
         Validation validation = this.validationService.lireCode(activation.get("code"));

@@ -4,6 +4,7 @@ import com.source.epoissonnerie.entites.Commentaire;
 import com.source.epoissonnerie.services.CommentaireService;
 import jakarta.validation.Valid;
 import lombok.Builder;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -11,27 +12,27 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping(path ="commentaire")
+@RequestMapping(value ="/commentaire",consumes = MediaType.APPLICATION_JSON_VALUE)
 @Builder
 public class CommentaireController {
     public final CommentaireService service;
-    @PostMapping(path = "ajouter")
+    @PostMapping(value = "/ajouter")
     public ResponseEntity<Commentaire> ajouter(@Valid @RequestBody Commentaire commentaire){
         return service.ajouter(commentaire);
     }
-    @GetMapping(path = "liste")
+    @GetMapping(value = "/liste")
     public ResponseEntity<List<Commentaire>> liste(){
         return service.liste();
     }
-    @PutMapping(path = "modifier/{id}")
+    @PutMapping(value = "/modifier/{id}")
     public ResponseEntity<Commentaire> modifier(@Valid @PathVariable Long id,@RequestBody Commentaire commentaire){
         return service.modifier(id, commentaire);
     }
-    @PatchMapping(path = "partiel/{id}")
+    @PatchMapping(value = "/partiel/{id}")
     public ResponseEntity<Commentaire> partiel(@PathVariable Long id,@RequestBody Map<String,Object> commentaire){
         return service.partiel(id, commentaire);
     }
-    @DeleteMapping(path = "supprimer/{id}")
+    @DeleteMapping(value = "/supprimer/{id}")
     public ResponseEntity<Void> supprimer(@PathVariable Long id){
         return service.supprimer(id);
     }

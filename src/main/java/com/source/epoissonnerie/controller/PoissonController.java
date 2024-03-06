@@ -3,6 +3,7 @@ package com.source.epoissonnerie.controller;
 import com.source.epoissonnerie.entites.Poisson;
 import com.source.epoissonnerie.services.PoissonService;
 import lombok.Builder;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -10,15 +11,15 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping(path = "poisson")
+@RequestMapping(value = "/poisson",consumes = MediaType.APPLICATION_JSON_VALUE)
 @Builder
 public class PoissonController {
     public final PoissonService service;
-    @PostMapping(path = "ajouter")
+    @PostMapping(value = "/ajouter")
     public ResponseEntity<Poisson> ajouter(@RequestBody Poisson poisson){
         return service.ajouter(poisson);
     }
-    @GetMapping(path = "liste")
+    @GetMapping(value = "/liste")
     public ResponseEntity<List<Poisson>> liste(){
         try {
             return ResponseEntity.ok(service.liste());
@@ -27,23 +28,23 @@ public class PoissonController {
             return ResponseEntity.status(500).build();
         }
     }
-    @GetMapping(path = "unPoisson/{id}")
+    @GetMapping(value = "/unPoisson/{id}")
     public ResponseEntity<Poisson> unPoisson(@PathVariable Long id){
         return service.unPoisson(id);
     }
-    @PutMapping(path = "modifier/{id}")
+    @PutMapping(value = "/modifier/{id}")
     public ResponseEntity<Poisson> modifier(@PathVariable Long id, @RequestBody Poisson poisson){
         return service.modifier(id,poisson);
     }
-    @PatchMapping(path = "partiel/{id}")
+    @PatchMapping(value = "/partiel/{id}")
     public ResponseEntity<Poisson> modifierPartiel(@PathVariable Long id, @RequestBody Map<String, Object> poisson){
         return service.partiel(id, poisson);
     }
-    @DeleteMapping(path = "supprimer/{id}")
+    @DeleteMapping(value = "/supprimer/{id}")
     public ResponseEntity<Void> supprimer(@PathVariable Long id){
         return service.supprimer(id);
     }
-    @GetMapping(path = "filtre")
+    @GetMapping(value = "/filtre")
     public ResponseEntity<List<Poisson>> filtrePoisson(@RequestParam String nom){
         try{
             return service.filtrePoisson(nom);

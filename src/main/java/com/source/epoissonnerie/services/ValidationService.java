@@ -21,6 +21,7 @@ public class ValidationService {
     public void enregistrer(Utilisateur utilisateur){
 
         Validation validation = new Validation();
+
         validation.setUtilisateur(utilisateur);
 
         Instant creation = Instant.now();

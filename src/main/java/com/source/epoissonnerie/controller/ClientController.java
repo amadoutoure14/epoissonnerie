@@ -13,26 +13,23 @@ import java.util.Map;
 
 @RestController
 @Builder
-@RequestMapping(path = "client",consumes = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(value = "/client",consumes = MediaType.APPLICATION_JSON_VALUE)
 public class ClientController {
     public final ClientService service;
-    @PostMapping(path = "inscription")
-    public ResponseEntity<Client> ajouter(@Valid @RequestBody Client client){
-        return service.ajouter(client);
-    }
-    @GetMapping(path = "{id}")
+
+    @GetMapping(value = "/{id}")
     public ResponseEntity<Client> leClient(@PathVariable Long id){
         return service.leClient(id);
     }
-    @PutMapping(path = "modifier/{id}")
+    @PutMapping(value = "/modifier/{id}")
     public ResponseEntity<Client> modifier(@Valid @PathVariable Long id, @Valid @RequestBody Client client){
         return service.modifier(id, client);
     }
-    @PatchMapping(path = "partiel/{id}")
+    @PatchMapping(value = "/partiel/{id}")
     public ResponseEntity<Client> partiel(@Valid @PathVariable Long id, @RequestBody Map<String,Object> client){
         return service.partiel(id, client);
     }
-    @DeleteMapping(path = "supprimer/{id}")
+    @DeleteMapping(value = "/supprimer/{id}")
     public ResponseEntity<Void> supprimer(@PathVariable Long id){
        try {
            return service.supprimer(id);
@@ -40,7 +37,7 @@ public class ClientController {
            return ResponseEntity.internalServerError().build();
        }
     }
-    @GetMapping(path = "filtre")
+    @GetMapping(value = "/filtre")
     public ResponseEntity<List<Client>> filtreClient(@RequestParam String nom,@RequestParam String prenom){
         return service.filtreClient(nom,prenom);
     }

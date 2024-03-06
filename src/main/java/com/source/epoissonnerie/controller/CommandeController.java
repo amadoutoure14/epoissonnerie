@@ -4,6 +4,7 @@ import com.source.epoissonnerie.entites.Commande;
 import com.source.epoissonnerie.services.CommandeService;
 import jakarta.validation.Valid;
 import lombok.Builder;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -11,27 +12,27 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping(path ="commande")
+@RequestMapping(value ="/commande",consumes = MediaType.APPLICATION_JSON_VALUE)
 @Builder
 public class CommandeController {
     public final CommandeService service;
-    @PostMapping(path ="passer")
+    @PostMapping(value ="/passer")
     public ResponseEntity<Commande> ajouter(@Valid @RequestBody Commande commande){
         return service.ajouter(commande);
     }
-    @GetMapping(path ="liste")
+    @GetMapping(value ="/liste")
     public ResponseEntity<List<Commande>> liste(){
         return service.liste();
     }
-    @PutMapping(path ="modifier/{id}")
+    @PutMapping(value ="/modifier/{id}")
     public ResponseEntity<Commande> modifier(@PathVariable Long id, @RequestBody Commande commande){
         return service.modifier(id,commande);
     }
-    @PatchMapping(path = "partiel/{id}")
+    @PatchMapping(value = "/partiel/{id}")
     public ResponseEntity<Commande> modifierPartiel(@PathVariable Long id, @RequestBody Map<String, Object> commande){
         return service.partiel(id, commande);
     }
-    @DeleteMapping(path = "supprimer/{id}")
+    @DeleteMapping(value = "/supprimer/{id}")
     public ResponseEntity<Void> supprimer(@PathVariable Long id){
         return service.supprimer(id);
     }

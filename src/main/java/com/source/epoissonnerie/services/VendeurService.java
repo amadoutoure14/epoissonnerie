@@ -19,16 +19,6 @@ import static org.hibernate.sql.ast.SqlTreeCreationLogger.LOGGER;
 public class VendeurService {
     private final VendeurRepository repository;
     private final PoissonService poissonService;
-    public ResponseEntity<Vendeur> ajouter(Vendeur vendeur){
-        Administrateur administrateur = new Administrateur();
-        administrateur.setId(1L);
-        vendeur.setAdministrateur(administrateur);
-        try{
-            return ResponseEntity.ok(repository.save(vendeur));
-        }catch (Exception e){
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-        }
-    }
     public ResponseEntity<Vendeur> unVendeur(Long id) {
         Vendeur vendeur = repository.findById(id).orElseThrow(()->new IllegalStateException("Le vendeur est introuvable !"));
         return ResponseEntity.ok(vendeur);
