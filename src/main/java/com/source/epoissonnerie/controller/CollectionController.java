@@ -3,6 +3,7 @@ package com.source.epoissonnerie.controller;
 import com.source.epoissonnerie.entites.Collection;
 import com.source.epoissonnerie.services.CollectionService;
 import jakarta.validation.Valid;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -14,7 +15,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping(value ="/collection",consumes = MediaType.APPLICATION_JSON_VALUE)
-@Builder
+@AllArgsConstructor
 public class CollectionController {
     public final CollectionService service;
     @PostMapping(value = "/ajouter")

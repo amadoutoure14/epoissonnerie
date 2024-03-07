@@ -2,6 +2,7 @@ package com.source.epoissonnerie.services;
 
 import com.source.epoissonnerie.entites.Evaluation;
 import com.source.epoissonnerie.repository.EvaluationRepository;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
@@ -12,7 +13,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-@Builder
+@AllArgsConstructor
 public class EvaluationService {
     private final EvaluationRepository repository;
     public ResponseEntity<Evaluation> ajouter(Evaluation evaluation) {

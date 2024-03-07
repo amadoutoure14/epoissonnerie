@@ -9,11 +9,9 @@ import org.springframework.stereotype.Service;
 
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
-import java.util.Optional;
 import java.util.Random;
 
 @Service
-@Builder
 @AllArgsConstructor
 public class ValidationService {
 

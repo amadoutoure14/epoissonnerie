@@ -3,6 +3,7 @@ package com.source.epoissonnerie.controller;
 import com.source.epoissonnerie.entites.Client;
 import com.source.epoissonnerie.services.ClientService;
 import jakarta.validation.Valid;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -12,7 +13,7 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@Builder
+@AllArgsConstructor
 @RequestMapping(value = "/client",consumes = MediaType.APPLICATION_JSON_VALUE)
 public class ClientController {
     public final ClientService service;

@@ -4,8 +4,11 @@ import com.source.epoissonnerie.entites.Role;
 import com.source.epoissonnerie.entites.Utilisateur;
 import com.source.epoissonnerie.entites.Validation;
 import com.source.epoissonnerie.repository.UtilisateurRepository;
-import lombok.Builder;
+import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -13,11 +16,11 @@ import java.time.Instant;
 import java.util.Map;
 
 @Service
-@Builder
-public class UtilisateurService {
-    private final UtilisateurRepository repository;
-    private final BCryptPasswordEncoder passwordEncoder;
-    private final ValidationService validationService;
+@AllArgsConstructor
+public class UtilisateurService implements UserDetailsService {
+    private  UtilisateurRepository repository;
+    private  BCryptPasswordEncoder passwordEncoder;
+    private  ValidationService validationService;
     public ResponseEntity<Utilisateur> inscription(Utilisateur utilisateur){
         String MdpCrypte = this.passwordEncoder.encode(utilisateur.getMdp());//On prend et crypte le mot de passe du client
         utilisateur.setMdp(MdpCrypte);//On remplace le mot de passe du client par le mot de passe crypte
@@ -34,5 +37,12 @@ public class UtilisateurService {
         Utilisateur utilisateurActiver = this.repository.findById(validation.getUtilisateur().getId()).orElseThrow(() -> new RuntimeException("L'utilisateur est introuvable!"));
         utilisateurActiver.setActif(true);
         this.repository.save(utilisateurActiver);
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        return this.repository
+                .findByEmail(username)
+                .orElseThrow(()->new UsernameNotFoundException("Aucun utilisateur ne correspond à " + username));
     }
 }

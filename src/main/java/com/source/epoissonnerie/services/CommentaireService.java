@@ -2,6 +2,7 @@ package com.source.epoissonnerie.services;
 
 import com.source.epoissonnerie.entites.Commentaire;
 import com.source.epoissonnerie.repository.CommentaireRepository;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
@@ -12,7 +13,7 @@ import java.util.Map;
 import java.util.Optional;
 
 @Service
-@Builder
+@AllArgsConstructor
 public class CommentaireService {
     private final CommentaireRepository repository;
     public ResponseEntity<Commentaire> ajouter(Commentaire commentaire){

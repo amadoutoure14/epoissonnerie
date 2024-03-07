@@ -3,7 +3,9 @@ package com.source.epoissonnerie.services;
 import com.source.epoissonnerie.entites.Administrateur;
 import com.source.epoissonnerie.entites.Vendeur;
 import com.source.epoissonnerie.repository.VendeurRepository;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.NoArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -15,10 +17,10 @@ import java.util.Optional;
 import static org.hibernate.sql.ast.SqlTreeCreationLogger.LOGGER;
 
 @Service
-@Builder
+@AllArgsConstructor
 public class VendeurService {
-    private final VendeurRepository repository;
-    private final PoissonService poissonService;
+    private  VendeurRepository repository;
+    private  PoissonService poissonService;
     public ResponseEntity<Vendeur> unVendeur(Long id) {
         Vendeur vendeur = repository.findById(id).orElseThrow(()->new IllegalStateException("Le vendeur est introuvable !"));
         return ResponseEntity.ok(vendeur);

@@ -1,6 +1,8 @@
 package com.source.epoissonnerie.repository;
 
 import com.source.epoissonnerie.entites.Utilisateur;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 import org.springframework.data.domain.Example;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;

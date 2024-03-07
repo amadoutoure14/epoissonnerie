@@ -3,6 +3,7 @@ package com.source.epoissonnerie.controller;
 import com.source.epoissonnerie.entites.Evaluation;
 import com.source.epoissonnerie.services.EvaluationService;
 import jakarta.validation.Valid;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -12,7 +13,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping(value ="/evaluation",consumes = MediaType.APPLICATION_JSON_VALUE)
-@Builder
+@AllArgsConstructor
 public class EvaluationController {
     public final EvaluationService service;
     @PostMapping(value = "/ajouter")

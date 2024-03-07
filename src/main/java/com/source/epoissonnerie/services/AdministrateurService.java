@@ -4,6 +4,7 @@ import com.source.epoissonnerie.entites.Administrateur;
 import com.source.epoissonnerie.entites.Client;
 import com.source.epoissonnerie.entites.Vendeur;
 import com.source.epoissonnerie.repository.*;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,7 +16,7 @@ import java.util.List;
 import static org.hibernate.sql.results.LoadingLogger.LOGGER;
 
 @Service
-@Builder
+@AllArgsConstructor
 public class AdministrateurService {
     private final AdministratreurRepository administratreurRepository;
     private final VendeurRepository vendeurRepository;

@@ -4,8 +4,12 @@ import com.source.epoissonnerie.entites.Administrateur;
 import com.source.epoissonnerie.entites.Client;
 import com.source.epoissonnerie.entites.Vendeur;
 import com.source.epoissonnerie.services.AdministrateurService;
+import jakarta.persistence.Entity;
 import jakarta.validation.Valid;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -13,7 +17,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@Builder
+@AllArgsConstructor
 @RequestMapping(value = "/admin",consumes = MediaType.APPLICATION_JSON_VALUE)
 public class AdministrateurController {
     public final AdministrateurService service;

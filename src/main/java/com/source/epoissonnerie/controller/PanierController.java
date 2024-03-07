@@ -3,6 +3,7 @@ package com.source.epoissonnerie.controller;
 import com.source.epoissonnerie.entites.Panier;
 import com.source.epoissonnerie.services.PanierService;
 import jakarta.validation.Valid;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -12,7 +13,7 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@Builder
+@AllArgsConstructor
 @RequestMapping(value = "/controller",consumes = MediaType.APPLICATION_JSON_VALUE)
 public class PanierController {
     private final PanierService service;

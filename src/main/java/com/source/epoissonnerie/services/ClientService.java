@@ -3,6 +3,7 @@ package com.source.epoissonnerie.services;
 import com.source.epoissonnerie.entites.Administrateur;
 import com.source.epoissonnerie.entites.Client;
 import com.source.epoissonnerie.repository.ClientRepository;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,7 +14,7 @@ import java.util.Map;
 import java.util.Optional;
 
 @Service
-@Builder
+@AllArgsConstructor
 public class ClientService {
     public final ClientRepository repository;
     public ResponseEntity<Client> leClient(Long id) {

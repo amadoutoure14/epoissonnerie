@@ -2,6 +2,7 @@ package com.source.epoissonnerie.controller;
 
 import com.source.epoissonnerie.entites.Poisson;
 import com.source.epoissonnerie.services.PoissonService;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -12,7 +13,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping(value = "/poisson",consumes = MediaType.APPLICATION_JSON_VALUE)
-@Builder
+@AllArgsConstructor
 public class PoissonController {
     public final PoissonService service;
     @PostMapping(value = "/ajouter")

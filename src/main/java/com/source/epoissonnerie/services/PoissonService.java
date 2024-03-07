@@ -2,6 +2,7 @@ package com.source.epoissonnerie.services;
 
 import com.source.epoissonnerie.entites.Poisson;
 import com.source.epoissonnerie.repository.PoissonRepository;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -11,7 +12,7 @@ import java.util.Map;
 import java.util.Optional;
 
 @Service
-@Builder
+@AllArgsConstructor
 public class PoissonService {
     public final PoissonRepository repository;
     public ResponseEntity<Poisson> ajouter(Poisson poisson){

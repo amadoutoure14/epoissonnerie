@@ -3,6 +3,7 @@ package com.source.epoissonnerie.controller;
 import com.source.epoissonnerie.entites.Commentaire;
 import com.source.epoissonnerie.services.CommentaireService;
 import jakarta.validation.Valid;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -13,7 +14,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping(value ="/commentaire",consumes = MediaType.APPLICATION_JSON_VALUE)
-@Builder
+@AllArgsConstructor
 public class CommentaireController {
     public final CommentaireService service;
     @PostMapping(value = "/ajouter")
