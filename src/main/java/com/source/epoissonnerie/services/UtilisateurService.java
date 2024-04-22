@@ -40,7 +40,7 @@ public class UtilisateurService implements UserDetailsService {
     }
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+    public Utilisateur loadUserByUsername(String username) throws UsernameNotFoundException {
         return this.repository
                 .findByEmail(username)
                 .orElseThrow(()->new UsernameNotFoundException("Aucun utilisateur ne correspond à " + username));

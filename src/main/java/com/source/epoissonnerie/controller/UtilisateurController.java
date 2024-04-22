@@ -1,5 +1,6 @@
 package com.source.epoissonnerie.controller;
 
+import com.source.epoissonnerie.config.JwtService;
 import com.source.epoissonnerie.dto.AuthentificationDTO;
 import com.source.epoissonnerie.entites.Utilisateur;
 import com.source.epoissonnerie.services.UtilisateurService;
@@ -25,6 +26,7 @@ import java.util.Map;
 public class UtilisateurController {
     private  UtilisateurService service;
     private AuthenticationManager authentificationManager;
+    private JwtService jwtService;
     @PostMapping(value = "/inscription")
     public ResponseEntity<Utilisateur> inscription(@Valid @RequestBody Utilisateur utilisateur){
         return service.inscription(utilisateur);
@@ -36,7 +38,9 @@ public class UtilisateurController {
     @PostMapping(value = "/connexion")
     public Map<String,String> connexion(@RequestBody AuthentificationDTO authentificationDTO){
         final Authentication authenticate = authentificationManager.authenticate(new UsernamePasswordAuthenticationToken(authentificationDTO.username(), authentificationDTO.password()));
-        log.info("resultat {}", authenticate.isAuthenticated());
+        if(authenticate.isAuthenticated()){
+         return this.jwtService.generate(authentificationDTO.username());
+        }
         return null;
     }
 }
