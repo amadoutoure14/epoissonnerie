@@ -27,7 +27,7 @@ public class UtilisateurController {
     private  UtilisateurService service;
     private AuthenticationManager authentificationManager;
     private JwtService jwtService;
-    @PostMapping(value = "/inscription")
+    @PostMapping(value = "/login")
     public ResponseEntity<Utilisateur> inscription(@Valid @RequestBody Utilisateur utilisateur){
         return service.inscription(utilisateur);
     }

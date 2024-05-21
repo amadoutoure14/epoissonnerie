@@ -28,10 +28,7 @@ public class Utilisateur implements UserDetails {
     private Long id;
 
     @NotNull
-    private String nom;
-
-    @NotNull
-    private String prenom;
+    private String nom_complet;
 
     @Email
     @Column(unique = true)

@@ -28,7 +28,7 @@ public class SecurityConfig {
                                         .requestMatchers(POST, "utilisateur/inscription").permitAll()
                                         .requestMatchers(POST, "utilisateur/activation").permitAll()
                                         .requestMatchers(POST, "utilisateur/connexion").permitAll()
-                                        .anyRequest().authenticated()
+                                        .anyRequest().permitAll()
                 )
                 .build();
     }
