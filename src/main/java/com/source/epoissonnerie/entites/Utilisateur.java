@@ -51,12 +51,6 @@ public class Utilisateur implements UserDetails {
     @OneToOne(cascade = CascadeType.ALL)
     private final Role role;
 
-
-    @PrePersist
-    private void PrePersist(){
-        this.date = LocalDate.now();
-    }
-
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return Collections.singletonList(new SimpleGrantedAuthority("ROLE_"+this.role.getLibelle()));

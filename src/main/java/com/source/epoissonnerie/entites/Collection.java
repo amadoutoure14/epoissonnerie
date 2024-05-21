@@ -26,10 +26,4 @@ public class Collection {
 
     private boolean publier;
 
-    @ManyToOne
-    @JoinColumn(name = "vendeur")
-    private Vendeur vendeur;
-
-    @OneToMany(mappedBy = "collection",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
-    private List<Poisson> poissons;
 }

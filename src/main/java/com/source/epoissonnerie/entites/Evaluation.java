@@ -20,13 +20,7 @@ public class Evaluation {
     private Long id;
 
     @NotNull
-    @Size(min = 1,max = 6)
+    @Size(min = 1,max = 5)
     private int note = 0;
 
-    @ManyToOne
-    @JoinColumn(name = "client")
-    private Client client;
-
-    @OneToMany(mappedBy = "evaluation",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
-    private List<Poisson> poissons;
 }

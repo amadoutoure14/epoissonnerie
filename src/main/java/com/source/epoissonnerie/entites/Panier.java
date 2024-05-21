@@ -21,11 +21,8 @@ public class Panier {
     private Long id;
 
     @NotNull
-    @Size(min = 3, max = 30)
     private String nom;
 
-    @NotNull
-    @Min(10L)
     private String description;
 
     @Column(nullable = false)
@@ -33,17 +30,5 @@ public class Panier {
 
     private int quantite;
 
-    @OneToOne
-    @JoinColumn(name = "client")
-    private Client client;
 
-    @OneToMany(mappedBy = "panier",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
-    private List<Commande> commandes;
-    @PrePersist
-    public void prePersist(){
-        this.prix_total = 0;
-        for (Commande commande : commandes) {
-            this.prix_total += commande.getPrix_total();
-        }
-    }
 }
