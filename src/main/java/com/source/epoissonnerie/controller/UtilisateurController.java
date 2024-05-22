@@ -6,7 +6,6 @@ import com.source.epoissonnerie.entites.Utilisateur;
 import com.source.epoissonnerie.services.UtilisateurService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -21,7 +20,6 @@ import java.util.Map;
 
 @RestController
 @AllArgsConstructor
-@Slf4j
 @RequestMapping(value = "/utilisateur",consumes = MediaType.APPLICATION_JSON_VALUE)
 public class UtilisateurController {
     private  UtilisateurService service;

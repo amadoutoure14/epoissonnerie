@@ -32,8 +32,9 @@ public class VendeurPoisson {
     private int tel;
 
     @NotNull
-    @Size(min = 4,max = 20)
     private String mdp;
 
-    private LocalDate date;
+    @NotNull
+    private String adresse;
+
 }

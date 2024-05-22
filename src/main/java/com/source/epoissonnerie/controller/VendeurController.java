@@ -4,7 +4,6 @@ import com.source.epoissonnerie.entites.VendeurPoisson;
 import com.source.epoissonnerie.services.VendeurService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
