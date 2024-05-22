@@ -16,21 +16,16 @@ public class VendeurService {
     final public VendeurRepository vendeurRepository;
     final public BCryptPasswordEncoder encoder;
 
-
     public ResponseEntity<VendeurPoisson> nouveauVendeur(VendeurPoisson vendeur) {
-
         Optional<Integer> telephone = Optional.ofNullable(vendeur.getTel());
-        if (vendeur.getNom_complet().isEmpty() || vendeur.getMdp().isEmpty() || telephone.isEmpty()) {
-            throw new IllegalArgumentException("les informations personnelles ne sont pas valides !");
-        } else if (vendeur.getMdp().startsWith("_") || vendeur.getMdp().startsWith("@")) {
-            throw new IllegalArgumentException("Le mot de passe ne peut pas commencer par '_' ou '@'");
+        if (vendeur.getNom_complet().isEmpty() ||vendeur.getMdp().isEmpty() || telephone.isEmpty()) {
+            throw new IllegalArgumentException("Les informations personnelles ne sont pas valides ! Verifier l'espace entre le nom et le prénom!");
         }
-        String mdpcrypte = encoder.encode(vendeur.getMdp());
-        vendeur.setMdp(mdpcrypte);
-
-        vendeurRepository.save(vendeur);
-
-       return ResponseEntity.status(200).build();
+        else if (vendeur.getNom_complet().contains(" ")){
+            String mdpcrypte = encoder.encode(vendeur.getMdp());
+            vendeur.setMdp(mdpcrypte);
+            vendeurRepository.save(vendeur);
+        }
+        return ResponseEntity.status(200).build();
     }
-
 }

@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class VendeurController {
 
     final private VendeurService vendeurService;
+
     @PostMapping
     public ResponseEntity<VendeurPoisson> nouveauVendeur(@Valid @RequestBody VendeurPoisson vendeur){
         return vendeurService.nouveauVendeur(vendeur);

@@ -7,5 +7,5 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 
 @Repository
-public interface VendeurRepository extends JpaRepository<VendeurPoisson,Long> {
+public interface VendeurRepository extends JpaRepository<VendeurPoisson, Integer> {
 }
