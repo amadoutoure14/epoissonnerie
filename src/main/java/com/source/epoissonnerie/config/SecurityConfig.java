@@ -11,10 +11,9 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.web.DefaultSecurityFilterChain;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.savedrequest.HttpSessionRequestCache;
 
+import static org.springframework.http.HttpMethod.GET;
 import static org.springframework.http.HttpMethod.POST;
 
 @Configuration
@@ -30,6 +29,8 @@ public class SecurityConfig {
                                         .requestMatchers(POST, "utilisateur/inscription").permitAll()
                                         .requestMatchers(POST, "utilisateur/activation").permitAll()
                                         .requestMatchers(POST, "utilisateur/connexion").permitAll()
+                                        .requestMatchers(GET,"/api-docs").permitAll()
+                                        .requestMatchers(GET,"/swagger").permitAll()
                                         .anyRequest().permitAll()
                 )
                 .build();

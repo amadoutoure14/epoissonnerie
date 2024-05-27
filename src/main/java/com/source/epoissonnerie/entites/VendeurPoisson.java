@@ -1,17 +1,10 @@
 package com.source.epoissonnerie.entites;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Pattern;
-import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.time.LocalDate;
-import java.util.List;
 
 @Entity
 @Data
@@ -24,8 +17,7 @@ public class VendeurPoisson {
     private int id;
 
     @NotNull
-    @Column(length = 200)
-    private String nom_complet;
+    private String nomComplet;
 
     @NotNull
     @Column(unique = true,length = 8)

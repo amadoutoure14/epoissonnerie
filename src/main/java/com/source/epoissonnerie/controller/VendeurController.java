@@ -18,8 +18,9 @@ public class VendeurController {
 
     final private VendeurService vendeurService;
 
-    @PostMapping
+    @PostMapping("/inscription")
     public ResponseEntity<VendeurPoisson> nouveauVendeur(@Valid @RequestBody VendeurPoisson vendeur){
         return vendeurService.nouveauVendeur(vendeur);
     }
+
 }
