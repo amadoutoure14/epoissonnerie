@@ -2,22 +2,19 @@ package com.source.epoissonnerie.entites;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
-import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
-import java.util.List;
 
 @Entity
-@Data
+@Table(name = "visiteur")
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "Commande")
-public class Commande {
+public class Visiteur {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private int id;
+
     private LocalDate date;
-    private String description;
 
 }

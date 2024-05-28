@@ -20,46 +20,23 @@ public class Poisson {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotNull
-    @Column(length = 200)
-    private String nom;
-
-    @NotNull
     @Enumerated(EnumType.STRING)
     private TypePoisson type;
+
+    private String description;
 
     @NotNull
     @Min(value = 1)
     private int quantite;
-    private String description;
 
     @NotNull
     @Column(nullable = false)
-    private double prixUnitaire;
+    private double prix_unitaire;
 
     private boolean publier = false;
-
-    @ManyToOne
-    @JoinColumn(name = "collection")
-    private Collection collection;
-
-    @ManyToOne
-    @JoinColumn(name = "commande")
-    private Commande commande;
-
-    @ManyToOne
-    @JoinColumn(name = "commentaire")
-    private Commentaire commentaire;
-
-    @ManyToOne
-    @JoinColumn(name = "evaluation")
-    private Evaluation evaluation;
 
     @Temporal(TemporalType.DATE)
     @JsonFormat(pattern = "dd/MM/yyyy",timezone = "UTC")
     private LocalDate date;
-    @PrePersist
-    public void PrePresist() {
-        this.date = LocalDate.now();
-    }
+
 }

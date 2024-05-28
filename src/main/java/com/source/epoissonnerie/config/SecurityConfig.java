@@ -13,6 +13,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
+import static org.springframework.http.HttpMethod.GET;
 import static org.springframework.http.HttpMethod.POST;
 
 @Configuration
@@ -28,10 +29,13 @@ public class SecurityConfig {
                                         .requestMatchers(POST, "utilisateur/inscription").permitAll()
                                         .requestMatchers(POST, "utilisateur/activation").permitAll()
                                         .requestMatchers(POST, "utilisateur/connexion").permitAll()
-                                        .anyRequest().authenticated()
+                                        .requestMatchers(GET,"/api-docs").permitAll()
+                                        .requestMatchers(GET,"/swagger").permitAll()
+                                        .anyRequest().permitAll()
                 )
                 .build();
     }
+
     @Bean
     public BCryptPasswordEncoder passwordEncoder(){
         return new BCryptPasswordEncoder();

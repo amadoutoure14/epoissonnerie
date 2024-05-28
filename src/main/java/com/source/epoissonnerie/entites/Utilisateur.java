@@ -28,10 +28,7 @@ public class Utilisateur implements UserDetails {
     private Long id;
 
     @NotNull
-    private String nom;
-
-    @NotNull
-    private String prenom;
+    private String nom_complet;
 
     @Email
     @Column(unique = true)
@@ -50,12 +47,6 @@ public class Utilisateur implements UserDetails {
 
     @OneToOne(cascade = CascadeType.ALL)
     private final Role role;
-
-
-    @PrePersist
-    private void PrePersist(){
-        this.date = LocalDate.now();
-    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

@@ -6,24 +6,27 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
-
 @Entity
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "Collection")
-public class Collection {
+@Table(name = "Vendeur")
+public class VendeurPoisson {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private int id;
 
     @NotNull
-    private String nom;
+    private String nomComplet;
 
     @NotNull
-    private String description;
+    @Column(unique = true,length = 8)
+    private int tel;
 
-    private boolean publier;
+    @NotNull
+    private String mdp;
+
+    @NotNull
+    private String adresse;
 
 }

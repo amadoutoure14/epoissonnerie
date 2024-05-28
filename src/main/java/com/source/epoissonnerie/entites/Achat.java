@@ -6,18 +6,18 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
-import java.util.List;
 
 @Entity
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "Commande")
-public class Commande {
+@Table(name = "Achat")
+class Achat{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private LocalDate date;
-    private String description;
-
+    private double prix;
+    private int quantite;
+    private double montant;
 }

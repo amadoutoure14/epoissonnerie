@@ -22,21 +22,10 @@ import java.util.List;
         private Long id;
 
         @NotNull
-        @Min(value = 20,message = "Le commentaire est trop court")
         private String contenu;
 
         @Temporal(TemporalType.DATE)
         @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy",timezone = "UTC")
         private LocalDate date;
 
-        @ManyToOne
-        @JoinColumn(name = "client")
-        private Client client;
-
-        @OneToMany(mappedBy = "commentaire",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
-        private List<Poisson> poissons;
-        @PrePersist
-        public void PrePersist() {
-            this.date = LocalDate.now();
-        }
     }
