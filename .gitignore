@@ -85,3 +85,10 @@
 /target/classes/com/source/epoissonnerie/entites/VendeurPoisson.class
 /target/classes/com/source/epoissonnerie/entites/Visiteur.class
 /.idea/sqldialects.xml
+/target/classes/com/source/epoissonnerie/entites/Achat.class
+/target/classes/com/source/epoissonnerie/dto/AuthentificationDTO.class
+/target/classes/com/source/epoissonnerie/entites/ClientPoisson.class
+/target/classes/com/source/epoissonnerie/config/JwtService.class
+/target/classes/com/source/epoissonnerie/entites/VendeurPoisson.class
+/target/classes/com/source/epoissonnerie/entites/Visiteur.class
+/.idea/sqldialects.xml
