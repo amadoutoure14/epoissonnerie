@@ -3,7 +3,7 @@ package com.source.epoissonnerie.services;
 import com.source.epoissonnerie.assembleurs.VendeurModelAssembleur;
 import com.source.epoissonnerie.controller.VendeurController;
 import com.source.epoissonnerie.entites.Vendeur;
-import com.source.epoissonnerie.exceptions.VendeurNonTrouver;
+import com.source.epoissonnerie.exceptions.VendeurIntrouvable;
 import lombok.AllArgsConstructor;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
@@ -86,7 +86,7 @@ public class VendeurService {
         public ResponseEntity<?> modifierPartiel(Long id, Map<String, Object> vendeur) {
             Vendeur vendeurOptional = vendeurRepository
                     .findById(id)
-                    .orElseThrow(() -> new VendeurNonTrouver(id));
+                    .orElseThrow(() -> new VendeurIntrouvable(id));
 
             vendeur.forEach((key, value) -> {
                 switch (key) {
