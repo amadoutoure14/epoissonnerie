@@ -37,4 +37,8 @@ public class VendeurController {
     ResponseEntity<?> patch(@PathVariable Long id, @RequestBody Map<String, Object> vendeur) {
         return vendeurService.modifierPartiel(id,vendeur);
     }
+    @DeleteMapping("/{id}")
+    ResponseEntity<?> supprimer(@PathVariable Long id) {
+        return vendeurService.supprimer(id);
+    }
 }

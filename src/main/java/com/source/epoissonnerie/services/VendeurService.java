@@ -115,5 +115,8 @@ public class VendeurService {
             return ResponseEntity.created(entityModel.getRequiredLink(IanaLinkRelations.SELF).toUri()).body(entityModel);
         }
 
-
+    public ResponseEntity<?> supprimer(Long id) {
+        vendeurRepository.deleteById(id);
+        return ResponseEntity.noContent().build();
+    }
 }
