@@ -1,4 +1,4 @@
 package com.source.epoissonnerie.services;
 
-public class Achat {
+public class AchatService {
 }

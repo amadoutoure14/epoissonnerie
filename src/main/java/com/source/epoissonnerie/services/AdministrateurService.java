@@ -1,4 +1,4 @@
 package com.source.epoissonnerie.services;
 
-public class Administrateur {
+public class AdministrateurService {
 }
