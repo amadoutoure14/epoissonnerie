@@ -1,9 +1,21 @@
-POST http://localhost:9000/collection
+POST http://localhost:9000/categorie
 Content-Type: application/json
 Accept: application/json
 
 {
-  "nom": "Les Tilapia",
+  "nom": "Les Clarias",
   "description": "Une collection de tilapia",
   "publier": true
+}
+###
+GET http://localhost:9000/categorie
+Accept: application/json
+Content-Type: application/json
+###
+PATCH http://localhost:9000/categorie/1
+Content-Type: application/json
+Accept: application/json
+
+{
+  "description": "djkqsdhqjksdk"
 }

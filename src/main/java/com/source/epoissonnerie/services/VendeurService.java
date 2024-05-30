@@ -3,6 +3,7 @@ package com.source.epoissonnerie.services;
 import com.source.epoissonnerie.assembleurs.VendeurModelAssembleur;
 import com.source.epoissonnerie.controller.VendeurController;
 import com.source.epoissonnerie.entites.Vendeur;
+import com.source.epoissonnerie.exceptions.CategorieIntrouvable;
 import com.source.epoissonnerie.exceptions.VendeurIntrouvable;
 import com.source.epoissonnerie.repositories.VendeurRepo;
 import lombok.AllArgsConstructor;
@@ -40,13 +41,15 @@ public class VendeurService {
 
     }
     public CollectionModel<EntityModel<Vendeur>> tout(){
-        List<EntityModel<Vendeur>> employees = vendeurRepository.findAll().stream()
+        List<EntityModel<Vendeur>> vendeurs = vendeurRepository
+                .findAll()
+                .stream()
                 .map(vendeur -> EntityModel.of(vendeur,
                         linkTo(methodOn(VendeurController.class).un(vendeur.getId())).withSelfRel(),
                         linkTo(methodOn(VendeurController.class).tout()).withRel("vendeurs")))
                 .collect(Collectors.toList());
 
-        return CollectionModel.of(employees, linkTo(methodOn(VendeurController.class).tout()).withSelfRel());
+        return CollectionModel.of(vendeurs, linkTo(methodOn(VendeurController.class).tout()).withSelfRel());
     }
 
     public ResponseEntity<?> nouveauVendeur(Vendeur vendeur) {
@@ -88,7 +91,8 @@ public class VendeurService {
             Vendeur vendeurOptional = vendeurRepository
                     .findById(id)
                     .orElseThrow(() -> new VendeurIntrouvable(id));
-            vendeur.forEach((key, value) -> {
+            vendeur.forEach(
+                    (key, value) -> {
                 switch (key) {
                     case "nom":
                         vendeurOptional.setNom((String) value);
@@ -106,7 +110,7 @@ public class VendeurService {
                         vendeurOptional.setAdresse((String) value);
                         break;
                     default:
-                        throw new IllegalArgumentException("Champ invalide : " + key);
+                        throw new CategorieIntrouvable( id);
                 }
             });
 

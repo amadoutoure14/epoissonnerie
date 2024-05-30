@@ -8,6 +8,8 @@ import org.springframework.hateoas.EntityModel;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
+
 @RestController
 @RequestMapping("/categorie")
 @AllArgsConstructor
@@ -25,8 +27,16 @@ public class CategorieController {
     public CollectionModel<EntityModel<Categorie>> toute() {
         return categorieService.toute();
     }
-    @PutMapping("/id")
-    public ResponseEntity<?> update(@RequestBody Categorie categorie) {
-        return null;
+    @PutMapping("/{id}")
+    public ResponseEntity<?> modifier(@PathVariable Long id,@RequestBody Categorie categorie) {
+        return categorieService.modifier(id,categorie);
+    }
+    @PatchMapping("/{id}")
+    public ResponseEntity<?> modifierPartiel(@PathVariable Long id,@RequestBody Map<String, Object> categorie) {
+        return categorieService.modifierPartiel(id,categorie);
+    }
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> supprimer(@PathVariable Long id) {
+        return categorieService.supprimer(id);
     }
 }

@@ -7,9 +7,9 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 @RestControllerAdvice
 public class CollectionIntrouvableConseil {
-    @ExceptionHandler(CollectionIntrouvable.class)
+    @ExceptionHandler(CategorieIntrouvable.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    String CollectionIntrouvableException(CollectionIntrouvable e) {
+    String CollectionIntrouvableException(CategorieIntrouvable e) {
         return e.getMessage();
     }
 }
