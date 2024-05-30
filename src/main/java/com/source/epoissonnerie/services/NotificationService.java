@@ -22,7 +22,7 @@ public class NotificationService {
         message.setSentDate(Date.from(Instant.now()));
         String texte = String.format(
                 "Bonjour %s, votre code d'activation est %s; Á bientôt. Ce message a été envoyer à %s et expirera dans 10 minutes!",
-                validation.getUtilisateur().getNom_complet(),
+                validation.getUtilisateur().getNom(),
                 validation.getCode(),
                 validation.getCreation()
                 );

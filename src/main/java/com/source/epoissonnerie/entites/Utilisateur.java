@@ -28,7 +28,7 @@ public class Utilisateur implements UserDetails {
     private Long id;
 
     @NotNull
-    private String nom_complet;
+    private String nom;
 
     @Email
     @Column(unique = true)
@@ -50,7 +50,7 @@ public class Utilisateur implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return Collections.singletonList(new SimpleGrantedAuthority("ROLE_"+this.role.getLibelle()));
+        return Collections.singletonList(new SimpleGrantedAuthority("ROLE_"+this.role.getDescription()));
     }
 
     @Override

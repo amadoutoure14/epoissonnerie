@@ -1,9 +1,9 @@
 package com.source.epoissonnerie.repository;
 
-import com.source.epoissonnerie.entites.Administrateur;
+import com.source.epoissonnerie.entites.Vendeur;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface AdministrateurRepository extends JpaRepository<Administrateur, Integer> {
+public interface vendeurRepository extends JpaRepository<Vendeur, Long> {
 }

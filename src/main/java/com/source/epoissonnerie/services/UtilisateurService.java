@@ -3,10 +3,9 @@ package com.source.epoissonnerie.services;
 import com.source.epoissonnerie.entites.Role;
 import com.source.epoissonnerie.entites.Utilisateur;
 import com.source.epoissonnerie.entites.Validation;
-import com.source.epoissonnerie.repository.UtilisateurRepository;
+import com.source.epoissonnerie.repository.utilisateurRepo;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -18,7 +17,7 @@ import java.util.Map;
 @Service
 @AllArgsConstructor
 public class UtilisateurService implements UserDetailsService {
-    private  UtilisateurRepository repository;
+    private utilisateurRepo repository;
     private  BCryptPasswordEncoder passwordEncoder;
     private  ValidationService validationService;
     public ResponseEntity<Utilisateur> inscription(Utilisateur utilisateur){

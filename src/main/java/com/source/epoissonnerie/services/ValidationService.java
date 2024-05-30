@@ -2,9 +2,8 @@ package com.source.epoissonnerie.services;
 
 import com.source.epoissonnerie.entites.Utilisateur;
 import com.source.epoissonnerie.entites.Validation;
-import com.source.epoissonnerie.repository.ValidationRepository;
+import com.source.epoissonnerie.repository.validationRepo;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
@@ -15,7 +14,7 @@ import java.util.Random;
 @AllArgsConstructor
 public class ValidationService {
 
-    private final ValidationRepository repository;
+    private final validationRepo repository;
     private final NotificationService notificationService;
     public void enregistrer(Utilisateur utilisateur){
 
