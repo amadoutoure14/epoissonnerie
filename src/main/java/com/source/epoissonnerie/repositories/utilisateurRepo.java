@@ -1,4 +1,4 @@
-package com.source.epoissonnerie.repository;
+package com.source.epoissonnerie.repositories;
 
 import com.source.epoissonnerie.entites.Utilisateur;
 import org.springframework.data.jpa.repository.JpaRepository;

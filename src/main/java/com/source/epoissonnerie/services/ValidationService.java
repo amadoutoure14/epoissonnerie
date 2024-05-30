@@ -2,7 +2,7 @@ package com.source.epoissonnerie.services;
 
 import com.source.epoissonnerie.entites.Utilisateur;
 import com.source.epoissonnerie.entites.Validation;
-import com.source.epoissonnerie.repository.validationRepo;
+import com.source.epoissonnerie.repositories.validationRepo;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 

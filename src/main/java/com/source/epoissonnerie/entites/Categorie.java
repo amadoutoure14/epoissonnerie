@@ -2,36 +2,26 @@ package com.source.epoissonnerie.entites;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.time.LocalDate;
 
 @Entity
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "client")
-public class ClientPoisson {
+@Table(name = "Categorie")
+public class Categorie {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @NotNull
-    @Column(length = 200)
-    private String nom_complet;
+    private String nom;
 
     @NotNull
-    @Column(unique = true,length = 8)
-    private int tel;
+    private String description;
 
-    @NotNull
-    @Size(min = 4,max = 20)
-    private String mdp;
-    
-    private LocalDate date;
-
+    private boolean publier;
 
 }

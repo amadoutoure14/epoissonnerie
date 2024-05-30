@@ -4,6 +4,7 @@ import com.source.epoissonnerie.assembleurs.VendeurModelAssembleur;
 import com.source.epoissonnerie.controller.VendeurController;
 import com.source.epoissonnerie.entites.Vendeur;
 import com.source.epoissonnerie.exceptions.VendeurIntrouvable;
+import com.source.epoissonnerie.repositories.VendeurRepo;
 import lombok.AllArgsConstructor;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
@@ -22,7 +23,7 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.*;
 @AllArgsConstructor
 public class VendeurService {
 
-    final public com.source.epoissonnerie.repository.vendeurRepository vendeurRepository;
+    final public VendeurRepo vendeurRepository;
     final public BCryptPasswordEncoder encoder;
     private final VendeurModelAssembleur assembler;
 
@@ -87,7 +88,6 @@ public class VendeurService {
             Vendeur vendeurOptional = vendeurRepository
                     .findById(id)
                     .orElseThrow(() -> new VendeurIntrouvable(id));
-
             vendeur.forEach((key, value) -> {
                 switch (key) {
                     case "nom":

@@ -3,7 +3,7 @@ package com.source.epoissonnerie.services;
 import com.source.epoissonnerie.entites.Role;
 import com.source.epoissonnerie.entites.Utilisateur;
 import com.source.epoissonnerie.entites.Validation;
-import com.source.epoissonnerie.repository.utilisateurRepo;
+import com.source.epoissonnerie.repositories.utilisateurRepo;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UserDetailsService;
