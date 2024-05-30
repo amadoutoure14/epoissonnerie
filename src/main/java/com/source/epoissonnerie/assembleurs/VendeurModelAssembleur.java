@@ -17,6 +17,7 @@ public class VendeurModelAssembleur implements RepresentationModelAssembler<Vend
                 .of(
                         vendeur,
                 linkTo(methodOn(VendeurController.class).un(vendeur.getId())).withSelfRel(),
-                linkTo(methodOn(VendeurController.class).tout()).withRel("vendeurs"));
+                linkTo(methodOn(VendeurController.class).tout()).withRel("vendeurs")
+                );
     }
 }

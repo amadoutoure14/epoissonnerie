@@ -3,7 +3,7 @@ package com.source.epoissonnerie.services;
 import com.source.epoissonnerie.entites.Role;
 import com.source.epoissonnerie.entites.Utilisateur;
 import com.source.epoissonnerie.entites.Validation;
-import com.source.epoissonnerie.repositories.utilisateurRepo;
+import com.source.epoissonnerie.repositories.UtilisateurRepo;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -17,7 +17,7 @@ import java.util.Map;
 @Service
 @AllArgsConstructor
 public class UtilisateurService implements UserDetailsService {
-    private utilisateurRepo repository;
+    private UtilisateurRepo repository;
     private  BCryptPasswordEncoder passwordEncoder;
     private  ValidationService validationService;
     public ResponseEntity<Utilisateur> inscription(Utilisateur utilisateur){

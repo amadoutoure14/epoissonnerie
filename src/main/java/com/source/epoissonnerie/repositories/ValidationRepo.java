@@ -7,6 +7,6 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 
 @Repository
-public interface validationRepo extends JpaRepository<Validation, Long> {
+public interface ValidationRepo extends JpaRepository<Validation, Long> {
     Optional<Validation> findByCode(String code);
 }
