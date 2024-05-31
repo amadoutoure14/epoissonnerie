@@ -1,5 +1,6 @@
 package com.source.epoissonnerie.assembleurs;
 
+import com.source.epoissonnerie.controller.EvaluationController;
 import com.source.epoissonnerie.controller.VendeurController;
 import com.source.epoissonnerie.entites.Evaluation;
 import com.source.epoissonnerie.entites.Vendeur;
@@ -17,8 +18,8 @@ public class EvaluationModelAssembleur implements RepresentationModelAssembler<E
         return EntityModel
                 .of(
                         evaluation,
-                        linkTo(methodOn(VendeurController.class).un(evaluation.getId())).withSelfRel(),
-                        linkTo(methodOn(VendeurController.class).tout()).withRel("evaluations")
+                        linkTo(methodOn(EvaluationController.class).un(evaluation.getId())).withSelfRel(),
+                        linkTo(methodOn(EvaluationController.class).tout()).withRel("evaluations")
                 );
     }
 }

@@ -1,5 +1,7 @@
 package com.source.epoissonnerie.assembleurs;
 
+import com.source.epoissonnerie.controller.CategorieController;
+import com.source.epoissonnerie.controller.CommandeController;
 import com.source.epoissonnerie.controller.VendeurController;
 import com.source.epoissonnerie.entites.Commande;
 import com.source.epoissonnerie.entites.Vendeur;
@@ -17,8 +19,8 @@ public class CommandeModelAssembleur implements RepresentationModelAssembler<Com
         return EntityModel
                 .of(
                         commande,
-                        linkTo(methodOn(VendeurController.class).un(commande.getId())).withSelfRel(),
-                        linkTo(methodOn(VendeurController.class).tout()).withRel("commandes")
+                        linkTo(methodOn(CommandeController.class).un(commande.getId())).withSelfRel(),
+                        linkTo(methodOn(CommandeController.class).tout()).withRel("commandes")
                 );
     }
 }

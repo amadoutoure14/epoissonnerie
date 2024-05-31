@@ -1,5 +1,6 @@
 package com.source.epoissonnerie.assembleurs;
 
+import com.source.epoissonnerie.controller.ClientController;
 import com.source.epoissonnerie.controller.VendeurController;
 import com.source.epoissonnerie.entites.Client;
 import com.source.epoissonnerie.entites.Vendeur;
@@ -17,8 +18,8 @@ public class ClientModelAssembleur implements RepresentationModelAssembler<Clien
         return EntityModel
                 .of(
                         client,
-                        linkTo(methodOn(VendeurController.class).un(client.getId())).withSelfRel(),
-                        linkTo(methodOn(VendeurController.class).tout()).withRel("clients")
+                        linkTo(methodOn(ClientController.class).un(client.getId())).withSelfRel(),
+                        linkTo(methodOn(ClientController.class).tout()).withRel("clients")
                 );
     }
 }

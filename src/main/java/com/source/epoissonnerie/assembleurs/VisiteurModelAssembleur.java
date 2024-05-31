@@ -1,6 +1,7 @@
 package com.source.epoissonnerie.assembleurs;
 
 import com.source.epoissonnerie.controller.VendeurController;
+import com.source.epoissonnerie.controller.VisiteurController;
 import com.source.epoissonnerie.entites.Vendeur;
 import com.source.epoissonnerie.entites.Visiteur;
 import org.springframework.hateoas.EntityModel;
@@ -15,8 +16,8 @@ public class VisiteurModelAssembleur implements RepresentationModelAssembler<Vis
         return EntityModel
                 .of(
                         visiteur,
-                        linkTo(methodOn(VendeurController.class).un(visiteur.getId())).withSelfRel(),
-                        linkTo(methodOn(VendeurController.class).tout()).withRel("vendeurs")
+                        linkTo(methodOn(VisiteurController.class).un(visiteur.getId())).withSelfRel(),
+                        linkTo(methodOn(VisiteurController.class).tout()).withRel("visiteurs")
                 );
     }
 }

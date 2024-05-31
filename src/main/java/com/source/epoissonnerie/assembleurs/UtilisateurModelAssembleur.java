@@ -1,5 +1,6 @@
 package com.source.epoissonnerie.assembleurs;
 
+import com.source.epoissonnerie.controller.UtilisateurController;
 import com.source.epoissonnerie.controller.VendeurController;
 import com.source.epoissonnerie.entites.Utilisateur;
 import com.source.epoissonnerie.entites.Vendeur;
@@ -15,8 +16,8 @@ public class UtilisateurModelAssembleur implements RepresentationModelAssembler<
         return EntityModel
                 .of(
                         utilisateur,
-                        linkTo(methodOn(VendeurController.class).tout()).withSelfRel(),
-                        linkTo(methodOn(VendeurController.class).tout()).withRel("vendeurs")
+                        linkTo(methodOn(UtilisateurController.class).un()).withSelfRel(),
+                        linkTo(methodOn(UtilisateurController.class).tout()).withRel("utilisateurs")
                 );
     }
 }

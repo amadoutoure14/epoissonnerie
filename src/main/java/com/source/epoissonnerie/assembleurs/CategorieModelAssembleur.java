@@ -17,7 +17,7 @@ public class CategorieModelAssembleur implements RepresentationModelAssembler<Ca
                 .of(
                         categorie,
                 linkTo(methodOn(CategorieController.class).une(categorie.getId())).withSelfRel(),
-                        linkTo(methodOn(CategorieController.class).toute()).withRel("collections")
+                        linkTo(methodOn(CategorieController.class).toute()).withRel("categories")
         );
     }
 }

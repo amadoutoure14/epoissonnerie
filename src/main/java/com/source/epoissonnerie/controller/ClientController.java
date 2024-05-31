@@ -40,4 +40,12 @@ public class ClientController {
     public ResponseEntity<?> supprimer(@PathVariable Long id) {
         return categorieService.supprimer(id);
     }
+
+    public Class<?> un(Long id) {
+        return null;
+    }
+
+    public Class<?> tout() {
+        return null;
+    }
 }

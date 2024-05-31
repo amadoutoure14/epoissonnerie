@@ -41,4 +41,12 @@ public class UtilisateurController {
         }
         return null;
     }
+
+    public Class<?> un() {
+        return null;
+    }
+
+    public Class<?> tout() {
+        return null;
+    }
 }

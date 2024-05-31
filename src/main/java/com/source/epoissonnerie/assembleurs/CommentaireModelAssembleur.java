@@ -3,6 +3,7 @@ package com.source.epoissonnerie.assembleurs;
 import com.source.epoissonnerie.controller.VendeurController;
 import com.source.epoissonnerie.entites.Commentaire;
 import com.source.epoissonnerie.entites.Vendeur;
+import com.source.epoissonnerie.exceptions.CommentaireIntrouvable;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.server.RepresentationModelAssembler;
 import org.springframework.stereotype.Component;
@@ -17,8 +18,8 @@ public class CommentaireModelAssembleur implements RepresentationModelAssembler<
         return EntityModel
                 .of(
                         commentaire,
-                        linkTo(methodOn(VendeurController.class).un(commentaire.getId())).withSelfRel(),
-                        linkTo(methodOn(VendeurController.class).tout()).withRel("commentaires")
+                        linkTo(methodOn(CommentaireIntrouvable.class).un(commentaire.getId())).withSelfRel(),
+                        linkTo(methodOn(CommentaireIntrouvable.class).tout()).withRel("commentaires")
                 );
     }
 }

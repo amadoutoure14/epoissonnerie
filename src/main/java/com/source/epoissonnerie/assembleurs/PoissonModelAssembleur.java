@@ -1,5 +1,6 @@
 package com.source.epoissonnerie.assembleurs;
 
+import com.source.epoissonnerie.controller.PoissonController;
 import com.source.epoissonnerie.controller.VendeurController;
 import com.source.epoissonnerie.entites.Poisson;
 import com.source.epoissonnerie.entites.Vendeur;
@@ -15,8 +16,8 @@ public class PoissonModelAssembleur implements RepresentationModelAssembler<Pois
         return EntityModel
                 .of(
                         poisson,
-                        linkTo(methodOn(VendeurController.class).un(poisson.getId())).withSelfRel(),
-                        linkTo(methodOn(VendeurController.class).tout()).withRel("poissons")
+                        linkTo(methodOn(PoissonController.class).un(poisson.getId())).withSelfRel(),
+                        linkTo(methodOn(PoissonController.class).tout()).withRel("poissons")
                 );
     }
 }

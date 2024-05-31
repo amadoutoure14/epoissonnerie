@@ -1,5 +1,6 @@
 package com.source.epoissonnerie.assembleurs;
 
+import com.source.epoissonnerie.controller.PanierController;
 import com.source.epoissonnerie.controller.VendeurController;
 import com.source.epoissonnerie.entites.Panier;
 import com.source.epoissonnerie.entites.Vendeur;
@@ -17,8 +18,8 @@ public class PanierModelAssembleur implements RepresentationModelAssembler<Panie
         return EntityModel
                 .of(
                         panier,
-                        linkTo(methodOn(VendeurController.class).un(panier.getId())).withSelfRel(),
-                        linkTo(methodOn(VendeurController.class).tout()).withRel("paniers")
+                        linkTo(methodOn(PanierController.class).un(panier.getId())).withSelfRel(),
+                        linkTo(methodOn(PanierController.class).tout()).withRel("paniers")
                 );
     }
 }
