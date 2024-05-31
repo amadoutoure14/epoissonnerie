@@ -1,7 +1,7 @@
 package com.source.epoissonnerie.controller;
 
-import com.source.epoissonnerie.entites.Categorie;
-import com.source.epoissonnerie.services.CategorieService;
+import com.source.epoissonnerie.entites.Commande;
+import com.source.epoissonnerie.services.CommandeService;
 import lombok.AllArgsConstructor;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
@@ -15,37 +15,30 @@ import java.util.Map;
 @AllArgsConstructor
 @RequestMapping(value = "/commande",consumes = MediaType.APPLICATION_JSON_VALUE)
 public class CommandeController {
-    private CategorieService categorieService;
+    final private CommandeService commandeService;
     @PostMapping
-    ResponseEntity<?> nouvelle(@RequestBody Categorie categorie){
-        return categorieService.nouvelle(categorie);
+    ResponseEntity<?> nouvelle(@RequestBody Commande commande){
+        return commandeService.nouvelle(commande);
     }
     @GetMapping("/{id}")
-    public EntityModel<Categorie> une(@PathVariable Long id) {
-        return categorieService.une(id);
+    public EntityModel<Commande> une(@PathVariable Long id) {
+        return commandeService.une(id);
     }
     @GetMapping
-    public CollectionModel<EntityModel<Categorie>> toute() {
-        return categorieService.toute();
+    public CollectionModel<EntityModel<Commande>> liste() {
+        return commandeService.liste();
     }
     @PutMapping("/{id}")
-    public ResponseEntity<?> modifier(@PathVariable Long id,@RequestBody Categorie categorie) {
-        return categorieService.modifier(id,categorie);
+    public ResponseEntity<?> modifier(@PathVariable Long id,@RequestBody Commande commande) {
+        return commandeService.modifier(id,commande);
     }
     @PatchMapping("/{id}")
-    public ResponseEntity<?> modifierPartiel(@PathVariable Long id,@RequestBody Map<String, Object> categorie) {
-        return categorieService.modifierPartiel(id,categorie);
+    public ResponseEntity<?> modifierPartiel(@PathVariable Long id,@RequestBody Map<String, Object> commande) {
+        return commandeService.modifierPartiel(id,commande);
     }
     @DeleteMapping("/{id}")
     public ResponseEntity<?> supprimer(@PathVariable Long id) {
-        return categorieService.supprimer(id);
+        return commandeService.supprimer(id);
     }
 
-    public Class<?> un(Long id) {
-        return null;
-    }
-
-    public Class<?> tout() {
-        return null;
-    }
 }

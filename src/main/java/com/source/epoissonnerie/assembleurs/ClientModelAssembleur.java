@@ -1,9 +1,7 @@
 package com.source.epoissonnerie.assembleurs;
 
 import com.source.epoissonnerie.controller.ClientController;
-import com.source.epoissonnerie.controller.VendeurController;
 import com.source.epoissonnerie.entites.Client;
-import com.source.epoissonnerie.entites.Vendeur;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.server.RepresentationModelAssembler;
 import org.springframework.stereotype.Component;
@@ -19,7 +17,7 @@ public class ClientModelAssembleur implements RepresentationModelAssembler<Clien
                 .of(
                         client,
                         linkTo(methodOn(ClientController.class).un(client.getId())).withSelfRel(),
-                        linkTo(methodOn(ClientController.class).tout()).withRel("clients")
+                        linkTo(methodOn(ClientController.class).liste()).withRel("clients")
                 );
     }
 }

@@ -1,7 +1,7 @@
 package com.source.epoissonnerie.controller;
 
-import com.source.epoissonnerie.entites.Categorie;
-import com.source.epoissonnerie.services.CategorieService;
+import com.source.epoissonnerie.entites.Evaluation;
+import com.source.epoissonnerie.services.EvaluationService;
 import lombok.AllArgsConstructor;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
@@ -9,43 +9,30 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Map;
-
 @RestController
 @AllArgsConstructor
 @RequestMapping(value = "/evaluation",consumes = MediaType.APPLICATION_JSON_VALUE)
 public class EvaluationController {
-    private CategorieService categorieService;
+    private EvaluationService evaluationService;
     @PostMapping
-    ResponseEntity<?> nouvelle(@RequestBody Categorie categorie){
-        return categorieService.nouvelle(categorie);
+    ResponseEntity<?> nouvelle(@RequestBody Evaluation evaluation){
+        return evaluationService.nouvelle(evaluation);
     }
     @GetMapping("/{id}")
-    public EntityModel<Categorie> une(@PathVariable Long id) {
-        return categorieService.une(id);
+    public EntityModel<Evaluation> une(@PathVariable Long id) {
+        return evaluationService.une(id);
     }
     @GetMapping
-    public CollectionModel<EntityModel<Categorie>> toute() {
-        return categorieService.toute();
+    public CollectionModel<EntityModel<Evaluation>> liste() {
+        return evaluationService.liste();
     }
     @PutMapping("/{id}")
-    public ResponseEntity<?> modifier(@PathVariable Long id,@RequestBody Categorie categorie) {
-        return categorieService.modifier(id,categorie);
-    }
-    @PatchMapping("/{id}")
-    public ResponseEntity<?> modifierPartiel(@PathVariable Long id,@RequestBody Map<String, Object> categorie) {
-        return categorieService.modifierPartiel(id,categorie);
+    public ResponseEntity<?> modifier(@PathVariable Long id,@RequestBody Evaluation evaluation) {
+        return evaluationService.modifier(id,evaluation);
     }
     @DeleteMapping("/{id}")
     public ResponseEntity<?> supprimer(@PathVariable Long id) {
-        return categorieService.supprimer(id);
+        return evaluationService.supprimer(id);
     }
 
-    public Class<?> un(Long id) {
-        return null;
-    }
-
-    public Class<?> tout() {
-        return null;
-    }
 }

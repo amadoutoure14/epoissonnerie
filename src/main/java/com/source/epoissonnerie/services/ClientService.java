@@ -1,11 +1,11 @@
 package com.source.epoissonnerie.services;
 
-import com.source.epoissonnerie.assembleurs.VendeurModelAssembleur;
-import com.source.epoissonnerie.controller.VendeurController;
-import com.source.epoissonnerie.entites.Vendeur;
+import com.source.epoissonnerie.assembleurs.ClientModelAssembleur;
+import com.source.epoissonnerie.controller.ClientController;
+import com.source.epoissonnerie.entites.Client;
 import com.source.epoissonnerie.exceptions.CategorieIntrouvable;
-import com.source.epoissonnerie.exceptions.VendeurIntrouvable;
-import com.source.epoissonnerie.repositories.VendeurRepo;
+import com.source.epoissonnerie.exceptions.ClientIntrouvable;
+import com.source.epoissonnerie.repositories.ClientRepo;
 import lombok.AllArgsConstructor;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
@@ -13,7 +13,6 @@ import org.springframework.hateoas.IanaLinkRelations;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.webjars.NotFoundException;
 
 import java.util.List;
 import java.util.Map;
@@ -26,60 +25,66 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 @AllArgsConstructor
 public class ClientService {
 
-    final public VendeurRepo vendeurRepository;
+    final public ClientRepo clientRepo;
     final public BCryptPasswordEncoder encoder;
-    private final VendeurModelAssembleur assembler;
+    private final ClientModelAssembleur assembler;
 
 
-    public EntityModel<Vendeur> un(Long id){
+    public EntityModel<Client> un(Long id){
 
-        Vendeur vendeur = vendeurRepository
+        Client client = clientRepo
                 .findById(id)
-                .orElseThrow(() -> new NotFoundException("Vendeur non trouvé!"));
+                .orElseThrow(() -> new ClientIntrouvable(id));
 
-        return EntityModel.of(vendeur,
-                linkTo(methodOn(VendeurController.class).un(id)).withSelfRel(),
-                linkTo(methodOn(VendeurController.class).tout()).withRel("vendeurs"));
+        return EntityModel.of(client,
+                linkTo(methodOn(ClientController.class).un(id)).withSelfRel(),
+                linkTo(methodOn(ClientController.class).liste()).withRel("clients"));
 
     }
-    public CollectionModel<EntityModel<Vendeur>> tout(){
-        List<EntityModel<Vendeur>> vendeurs = vendeurRepository
+    public CollectionModel<EntityModel<Client>> liste(){
+        List<EntityModel<Client>> clientsList = clientRepo
                 .findAll()
                 .stream()
-                .map(vendeur -> EntityModel.of(vendeur,
-                        linkTo(methodOn(VendeurController.class).un(vendeur.getId())).withSelfRel(),
-                        linkTo(methodOn(VendeurController.class).tout()).withRel("vendeurs")))
+                .map(client -> EntityModel.of(
+                        client,
+                        linkTo(methodOn(ClientController.class).un(client.getId())).withSelfRel(),
+                        linkTo(methodOn(ClientController.class).liste()).withRel("clientsList")))
                 .collect(Collectors.toList());
 
-        return CollectionModel.of(vendeurs, linkTo(methodOn(VendeurController.class).tout()).withSelfRel());
+        return CollectionModel.of(clientsList, linkTo(methodOn(ClientController.class).liste()).withSelfRel());
     }
 
-    public ResponseEntity<?> nouveauVendeur(Vendeur vendeur) {
-        String mdp = encoder.encode(vendeur.getMdp());
-        EntityModel<Vendeur> entityModel = assembler.toModel(vendeurRepository.save(vendeur));
+    public ResponseEntity<?> nouveauClient(Client client) {
+        String mdp = encoder.encode(client.getMdp());
+        client.setMdp(mdp);
+        EntityModel<Client> entityModel = assembler.toModel(
+                clientRepo.save(client)
+        );
         return ResponseEntity
-                .created(entityModel.getRequiredLink(IanaLinkRelations.SELF).toUri())
+                .created(entityModel.getRequiredLink(
+                        IanaLinkRelations.SELF).toUri())
                 .body(entityModel);
     }
 
-    public ResponseEntity<?> modifier(Vendeur vendeur,Long id) {
-        String mdp = encoder.encode(vendeur.getMdp());
-        Vendeur optionalVendeur = vendeurRepository
+    public ResponseEntity<?> modifier(Long id,Client client) {
+        String mdp = encoder.encode(client.getMdp());
+        client.setMdp(mdp);
+        Client optionalClient = clientRepo
                 .findById(id)
                 .map(
                         maj -> {
-                            maj.setNom(vendeur.getNom());
-                            maj.setMdp(vendeur.getMdp());
-                            maj.setAdresse(vendeur.getAdresse());
-                            maj.setTel(vendeur.getTel());
-                            return vendeurRepository.save(maj);
+                            maj.setMdp(client.getMdp());
+                            maj.setMdp(client.getMdp());
+                            maj.setAdresse(client.getAdresse());
+                            maj.setTel(client.getTel());
+                            return clientRepo.save(maj);
                         })
                 .orElseGet(
                         () -> {
-                            vendeur.setId(id);
-                            return vendeurRepository.save(vendeur);
+                            client.setId(id);
+                            return clientRepo.save(client);
                         });
-        EntityModel<Vendeur> entityModel = assembler.toModel(optionalVendeur);
+        EntityModel<Client> entityModel = assembler.toModel(optionalClient);
 
         return ResponseEntity
                 .created(
@@ -89,40 +94,41 @@ public class ClientService {
                 .body(entityModel);
     }
 
-    public ResponseEntity<?> modifierPartiel(Long id, Map<String, Object> vendeur) {
-        Vendeur vendeurOptional = vendeurRepository
+    public ResponseEntity<?> modifierPartiel(Long id, Map<String, Object> client) {
+
+        Client ClientOptional = clientRepo
                 .findById(id)
-                .orElseThrow(() -> new VendeurIntrouvable(id));
-        vendeur.forEach(
+                .orElseThrow(() -> new ClientIntrouvable(id));
+        client.forEach(
                 (key, value) -> {
                     switch (key) {
                         case "nom":
-                            vendeurOptional.setNom((String) value);
+                            ClientOptional.setNom((String) value);
                             break;
                         case "tel":
-                            vendeurOptional.setTel((Integer) value);
+                            ClientOptional.setTel((Integer) value);
                             break;
                         case "mdp":
                             if(value instanceof String ){
                                 String mdp = encoder.encode((String) value);
-                                vendeurOptional.setMdp(mdp);
+                                ClientOptional.setMdp(mdp);
                             }
                             break;
                         case "adresse":
-                            vendeurOptional.setAdresse((String) value);
+                            ClientOptional.setAdresse((String) value);
                             break;
                         default:
                             throw new CategorieIntrouvable( id);
                     }
                 });
 
-        EntityModel<Vendeur> entityModel = assembler.toModel( vendeurRepository.save(vendeurOptional));
+        EntityModel<Client> entityModel = assembler.toModel( clientRepo.save(ClientOptional));
 
         return ResponseEntity.created(entityModel.getRequiredLink(IanaLinkRelations.SELF).toUri()).body(entityModel);
     }
 
     public ResponseEntity<?> supprimer(Long id) {
-        vendeurRepository.deleteById(id);
+        clientRepo.deleteById(id);
         return ResponseEntity.noContent().build();
     }
 }

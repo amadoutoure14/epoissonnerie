@@ -17,10 +17,7 @@ public class Categorie {
     private Long id;
 
     @NotNull
-    private String nom;
-
-    @NotNull
-    private String description;
+    private String nom,description;
 
     private boolean publier;
 

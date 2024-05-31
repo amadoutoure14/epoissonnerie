@@ -4,7 +4,6 @@ import com.source.epoissonnerie.assembleurs.AdministrateurModelAssembleur;
 import com.source.epoissonnerie.controller.AdministrateurController;
 import com.source.epoissonnerie.entites.Administrateur;
 import com.source.epoissonnerie.exceptions.AdministrateurIntrouvable;
-import com.source.epoissonnerie.exceptions.CategorieIntrouvable;
 import com.source.epoissonnerie.repositories.AdministrateurRepo;
 import lombok.AllArgsConstructor;
 import org.springframework.hateoas.CollectionModel;
@@ -25,59 +24,63 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 @AllArgsConstructor
 public class AdministrateurService {
 
-    final public AdministrateurRepo AdministrateurRepository;
+    final public AdministrateurRepo administrateurRepo;
     final public BCryptPasswordEncoder encoder;
     private final AdministrateurModelAssembleur assembler;
 
 
     public EntityModel<Administrateur> un(Long id){
 
-        Administrateur administrateur = AdministrateurRepository
+        Administrateur administrateur = administrateurRepo
                 .findById(id)
                 .orElseThrow(() -> new AdministrateurIntrouvable(id));
 
         return EntityModel.of(administrateur,
                 linkTo(methodOn(AdministrateurController.class).un(id)).withSelfRel(),
-                linkTo(methodOn(AdministrateurController.class).tout()).withRel("Administrateurs"));
+                linkTo(methodOn(AdministrateurController.class).liste()).withRel("Administrateurs"));
 
     }
-    public CollectionModel<EntityModel<Administrateur>> tout(){
-        List<EntityModel<Administrateur>> Administrateurs = AdministrateurRepository
+    public CollectionModel<EntityModel<Administrateur>> liste(){
+        List<EntityModel<Administrateur>> Administrateurs = administrateurRepo
                 .findAll()
                 .stream()
                 .map(administrateur -> EntityModel.of(administrateur,
                         linkTo(methodOn(AdministrateurController.class).un(administrateur.getId())).withSelfRel(),
-                        linkTo(methodOn(AdministrateurController.class).tout()).withRel("Administrateurs")))
+                        linkTo(methodOn(AdministrateurController.class).liste()).withRel("Administrateurs")))
                 .collect(Collectors.toList());
 
-        return CollectionModel.of(Administrateurs, linkTo(methodOn(AdministrateurController.class).tout()).withSelfRel());
+        return CollectionModel.of(Administrateurs, linkTo(methodOn(AdministrateurController.class).liste()).withSelfRel());
     }
 
-    public ResponseEntity<?> nouveauAdministrateur(Administrateur administrateur) {
+    public ResponseEntity<?> nouveau(Administrateur administrateur) {
         String mdp = encoder.encode(administrateur.getMdp());
-        EntityModel<Administrateur> entityModel = assembler.toModel(AdministrateurRepository.save(administrateur));
+        administrateur.setMdp(mdp);
+        EntityModel<Administrateur> entityModel = assembler.toModel(administrateurRepo.save(administrateur));
         return ResponseEntity
                 .created(entityModel.getRequiredLink(IanaLinkRelations.SELF).toUri())
                 .body(entityModel);
     }
 
-    public ResponseEntity<?> modifier(Administrateur administrateur,Long id) {
+    public ResponseEntity<?> modifier(Long id,Administrateur administrateur) {
         String mdp = encoder.encode(administrateur.getMdp());
-        Administrateur optionalAdministrateur = AdministrateurRepository
+        administrateur.setMdp(mdp);
+        Administrateur optionalAdministrateur = administrateurRepo
                 .findById(id)
                 .map(
                         maj -> {
                             maj.setNom(administrateur.getNom());
+                            maj.setEmail(administrateur.getEmail());
                             maj.setMdp(administrateur.getMdp());
                             maj.setTel(administrateur.getTel());
-                            return AdministrateurRepository.save(maj);
+                            return administrateurRepo.save(maj);
                         })
                 .orElseGet(
                         () -> {
                             administrateur.setId(id);
-                            return AdministrateurRepository.save(administrateur);
+                            return administrateurRepo.save(administrateur);
                         });
-        EntityModel<Administrateur> entityModel = assembler.toModel(administrateur);
+
+        EntityModel<Administrateur> entityModel = assembler.toModel(optionalAdministrateur);
 
         return ResponseEntity
                 .created(
@@ -87,11 +90,12 @@ public class AdministrateurService {
                 .body(entityModel);
     }
 
-    public ResponseEntity<?> modifierPartiel(Long id, Map<String, Object> Administrateur) {
-        Administrateur AdministrateurOptional = AdministrateurRepository
+    public ResponseEntity<?> modifierPartiel(Long id, Map<String, Object> administrateur) {
+        Administrateur AdministrateurOptional = administrateurRepo
                 .findById(id)
-                .orElseThrow(() -> new AdministrateurIntrouvable(id));
-        Administrateur.forEach(
+                .orElseThrow(
+                        () -> new AdministrateurIntrouvable(id));
+        administrateur.forEach(
                 (key, value) -> {
                     switch (key) {
                         case "nom":
@@ -99,6 +103,9 @@ public class AdministrateurService {
                             break;
                         case "tel":
                             AdministrateurOptional.setTel((Integer) value);
+                            break;
+                            case "email":
+                                AdministrateurOptional.setEmail((String) value);
                             break;
                         case "mdp":
                             if(value instanceof String ){
@@ -111,13 +118,13 @@ public class AdministrateurService {
                     }
                 });
 
-        EntityModel<Administrateur> entityModel = assembler.toModel(AdministrateurRepository.save(AdministrateurOptional));
+        EntityModel<Administrateur> entityModel = assembler.toModel(administrateurRepo.save(AdministrateurOptional));
 
         return ResponseEntity.created(entityModel.getRequiredLink(IanaLinkRelations.SELF).toUri()).body(entityModel);
     }
 
     public ResponseEntity<?> supprimer(Long id) {
-        AdministrateurRepository.deleteById(id);
+        administrateurRepo.deleteById(id);
         return ResponseEntity.noContent().build();
     }
 }

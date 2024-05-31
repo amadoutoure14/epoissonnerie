@@ -1,7 +1,8 @@
 package com.source.epoissonnerie.controller;
 
 import com.source.epoissonnerie.entites.Categorie;
-import com.source.epoissonnerie.services.CategorieService;
+import com.source.epoissonnerie.entites.Visiteur;
+import com.source.epoissonnerie.services.VisiteurService;
 import lombok.AllArgsConstructor;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
@@ -15,37 +16,32 @@ import java.util.Map;
 @AllArgsConstructor
 @RequestMapping(value = "/visiteur",consumes = MediaType.APPLICATION_JSON_VALUE)
 public class VisiteurController {
-    private CategorieService categorieService;
+
+    final private VisiteurService visiteurService;
     @PostMapping
-    ResponseEntity<?> nouvelle(@RequestBody Categorie categorie){
-        return categorieService.nouvelle(categorie);
+    ResponseEntity<?> nouveau(@RequestBody Visiteur visiteur){
+        return visiteurService.nouveau(visiteur);
     }
     @GetMapping("/{id}")
-    public EntityModel<Categorie> une(@PathVariable Long id) {
-        return categorieService.une(id);
+    public EntityModel<Visiteur> un(@PathVariable Long id) {
+        return visiteurService.un(id);
     }
     @GetMapping
-    public CollectionModel<EntityModel<Categorie>> toute() {
-        return categorieService.toute();
+    public CollectionModel<EntityModel<Visiteur>> liste() {
+        return visiteurService.liste();
     }
     @PutMapping("/{id}")
-    public ResponseEntity<?> modifier(@PathVariable Long id,@RequestBody Categorie categorie) {
-        return categorieService.modifier(id,categorie);
+    public ResponseEntity<?> modifier(@PathVariable Long id,@RequestBody Visiteur visiteur) {
+        return visiteurService.modifier(id,visiteur);
     }
     @PatchMapping("/{id}")
-    public ResponseEntity<?> modifierPartiel(@PathVariable Long id,@RequestBody Map<String, Object> categorie) {
-        return categorieService.modifierPartiel(id,categorie);
+    public ResponseEntity<?> modifierPartiel(@PathVariable Long id,@RequestBody Map<String, Object> visiteur) {
+        return visiteurService.modifierPartiel(id,visiteur);
     }
     @DeleteMapping("/{id}")
     public ResponseEntity<?> supprimer(@PathVariable Long id) {
-        return categorieService.supprimer(id);
+        return visiteurService.supprimer(id);
     }
 
-    public Class<?> un(Long id) {
-        return null;
-    }
 
-    public Class<?> tout() {
-        return null;
-    }
 }

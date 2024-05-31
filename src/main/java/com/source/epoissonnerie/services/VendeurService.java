@@ -13,7 +13,6 @@ import org.springframework.hateoas.IanaLinkRelations;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.webjars.NotFoundException;
 
 import java.util.List;
 import java.util.Map;
@@ -33,11 +32,11 @@ public class VendeurService {
 
         Vendeur vendeur = vendeurRepository
                 .findById(id)
-                .orElseThrow(() -> new NotFoundException("Vendeur non trouvé!"));
+                .orElseThrow(() -> new VendeurIntrouvable(id));
 
         return EntityModel.of(vendeur,
                 linkTo(methodOn(VendeurController.class).un(id)).withSelfRel(),
-                linkTo(methodOn(VendeurController.class).tout()).withRel("vendeurs"));
+                linkTo(methodOn(VendeurController.class).liste()).withRel("vendeurs"));
 
     }
     public CollectionModel<EntityModel<Vendeur>> tout(){
@@ -46,10 +45,10 @@ public class VendeurService {
                 .stream()
                 .map(vendeur -> EntityModel.of(vendeur,
                         linkTo(methodOn(VendeurController.class).un(vendeur.getId())).withSelfRel(),
-                        linkTo(methodOn(VendeurController.class).tout()).withRel("vendeurs")))
+                        linkTo(methodOn(VendeurController.class).liste()).withRel("vendeurs")))
                 .collect(Collectors.toList());
 
-        return CollectionModel.of(vendeurs, linkTo(methodOn(VendeurController.class).tout()).withSelfRel());
+        return CollectionModel.of(vendeurs, linkTo(methodOn(VendeurController.class).liste()).withSelfRel());
     }
 
     public ResponseEntity<?> nouveauVendeur(Vendeur vendeur) {

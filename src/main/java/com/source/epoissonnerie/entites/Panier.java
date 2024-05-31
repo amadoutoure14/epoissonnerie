@@ -24,8 +24,7 @@ public class Panier {
     private String nom;
 
     private String description;
-
-    @Column(nullable = false)
+    
     private double prix_total;
 
     private int quantite;

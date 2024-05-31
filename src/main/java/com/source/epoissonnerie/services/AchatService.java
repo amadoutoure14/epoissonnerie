@@ -2,20 +2,16 @@ package com.source.epoissonnerie.services;
 
 import com.source.epoissonnerie.assembleurs.AchatModelAssembleur;
 import com.source.epoissonnerie.controller.AchatController;
-import com.source.epoissonnerie.controller.VendeurController;
 import com.source.epoissonnerie.entites.Achat;
-import com.source.epoissonnerie.entites.Vendeur;
+import com.source.epoissonnerie.exceptions.AchatIntrouvable;
 import com.source.epoissonnerie.exceptions.CategorieIntrouvable;
-import com.source.epoissonnerie.exceptions.VendeurIntrouvable;
 import com.source.epoissonnerie.repositories.AchatRepo;
 import lombok.AllArgsConstructor;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.IanaLinkRelations;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.webjars.NotFoundException;
 
 import java.util.List;
 import java.util.Map;
@@ -29,41 +25,47 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 public class AchatService {
 
     final public AchatRepo achatRepo;
-    final public BCryptPasswordEncoder encoder;
     private final AchatModelAssembleur assembler;
-
-
     public EntityModel<Achat> un(Long id){
 
         Achat achat = achatRepo
                 .findById(id)
-                .orElseThrow(() -> new NotFoundException("Vendeur non trouvé!"));
+                .orElseThrow(
+                        () -> new AchatIntrouvable(id)
+                );
 
-        return EntityModel.of(achat,
-                linkTo(methodOn(AchatController.class).un(id)).withSelfRel(),
-                linkTo(methodOn(AchatController.class).tout()).withRel("achats"));
-
+        return EntityModel.of(
+                achat,
+                linkTo(
+                        methodOn(AchatController.class)
+                        .un(id))
+                        .withSelfRel(),
+                linkTo(
+                        methodOn(AchatController.class)
+                                .liste())
+                        .withRel("achats"));
     }
-    public CollectionModel<EntityModel<Achat>> tout(){
+    public CollectionModel<EntityModel<Achat>> liste(){
         List<EntityModel<Achat>> AchatList = achatRepo
                 .findAll()
                 .stream()
-                .map(achat -> EntityModel.of(achat,
-                        linkTo(methodOn(VendeurController.class).un(achat.getId())).withSelfRel(),
-                        linkTo(methodOn(VendeurController.class).tout()).withRel("achats")))
+                .map(
+                        achat -> EntityModel.of(achat,
+                        linkTo(methodOn(AchatController.class).un(achat.getId())).withSelfRel(),
+                        linkTo(methodOn(AchatController.class).liste()).withRel("achats")))
                 .collect(Collectors.toList());
 
-        return CollectionModel.of(AchatList, linkTo(methodOn(VendeurController.class).tout()).withSelfRel());
+        return CollectionModel.of(AchatList, linkTo(methodOn(AchatController.class).liste()).withSelfRel());
     }
 
-    public ResponseEntity<?> nouveauVendeur(Achat achat) {
+    public ResponseEntity<?> nouveauAchat(Achat achat) {
         EntityModel<Achat> entityModel = assembler.toModel(achatRepo.save(achat));
         return ResponseEntity
                 .created(entityModel.getRequiredLink(IanaLinkRelations.SELF).toUri())
                 .body(entityModel);
     }
 
-    public ResponseEntity<?> modifier(Achat achat,Long id) {
+    public ResponseEntity<?> modifier(Long id,Achat achat) {
         Achat achatOptional = achatRepo
                 .findById(id)
                 .map(
@@ -88,24 +90,26 @@ public class AchatService {
                 .body(entityModel);
     }
 
-    public ResponseEntity<?> modifierPartiel(Long id, Map<String, Object> vendeur) {
+    public ResponseEntity<?> modifierPartiel(Long id, Map<String, Object> achat) {
         Achat achatOptional = achatRepo
                 .findById(id)
-                .orElseThrow(() -> new VendeurIntrouvable(id));
-        vendeur.forEach(
+                .orElseThrow(
+                        () -> new AchatIntrouvable(id)
+                );
+        achat.forEach(
                 (key, value) -> {
                     switch (key) {
-                        case "nom":
+                        case "quantite":
                             achatOptional.setQuantite((int) value);
                             break;
-                        case "tel":
+                        case "prix":
                             achatOptional.setPrix((double) value);
                             break;
-                        case "adresse":
+                        case "montant":
                             achatOptional.setMontant((double) value);
                             break;
                         default:
-                            throw new CategorieIntrouvable( id);
+                            throw new AchatIntrouvable( id);
                     }
                 });
 

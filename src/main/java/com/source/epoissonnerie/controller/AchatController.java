@@ -1,7 +1,7 @@
 package com.source.epoissonnerie.controller;
 
-import com.source.epoissonnerie.entites.Categorie;
-import com.source.epoissonnerie.services.CategorieService;
+import com.source.epoissonnerie.entites.Achat;
+import com.source.epoissonnerie.services.AchatService;
 import lombok.AllArgsConstructor;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
@@ -15,37 +15,30 @@ import java.util.Map;
 @AllArgsConstructor
 @RequestMapping(value = "/achat",consumes = MediaType.APPLICATION_JSON_VALUE)
 public class AchatController {
-    private CategorieService categorieService;
+    final private AchatService achatService;
     @PostMapping
-    ResponseEntity<?> nouvelle(@RequestBody Categorie categorie){
-        return categorieService.nouvelle(categorie);
+    ResponseEntity<?> nouveau(@RequestBody Achat achat){
+        return achatService.nouveauAchat(achat);
     }
     @GetMapping("/{id}")
-    public EntityModel<Categorie> une(@PathVariable Long id) {
-        return categorieService.une(id);
+    public EntityModel<Achat> un(@PathVariable Long id) {
+        return achatService.un(id);
     }
     @GetMapping
-    public CollectionModel<EntityModel<Categorie>> toute() {
-        return categorieService.toute();
+    public CollectionModel<EntityModel<Achat>> liste() {
+        return achatService.liste();
     }
     @PutMapping("/{id}")
-    public ResponseEntity<?> modifier(@PathVariable Long id,@RequestBody Categorie categorie) {
-        return categorieService.modifier(id,categorie);
+    public ResponseEntity<?> modifier(@PathVariable Long id,@RequestBody Achat achat) {
+        return achatService.modifier(id,achat);
     }
     @PatchMapping("/{id}")
-    public ResponseEntity<?> modifierPartiel(@PathVariable Long id,@RequestBody Map<String, Object> categorie) {
-        return categorieService.modifierPartiel(id,categorie);
+    public ResponseEntity<?> modifierPartiel(@PathVariable Long id,@RequestBody Map<String, Object> achat) {
+        return achatService.modifierPartiel(id,achat);
     }
     @DeleteMapping("/{id}")
     public ResponseEntity<?> supprimer(@PathVariable Long id) {
-        return categorieService.supprimer(id);
+        return achatService.supprimer(id);
     }
 
-    public Class<?> un(Long id) {
-        return null;
-    }
-
-    public Class<?> tout() {
-        return null;
-    }
 }

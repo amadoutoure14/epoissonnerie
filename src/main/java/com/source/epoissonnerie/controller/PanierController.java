@@ -1,7 +1,7 @@
 package com.source.epoissonnerie.controller;
 
-import com.source.epoissonnerie.entites.Categorie;
-import com.source.epoissonnerie.services.CategorieService;
+import com.source.epoissonnerie.entites.Panier;
+import com.source.epoissonnerie.services.PanierService;
 import lombok.AllArgsConstructor;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
@@ -15,37 +15,31 @@ import java.util.Map;
 @AllArgsConstructor
 @RequestMapping(value = "/panier",consumes = MediaType.APPLICATION_JSON_VALUE)
 public class PanierController {
-    private CategorieService categorieService;
+    private PanierService panierService;
     @PostMapping
-    ResponseEntity<?> nouvelle(@RequestBody Categorie categorie){
-        return categorieService.nouvelle(categorie);
+    ResponseEntity<?> nouveau(@RequestBody Panier panier){
+        return panierService.nouveau(panier);
     }
     @GetMapping("/{id}")
-    public EntityModel<Categorie> une(@PathVariable Long id) {
-        return categorieService.une(id);
+    public EntityModel<Panier> un(@PathVariable Long id) {
+        return panierService.un(id);
     }
     @GetMapping
-    public CollectionModel<EntityModel<Categorie>> toute() {
-        return categorieService.toute();
+    public CollectionModel<EntityModel<Panier>> liste() {
+        return panierService.liste();
     }
     @PutMapping("/{id}")
-    public ResponseEntity<?> modifier(@PathVariable Long id,@RequestBody Categorie categorie) {
-        return categorieService.modifier(id,categorie);
+    public ResponseEntity<?> modifier(@PathVariable Long id,@RequestBody Panier panier) {
+        return panierService.modifier(id,panier);
     }
     @PatchMapping("/{id}")
-    public ResponseEntity<?> modifierPartiel(@PathVariable Long id,@RequestBody Map<String, Object> categorie) {
-        return categorieService.modifierPartiel(id,categorie);
+    public ResponseEntity<?> modifierPartiel(@PathVariable Long id,@RequestBody Map<String, Object> panier) {
+        return panierService.modifierPartiel(id,panier);
     }
     @DeleteMapping("/{id}")
     public ResponseEntity<?> supprimer(@PathVariable Long id) {
-        return categorieService.supprimer(id);
+        return panierService.supprimer(id);
     }
 
-    public Class<?> un(Long id) {
-        return null;
-    }
 
-    public Class<?> tout() {
-        return null;
-    }
 }

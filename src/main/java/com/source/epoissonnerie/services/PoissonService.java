@@ -1,20 +1,24 @@
 package com.source.epoissonnerie.services;
 
-import com.source.epoissonnerie.assembleurs.VendeurModelAssembleur;
+import com.source.epoissonnerie.assembleurs.PoissonModelAssembleur;
+import com.source.epoissonnerie.controller.PoissonController;
 import com.source.epoissonnerie.controller.VendeurController;
+import com.source.epoissonnerie.entites.Poisson;
+import com.source.epoissonnerie.entites.TypePoisson;
 import com.source.epoissonnerie.entites.Vendeur;
 import com.source.epoissonnerie.exceptions.CategorieIntrouvable;
+import com.source.epoissonnerie.exceptions.PanierIntrouvable;
+import com.source.epoissonnerie.exceptions.PoissonIntrouvable;
 import com.source.epoissonnerie.exceptions.VendeurIntrouvable;
-import com.source.epoissonnerie.repositories.VendeurRepo;
+import com.source.epoissonnerie.repositories.PoissonRepo;
 import lombok.AllArgsConstructor;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.IanaLinkRelations;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.webjars.NotFoundException;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -26,60 +30,60 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 @AllArgsConstructor
 public class PoissonService {
 
-    final public VendeurRepo vendeurRepository;
-    final public BCryptPasswordEncoder encoder;
-    private final VendeurModelAssembleur assembler;
+    final private PoissonRepo poissonRepo;
+    final private PoissonModelAssembleur assembler;
 
 
-    public EntityModel<Vendeur> un(Long id){
+    public EntityModel<Poisson> un(Long id){
 
-        Vendeur vendeur = vendeurRepository
+        Poisson poisson = poissonRepo
                 .findById(id)
-                .orElseThrow(() -> new NotFoundException("Vendeur non trouvé!"));
+                .orElseThrow(() -> new PoissonIntrouvable(id));
 
-        return EntityModel.of(vendeur,
-                linkTo(methodOn(VendeurController.class).un(id)).withSelfRel(),
-                linkTo(methodOn(VendeurController.class).tout()).withRel("vendeurs"));
+        return EntityModel.of(poisson,
+                linkTo(methodOn(PoissonController.class).un(id)).withSelfRel(),
+                linkTo(methodOn(PoissonController.class).liste()).withRel("poissons"));
 
     }
-    public CollectionModel<EntityModel<Vendeur>> tout(){
-        List<EntityModel<Vendeur>> vendeurs = vendeurRepository
+    public CollectionModel<EntityModel<Poisson>> liste(){
+        List<EntityModel<Poisson>> entityModelList = poissonRepo
                 .findAll()
                 .stream()
-                .map(vendeur -> EntityModel.of(vendeur,
-                        linkTo(methodOn(VendeurController.class).un(vendeur.getId())).withSelfRel(),
-                        linkTo(methodOn(VendeurController.class).tout()).withRel("vendeurs")))
+                .map(
+                        poisson -> EntityModel.of(
+                                poisson,
+                        linkTo(methodOn(PoissonController.class).un(poisson.getId())).withSelfRel(),
+                        linkTo(methodOn(PoissonController.class).liste()).withRel("entityModelList")))
                 .collect(Collectors.toList());
 
-        return CollectionModel.of(vendeurs, linkTo(methodOn(VendeurController.class).tout()).withSelfRel());
+        return CollectionModel.of(entityModelList, linkTo(methodOn(PoissonController.class).liste()).withSelfRel());
     }
 
-    public ResponseEntity<?> nouveauVendeur(Vendeur vendeur) {
-        String mdp = encoder.encode(vendeur.getMdp());
-        EntityModel<Vendeur> entityModel = assembler.toModel(vendeurRepository.save(vendeur));
+    public ResponseEntity<?> nouveau(Poisson poisson) {
+        EntityModel<Poisson> entityModel = assembler.toModel(poissonRepo.save(poisson));
         return ResponseEntity
                 .created(entityModel.getRequiredLink(IanaLinkRelations.SELF).toUri())
                 .body(entityModel);
     }
 
-    public ResponseEntity<?> modifier(Vendeur vendeur,Long id) {
-        String mdp = encoder.encode(vendeur.getMdp());
-        Vendeur optionalVendeur = vendeurRepository
+    public ResponseEntity<?> modifier(Long id,Poisson poisson) {
+        Poisson optionalPoisson = poissonRepo
                 .findById(id)
                 .map(
                         maj -> {
-                            maj.setNom(vendeur.getNom());
-                            maj.setMdp(vendeur.getMdp());
-                            maj.setAdresse(vendeur.getAdresse());
-                            maj.setTel(vendeur.getTel());
-                            return vendeurRepository.save(maj);
+                            maj.setQuantite(poisson.getQuantite());
+                            maj.setDescription(poisson.getDescription());
+                            maj.setType(poisson.getType());
+                            maj.setPrix(poisson.getPrix());
+                            maj.setDate(poisson.getDate());
+                            return poissonRepo.save(maj);
                         })
                 .orElseGet(
                         () -> {
-                            vendeur.setId(id);
-                            return vendeurRepository.save(vendeur);
+                            poisson.setId(id);
+                            return poissonRepo.save(poisson);
                         });
-        EntityModel<Vendeur> entityModel = assembler.toModel(optionalVendeur);
+        EntityModel<Poisson> entityModel = assembler.toModel(optionalPoisson);
 
         return ResponseEntity
                 .created(
@@ -89,40 +93,40 @@ public class PoissonService {
                 .body(entityModel);
     }
 
-    public ResponseEntity<?> modifierPartiel(Long id, Map<String, Object> vendeur) {
-        Vendeur vendeurOptional = vendeurRepository
+    public ResponseEntity<?> modifierPartiel(Long id, Map<String, Object> poisson) {
+        Poisson poissonOptional = poissonRepo
                 .findById(id)
-                .orElseThrow(() -> new VendeurIntrouvable(id));
-        vendeur.forEach(
+                .orElseThrow(() -> new PoissonIntrouvable(id));
+        poisson.forEach(
                 (key, value) -> {
                     switch (key) {
-                        case "nom":
-                            vendeurOptional.setNom((String) value);
+                        case "date":
+                            poissonOptional.setDate((LocalDate) value);
                             break;
-                        case "tel":
-                            vendeurOptional.setTel((Integer) value);
-                            break;
-                        case "mdp":
-                            if(value instanceof String ){
-                                String mdp = encoder.encode((String) value);
-                                vendeurOptional.setMdp(mdp);
-                            }
+                        case "publier":
+                            poissonOptional.setPublier((boolean) value);
                             break;
                         case "adresse":
-                            vendeurOptional.setAdresse((String) value);
+                            poissonOptional.setType((TypePoisson) value);
+                            break;
+                            case "quantite":
+                            poissonOptional.setQuantite((Integer) value);
+                            break;
+                            case "prix":
+                            poissonOptional.setPrix((Integer) value);
                             break;
                         default:
-                            throw new CategorieIntrouvable( id);
+                            throw new PoissonIntrouvable( id);
                     }
                 });
 
-        EntityModel<Vendeur> entityModel = assembler.toModel( vendeurRepository.save(vendeurOptional));
+        EntityModel<Poisson> entityModel = assembler.toModel( poissonRepo.save(poissonOptional));
 
         return ResponseEntity.created(entityModel.getRequiredLink(IanaLinkRelations.SELF).toUri()).body(entityModel);
     }
 
     public ResponseEntity<?> supprimer(Long id) {
-        vendeurRepository.deleteById(id);
+        poissonRepo.deleteById(id);
         return ResponseEntity.noContent().build();
     }
 }

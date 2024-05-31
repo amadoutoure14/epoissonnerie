@@ -31,9 +31,9 @@ public class Poisson {
 
     @NotNull
     @Column(nullable = false)
-    private double prix_unitaire;
+    private double prix;
 
-    private boolean publier = false;
+    private boolean publier;
 
     @Temporal(TemporalType.DATE)
     @JsonFormat(pattern = "dd/MM/yyyy",timezone = "UTC")

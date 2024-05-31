@@ -46,7 +46,7 @@ public class UtilisateurController {
         return null;
     }
 
-    public Class<?> tout() {
+    public Class<?> liste() {
         return null;
     }
 }

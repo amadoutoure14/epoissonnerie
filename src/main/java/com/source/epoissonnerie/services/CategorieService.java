@@ -45,7 +45,7 @@ public class CategorieService {
         return assembleur.toModel(categorie);
     }
 
-    public CollectionModel<EntityModel<Categorie>> toute() {
+    public CollectionModel<EntityModel<Categorie>> liste() {
         List<EntityModel<Categorie>> categories = categorieRepo
                 .findAll()
                 .stream()
@@ -53,12 +53,12 @@ public class CategorieService {
                         categorie -> EntityModel.of(
                               categorie,
                                 linkTo(methodOn(CategorieController.class).une(categorie.getId())).withSelfRel(),
-                                linkTo(methodOn(CategorieController.class).toute()).withRel("catégories")
+                                linkTo(methodOn(CategorieController.class).liste()).withRel("catégories")
                         )
                 )
                 .collect(Collectors.toList());
         return CollectionModel.of(
-                categories,linkTo(methodOn(CategorieController.class).toute()).withSelfRel()
+                categories,linkTo(methodOn(CategorieController.class).liste()).withSelfRel()
         );
     }
 

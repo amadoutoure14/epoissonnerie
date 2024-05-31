@@ -25,8 +25,8 @@ public class VendeurController {
     public EntityModel<Vendeur> un(@PathVariable Long id) {
         return vendeurService.un(id);
     }
-    @GetMapping("/tout")
-    public CollectionModel<EntityModel<Vendeur>> tout() {
+    @GetMapping("/liste")
+    public CollectionModel<EntityModel<Vendeur>> liste() {
         return vendeurService.tout();
     }
     @PutMapping("/{id}")

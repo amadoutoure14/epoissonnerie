@@ -20,18 +20,10 @@ public class Client {
     private Long id;
 
     @NotNull
-    @Column(length = 200)
-    private String nom_complet;
+    private String nom,mdp,adresse;
 
     @NotNull
     @Column(unique = true,length = 8)
     private int tel;
-
-    @NotNull
-    @Size(min = 4,max = 20)
-    private String mdp;
-    
-    private LocalDate date;
-
 
 }

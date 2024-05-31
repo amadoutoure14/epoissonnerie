@@ -1,19 +1,18 @@
 package com.source.epoissonnerie.services;
 
-import com.source.epoissonnerie.assembleurs.VendeurModelAssembleur;
+import com.source.epoissonnerie.assembleurs.CommandeModelAssembleur;
+import com.source.epoissonnerie.controller.CommandeController;
 import com.source.epoissonnerie.controller.VendeurController;
-import com.source.epoissonnerie.entites.Vendeur;
-import com.source.epoissonnerie.exceptions.CategorieIntrouvable;
-import com.source.epoissonnerie.exceptions.VendeurIntrouvable;
-import com.source.epoissonnerie.repositories.VendeurRepo;
+import com.source.epoissonnerie.entites.Commande;
+import com.source.epoissonnerie.entites.Status;
+import com.source.epoissonnerie.exceptions.CommandeIntrouvable;
+import com.source.epoissonnerie.repositories.CommandeRepo;
 import lombok.AllArgsConstructor;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.IanaLinkRelations;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.webjars.NotFoundException;
 
 import java.util.List;
 import java.util.Map;
@@ -26,60 +25,58 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 @AllArgsConstructor
 public class CommandeService {
 
-    final public VendeurRepo vendeurRepository;
-    final public BCryptPasswordEncoder encoder;
-    private final VendeurModelAssembleur assembler;
+    final public CommandeRepo commandeRepo;
+    private final CommandeModelAssembleur assembler;
 
 
-    public EntityModel<Vendeur> un(Long id){
+    public EntityModel<Commande> une(Long id){
 
-        Vendeur vendeur = vendeurRepository
+        Commande commande = commandeRepo
                 .findById(id)
-                .orElseThrow(() -> new NotFoundException("Vendeur non trouvé!"));
+                .orElseThrow(
+                        () -> new CommandeIntrouvable(id));
 
-        return EntityModel.of(vendeur,
-                linkTo(methodOn(VendeurController.class).un(id)).withSelfRel(),
-                linkTo(methodOn(VendeurController.class).tout()).withRel("vendeurs"));
+        return EntityModel.of(commande,
+                linkTo(methodOn(CommandeController.class).une(id)).withSelfRel(),
+                linkTo(methodOn(CommandeController.class).liste()).withRel("commandes"));
 
     }
-    public CollectionModel<EntityModel<Vendeur>> tout(){
-        List<EntityModel<Vendeur>> vendeurs = vendeurRepository
+    public CollectionModel<EntityModel<Commande>> liste(){
+        List<EntityModel<Commande>> entityModelList = commandeRepo
                 .findAll()
                 .stream()
-                .map(vendeur -> EntityModel.of(vendeur,
-                        linkTo(methodOn(VendeurController.class).un(vendeur.getId())).withSelfRel(),
-                        linkTo(methodOn(VendeurController.class).tout()).withRel("vendeurs")))
+                .map(
+                        commande -> EntityModel.of(
+                                commande,
+                        linkTo(methodOn(CommandeController.class).une(commande.getId())).withSelfRel(),
+                        linkTo(methodOn(CommandeController.class).liste()).withRel("commandes")))
                 .collect(Collectors.toList());
 
-        return CollectionModel.of(vendeurs, linkTo(methodOn(VendeurController.class).tout()).withSelfRel());
+        return CollectionModel.of(entityModelList, linkTo(methodOn(VendeurController.class).liste()).withSelfRel());
     }
 
-    public ResponseEntity<?> nouveauVendeur(Vendeur vendeur) {
-        String mdp = encoder.encode(vendeur.getMdp());
-        EntityModel<Vendeur> entityModel = assembler.toModel(vendeurRepository.save(vendeur));
+    public ResponseEntity<?> nouvelle(Commande commande) {
+        EntityModel<Commande> entityModel = assembler.toModel(commandeRepo.save(commande));
         return ResponseEntity
                 .created(entityModel.getRequiredLink(IanaLinkRelations.SELF).toUri())
                 .body(entityModel);
     }
 
-    public ResponseEntity<?> modifier(Vendeur vendeur,Long id) {
-        String mdp = encoder.encode(vendeur.getMdp());
-        Vendeur optionalVendeur = vendeurRepository
+    public ResponseEntity<?> modifier(Long id,Commande commande) {
+        Commande optionalCommande = commandeRepo
                 .findById(id)
                 .map(
                         maj -> {
-                            maj.setNom(vendeur.getNom());
-                            maj.setMdp(vendeur.getMdp());
-                            maj.setAdresse(vendeur.getAdresse());
-                            maj.setTel(vendeur.getTel());
-                            return vendeurRepository.save(maj);
+                            maj.setDescription(commande.getDescription());
+                            maj.setStatus(commande.getStatus());
+                            return commandeRepo.save(maj);
                         })
                 .orElseGet(
                         () -> {
-                            vendeur.setId(id);
-                            return vendeurRepository.save(vendeur);
+                            commande.setId(id);
+                            return commandeRepo.save(commande);
                         });
-        EntityModel<Vendeur> entityModel = assembler.toModel(optionalVendeur);
+        EntityModel<Commande> entityModel = assembler.toModel(optionalCommande);
 
         return ResponseEntity
                 .created(
@@ -89,40 +86,32 @@ public class CommandeService {
                 .body(entityModel);
     }
 
-    public ResponseEntity<?> modifierPartiel(Long id, Map<String, Object> vendeur) {
-        Vendeur vendeurOptional = vendeurRepository
+    public ResponseEntity<?> modifierPartiel(Long id, Map<String, Object> commande) {
+        Commande commandeOptional = commandeRepo
                 .findById(id)
-                .orElseThrow(() -> new VendeurIntrouvable(id));
-        vendeur.forEach(
+                .orElseThrow(
+                        () -> new CommandeIntrouvable(id));
+        commande.forEach(
                 (key, value) -> {
                     switch (key) {
-                        case "nom":
-                            vendeurOptional.setNom((String) value);
+                        case "statut":
+                            commandeOptional.setStatus(Status.valueOf((String) value));
                             break;
-                        case "tel":
-                            vendeurOptional.setTel((Integer) value);
-                            break;
-                        case "mdp":
-                            if(value instanceof String ){
-                                String mdp = encoder.encode((String) value);
-                                vendeurOptional.setMdp(mdp);
-                            }
-                            break;
-                        case "adresse":
-                            vendeurOptional.setAdresse((String) value);
+                        case "description":
+                            commandeOptional.setDescription((String) value);
                             break;
                         default:
-                            throw new CategorieIntrouvable( id);
+                            throw new CommandeIntrouvable( id);
                     }
                 });
 
-        EntityModel<Vendeur> entityModel = assembler.toModel( vendeurRepository.save(vendeurOptional));
+        EntityModel<Commande> entityModel = assembler.toModel( commandeRepo.save(commandeOptional));
 
         return ResponseEntity.created(entityModel.getRequiredLink(IanaLinkRelations.SELF).toUri()).body(entityModel);
     }
 
     public ResponseEntity<?> supprimer(Long id) {
-        vendeurRepository.deleteById(id);
+        commandeRepo.deleteById(id);
         return ResponseEntity.noContent().build();
     }
 }

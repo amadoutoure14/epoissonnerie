@@ -1,7 +1,7 @@
 package com.source.epoissonnerie.controller;
 
-import com.source.epoissonnerie.entites.Categorie;
-import com.source.epoissonnerie.services.CategorieService;
+import com.source.epoissonnerie.entites.Client;
+import com.source.epoissonnerie.services.ClientService;
 import lombok.AllArgsConstructor;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
@@ -15,37 +15,29 @@ import java.util.Map;
 @AllArgsConstructor
 @RequestMapping(value = "/client",consumes = MediaType.APPLICATION_JSON_VALUE)
 public class ClientController {
-    private CategorieService categorieService;
+    private ClientService clientService;
     @PostMapping
-    ResponseEntity<?> nouvelle(@RequestBody Categorie categorie){
-        return categorieService.nouvelle(categorie);
+    ResponseEntity<?> nouveauClient(@RequestBody Client client){
+        return clientService.nouveauClient(client);
     }
     @GetMapping("/{id}")
-    public EntityModel<Categorie> une(@PathVariable Long id) {
-        return categorieService.une(id);
+    public EntityModel<Client> un(@PathVariable Long id) {
+        return clientService.un(id);
     }
     @GetMapping
-    public CollectionModel<EntityModel<Categorie>> toute() {
-        return categorieService.toute();
+    public CollectionModel<EntityModel<Client>> liste() {
+        return clientService.liste();
     }
     @PutMapping("/{id}")
-    public ResponseEntity<?> modifier(@PathVariable Long id,@RequestBody Categorie categorie) {
-        return categorieService.modifier(id,categorie);
+    public ResponseEntity<?> modifier(@PathVariable Long id,@RequestBody Client client) {
+        return clientService.modifier(id,client);
     }
     @PatchMapping("/{id}")
-    public ResponseEntity<?> modifierPartiel(@PathVariable Long id,@RequestBody Map<String, Object> categorie) {
-        return categorieService.modifierPartiel(id,categorie);
+    public ResponseEntity<?> modifierPartiel(@PathVariable Long id,@RequestBody Map<String, Object> client) {
+        return clientService.modifierPartiel(id,client);
     }
     @DeleteMapping("/{id}")
     public ResponseEntity<?> supprimer(@PathVariable Long id) {
-        return categorieService.supprimer(id);
-    }
-
-    public Class<?> un(Long id) {
-        return null;
-    }
-
-    public Class<?> tout() {
-        return null;
+        return clientService.supprimer(id);
     }
 }

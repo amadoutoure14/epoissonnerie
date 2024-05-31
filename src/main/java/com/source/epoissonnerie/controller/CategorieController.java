@@ -24,8 +24,8 @@ public class CategorieController {
         return categorieService.une(id);
     }
     @GetMapping
-    public CollectionModel<EntityModel<Categorie>> toute() {
-        return categorieService.toute();
+    public CollectionModel<EntityModel<Categorie>> liste() {
+        return categorieService.liste();
     }
     @PutMapping("/{id}")
     public ResponseEntity<?> modifier(@PathVariable Long id,@RequestBody Categorie categorie) {

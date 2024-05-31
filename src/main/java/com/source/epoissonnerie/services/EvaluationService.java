@@ -1,22 +1,18 @@
 package com.source.epoissonnerie.services;
 
-import com.source.epoissonnerie.assembleurs.VendeurModelAssembleur;
-import com.source.epoissonnerie.controller.VendeurController;
-import com.source.epoissonnerie.entites.Vendeur;
-import com.source.epoissonnerie.exceptions.CategorieIntrouvable;
-import com.source.epoissonnerie.exceptions.VendeurIntrouvable;
-import com.source.epoissonnerie.repositories.VendeurRepo;
+import com.source.epoissonnerie.assembleurs.EvaluationModelAssembleur;
+import com.source.epoissonnerie.controller.EvaluationController;
+import com.source.epoissonnerie.entites.Evaluation;
+import com.source.epoissonnerie.exceptions.EvaluationIntrouvable;
+import com.source.epoissonnerie.repositories.EvaluationRepo;
 import lombok.AllArgsConstructor;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.IanaLinkRelations;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.webjars.NotFoundException;
 
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
@@ -26,60 +22,54 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 @AllArgsConstructor
 public class EvaluationService {
 
-    final public VendeurRepo vendeurRepository;
-    final public BCryptPasswordEncoder encoder;
-    private final VendeurModelAssembleur assembler;
+    final public EvaluationRepo evaluationRepo;
+    private final EvaluationModelAssembleur assembler;
 
 
-    public EntityModel<Vendeur> un(Long id){
+    public EntityModel<Evaluation> une(Long id){
 
-        Vendeur vendeur = vendeurRepository
+        Evaluation evaluation = evaluationRepo
                 .findById(id)
-                .orElseThrow(() -> new NotFoundException("Vendeur non trouvé!"));
+                .orElseThrow(() -> new EvaluationIntrouvable(id));
 
-        return EntityModel.of(vendeur,
-                linkTo(methodOn(VendeurController.class).un(id)).withSelfRel(),
-                linkTo(methodOn(VendeurController.class).tout()).withRel("vendeurs"));
+        return EntityModel.of(evaluation,
+                linkTo(methodOn(EvaluationController.class).une(id)).withSelfRel(),
+                linkTo(methodOn(EvaluationController.class).liste()).withRel("evaluations"));
 
     }
-    public CollectionModel<EntityModel<Vendeur>> tout(){
-        List<EntityModel<Vendeur>> vendeurs = vendeurRepository
+    public CollectionModel<EntityModel<Evaluation>> liste(){
+        List<EntityModel<Evaluation>> entityModelList = evaluationRepo
                 .findAll()
                 .stream()
-                .map(vendeur -> EntityModel.of(vendeur,
-                        linkTo(methodOn(VendeurController.class).un(vendeur.getId())).withSelfRel(),
-                        linkTo(methodOn(VendeurController.class).tout()).withRel("vendeurs")))
+                .map(evaluation -> EntityModel.of(evaluation,
+                        linkTo(methodOn(EvaluationController.class).une(evaluation.getId())).withSelfRel(),
+                        linkTo(methodOn(EvaluationController.class).liste()).withRel("evaluations")))
                 .collect(Collectors.toList());
 
-        return CollectionModel.of(vendeurs, linkTo(methodOn(VendeurController.class).tout()).withSelfRel());
+        return CollectionModel.of(entityModelList, linkTo(methodOn(EvaluationController.class).liste()).withSelfRel());
     }
 
-    public ResponseEntity<?> nouveauVendeur(Vendeur vendeur) {
-        String mdp = encoder.encode(vendeur.getMdp());
-        EntityModel<Vendeur> entityModel = assembler.toModel(vendeurRepository.save(vendeur));
+    public ResponseEntity<?> nouvelle(Evaluation evaluation) {
+        EntityModel<Evaluation> entityModel = assembler.toModel(evaluationRepo.save(evaluation));
         return ResponseEntity
                 .created(entityModel.getRequiredLink(IanaLinkRelations.SELF).toUri())
                 .body(entityModel);
     }
 
-    public ResponseEntity<?> modifier(Vendeur vendeur,Long id) {
-        String mdp = encoder.encode(vendeur.getMdp());
-        Vendeur optionalVendeur = vendeurRepository
+    public ResponseEntity<?> modifier(Long id, Evaluation evaluation) {
+        Evaluation evaluationOptional = evaluationRepo
                 .findById(id)
                 .map(
                         maj -> {
-                            maj.setNom(vendeur.getNom());
-                            maj.setMdp(vendeur.getMdp());
-                            maj.setAdresse(vendeur.getAdresse());
-                            maj.setTel(vendeur.getTel());
-                            return vendeurRepository.save(maj);
+                            maj.setNote(evaluation.getNote());
+                            return evaluationRepo.save(maj);
                         })
                 .orElseGet(
                         () -> {
-                            vendeur.setId(id);
-                            return vendeurRepository.save(vendeur);
+                            evaluation.setId(id);
+                            return evaluationRepo.save(evaluation);
                         });
-        EntityModel<Vendeur> entityModel = assembler.toModel(optionalVendeur);
+        EntityModel<Evaluation> entityModel = assembler.toModel(evaluationOptional);
 
         return ResponseEntity
                 .created(
@@ -88,41 +78,8 @@ public class EvaluationService {
                                 .toUri())
                 .body(entityModel);
     }
-
-    public ResponseEntity<?> modifierPartiel(Long id, Map<String, Object> vendeur) {
-        Vendeur vendeurOptional = vendeurRepository
-                .findById(id)
-                .orElseThrow(() -> new VendeurIntrouvable(id));
-        vendeur.forEach(
-                (key, value) -> {
-                    switch (key) {
-                        case "nom":
-                            vendeurOptional.setNom((String) value);
-                            break;
-                        case "tel":
-                            vendeurOptional.setTel((Integer) value);
-                            break;
-                        case "mdp":
-                            if(value instanceof String ){
-                                String mdp = encoder.encode((String) value);
-                                vendeurOptional.setMdp(mdp);
-                            }
-                            break;
-                        case "adresse":
-                            vendeurOptional.setAdresse((String) value);
-                            break;
-                        default:
-                            throw new CategorieIntrouvable( id);
-                    }
-                });
-
-        EntityModel<Vendeur> entityModel = assembler.toModel( vendeurRepository.save(vendeurOptional));
-
-        return ResponseEntity.created(entityModel.getRequiredLink(IanaLinkRelations.SELF).toUri()).body(entityModel);
-    }
-
     public ResponseEntity<?> supprimer(Long id) {
-        vendeurRepository.deleteById(id);
+        evaluationRepo.deleteById(id);
         return ResponseEntity.noContent().build();
     }
 }

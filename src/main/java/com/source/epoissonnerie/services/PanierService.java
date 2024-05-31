@@ -1,19 +1,18 @@
 package com.source.epoissonnerie.services;
 
-import com.source.epoissonnerie.assembleurs.VendeurModelAssembleur;
+import com.source.epoissonnerie.assembleurs.PanierModelAssembleur;
+import com.source.epoissonnerie.controller.PanierController;
 import com.source.epoissonnerie.controller.VendeurController;
-import com.source.epoissonnerie.entites.Vendeur;
+import com.source.epoissonnerie.entites.Panier;
 import com.source.epoissonnerie.exceptions.CategorieIntrouvable;
-import com.source.epoissonnerie.exceptions.VendeurIntrouvable;
-import com.source.epoissonnerie.repositories.VendeurRepo;
+import com.source.epoissonnerie.exceptions.PanierIntrouvable;
+import com.source.epoissonnerie.repositories.PanierRepo;
 import lombok.AllArgsConstructor;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.IanaLinkRelations;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.webjars.NotFoundException;
 
 import java.util.List;
 import java.util.Map;
@@ -26,60 +25,57 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 @AllArgsConstructor
 public class PanierService {
 
-    final public VendeurRepo vendeurRepository;
-    final public BCryptPasswordEncoder encoder;
-    private final VendeurModelAssembleur assembler;
+    final public PanierRepo panierRepo;
+    private final PanierModelAssembleur assembler;
 
 
-    public EntityModel<Vendeur> un(Long id){
+    public EntityModel<Panier> un(Long id){
 
-        Vendeur vendeur = vendeurRepository
+        Panier panier = panierRepo
                 .findById(id)
-                .orElseThrow(() -> new NotFoundException("Vendeur non trouvé!"));
+                .orElseThrow(() -> new PanierIntrouvable(id));
 
-        return EntityModel.of(vendeur,
-                linkTo(methodOn(VendeurController.class).un(id)).withSelfRel(),
-                linkTo(methodOn(VendeurController.class).tout()).withRel("vendeurs"));
+        return EntityModel.of(panier,
+                linkTo(methodOn(PanierController.class).un(id)).withSelfRel(),
+                linkTo(methodOn(PanierController.class).liste()).withRel("paniers"));
 
     }
-    public CollectionModel<EntityModel<Vendeur>> tout(){
-        List<EntityModel<Vendeur>> vendeurs = vendeurRepository
+    public CollectionModel<EntityModel<Panier>> liste(){
+        List<EntityModel<Panier>> entityModelList = panierRepo
                 .findAll()
                 .stream()
-                .map(vendeur -> EntityModel.of(vendeur,
-                        linkTo(methodOn(VendeurController.class).un(vendeur.getId())).withSelfRel(),
-                        linkTo(methodOn(VendeurController.class).tout()).withRel("vendeurs")))
+                .map(panier -> EntityModel.of(panier,
+                        linkTo(methodOn(PanierController.class).un(panier.getId())).withSelfRel(),
+                        linkTo(methodOn(PanierController.class).liste()).withRel("paniers")))
                 .collect(Collectors.toList());
 
-        return CollectionModel.of(vendeurs, linkTo(methodOn(VendeurController.class).tout()).withSelfRel());
+        return CollectionModel.of(entityModelList, linkTo(methodOn(VendeurController.class).liste()).withSelfRel());
     }
 
-    public ResponseEntity<?> nouveauVendeur(Vendeur vendeur) {
-        String mdp = encoder.encode(vendeur.getMdp());
-        EntityModel<Vendeur> entityModel = assembler.toModel(vendeurRepository.save(vendeur));
+    public ResponseEntity<?> nouveau(Panier panier) {
+        EntityModel<Panier> entityModel = assembler.toModel(panierRepo.save(panier));
         return ResponseEntity
                 .created(entityModel.getRequiredLink(IanaLinkRelations.SELF).toUri())
                 .body(entityModel);
     }
 
-    public ResponseEntity<?> modifier(Vendeur vendeur,Long id) {
-        String mdp = encoder.encode(vendeur.getMdp());
-        Vendeur optionalVendeur = vendeurRepository
+    public ResponseEntity<?> modifier(Long id,Panier panier) {
+        Panier optionalPanier = panierRepo
                 .findById(id)
                 .map(
                         maj -> {
-                            maj.setNom(vendeur.getNom());
-                            maj.setMdp(vendeur.getMdp());
-                            maj.setAdresse(vendeur.getAdresse());
-                            maj.setTel(vendeur.getTel());
-                            return vendeurRepository.save(maj);
+                            maj.setNom(panier.getNom());
+                            maj.setDescription(panier.getDescription());
+                            maj.setQuantite(panier.getQuantite());
+                            maj.setPrix_total(panier.getPrix_total());
+                            return panierRepo.save(maj);
                         })
                 .orElseGet(
                         () -> {
-                            vendeur.setId(id);
-                            return vendeurRepository.save(vendeur);
+                            panier.setId(id);
+                            return panierRepo.save(panier);
                         });
-        EntityModel<Vendeur> entityModel = assembler.toModel(optionalVendeur);
+        EntityModel<Panier> entityModel = assembler.toModel(optionalPanier);
 
         return ResponseEntity
                 .created(
@@ -89,40 +85,34 @@ public class PanierService {
                 .body(entityModel);
     }
 
-    public ResponseEntity<?> modifierPartiel(Long id, Map<String, Object> vendeur) {
-        Vendeur vendeurOptional = vendeurRepository
+    public ResponseEntity<?> modifierPartiel(Long id, Map<String, Object> panier) {
+        Panier panierOptional = panierRepo
                 .findById(id)
-                .orElseThrow(() -> new VendeurIntrouvable(id));
-        vendeur.forEach(
+                .orElseThrow(() -> new PanierIntrouvable(id));
+        panier.forEach(
                 (key, value) -> {
                     switch (key) {
                         case "nom":
-                            vendeurOptional.setNom((String) value);
+                            panierOptional.setNom((String) value);
                             break;
                         case "tel":
-                            vendeurOptional.setTel((Integer) value);
-                            break;
-                        case "mdp":
-                            if(value instanceof String ){
-                                String mdp = encoder.encode((String) value);
-                                vendeurOptional.setMdp(mdp);
-                            }
+                            panierOptional.setPrix_total((Integer) value);
                             break;
                         case "adresse":
-                            vendeurOptional.setAdresse((String) value);
+                            panierOptional.setQuantite((Integer) value);
                             break;
                         default:
                             throw new CategorieIntrouvable( id);
                     }
                 });
 
-        EntityModel<Vendeur> entityModel = assembler.toModel( vendeurRepository.save(vendeurOptional));
+        EntityModel<Panier> entityModel = assembler.toModel( panierRepo.save(panierOptional));
 
         return ResponseEntity.created(entityModel.getRequiredLink(IanaLinkRelations.SELF).toUri()).body(entityModel);
     }
 
     public ResponseEntity<?> supprimer(Long id) {
-        vendeurRepository.deleteById(id);
+        panierRepo.deleteById(id);
         return ResponseEntity.noContent().build();
     }
 }

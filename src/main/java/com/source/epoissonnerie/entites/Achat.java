@@ -16,7 +16,6 @@ public class Achat{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private double prix;
+    private double prix,montant;
     private int quantite;
-    private double montant;
 }

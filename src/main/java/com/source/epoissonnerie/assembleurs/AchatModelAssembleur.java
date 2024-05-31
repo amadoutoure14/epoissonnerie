@@ -1,7 +1,6 @@
 package com.source.epoissonnerie.assembleurs;
 
 import com.source.epoissonnerie.controller.AchatController;
-import com.source.epoissonnerie.controller.VendeurController;
 import com.source.epoissonnerie.entites.Achat;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.server.RepresentationModelAssembler;
@@ -18,7 +17,7 @@ public class AchatModelAssembleur implements RepresentationModelAssembler<Achat,
                 .of(
                         achat,
                         linkTo(methodOn(AchatController.class).un(achat.getId())).withSelfRel(),
-                        linkTo(methodOn(AchatController.class).tout()).withRel("achats")
+                        linkTo(methodOn(AchatController.class).liste()).withRel("achats")
                 );
     }
 }

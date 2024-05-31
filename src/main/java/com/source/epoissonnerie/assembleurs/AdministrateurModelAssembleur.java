@@ -1,7 +1,6 @@
 package com.source.epoissonnerie.assembleurs;
 
 import com.source.epoissonnerie.controller.AdministrateurController;
-import com.source.epoissonnerie.controller.VendeurController;
 import com.source.epoissonnerie.entites.Administrateur;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.server.RepresentationModelAssembler;
@@ -18,7 +17,7 @@ public class AdministrateurModelAssembleur implements RepresentationModelAssembl
                 .of(
                         administrateur,
                         linkTo(methodOn(AdministrateurController.class).un(administrateur.getId())).withSelfRel(),
-                        linkTo(methodOn(AdministrateurController.class).tout()).withRel("administrateurs")
+                        linkTo(methodOn(AdministrateurController.class).liste()).withRel("Administrateurs")
                 );
     }
 }
