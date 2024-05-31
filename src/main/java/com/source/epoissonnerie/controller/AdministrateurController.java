@@ -41,4 +41,11 @@ public class AdministrateurController {
         return categorieService.supprimer(id);
     }
 
+    public Class<?> un(Long id) {
+        return null;
+    }
+
+    public Class<?> tout() {
+        return null;
+    }
 }

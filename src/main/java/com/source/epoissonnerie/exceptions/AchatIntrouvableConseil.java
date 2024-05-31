@@ -6,10 +6,10 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 @RestControllerAdvice
-public class CollectionIntrouvableConseil {
-    @ExceptionHandler(CategorieIntrouvable.class)
+public class AchatIntrouvableConseil {
+    @ExceptionHandler(AchatIntrouvable.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    String CollectionIntrouvableException(CategorieIntrouvable e) {
+    public String exception(Exception e) {
         return e.getMessage();
     }
 }
