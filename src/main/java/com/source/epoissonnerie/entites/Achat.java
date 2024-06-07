@@ -18,4 +18,7 @@ public class Achat{
     private Long id;
     private double prix,montant;
     private int quantite;
+
+    @ManyToOne
+    private Panier panier;
 }

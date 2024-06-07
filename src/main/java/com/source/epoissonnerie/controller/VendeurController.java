@@ -17,7 +17,7 @@ import java.util.Map;
 public class VendeurController {
 
     final private VendeurService vendeurService;
-    @PostMapping("/nouveau")
+    @PostMapping
     ResponseEntity<?> nouveauVendeur(@RequestBody Vendeur vendeur) {
         return vendeurService.nouveauVendeur(vendeur);
     }
@@ -25,7 +25,7 @@ public class VendeurController {
     public EntityModel<Vendeur> un(@PathVariable Long id) {
         return vendeurService.un(id);
     }
-    @GetMapping("/liste")
+    @GetMapping
     public CollectionModel<EntityModel<Vendeur>> liste() {
         return vendeurService.tout();
     }

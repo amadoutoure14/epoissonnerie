@@ -19,3 +19,67 @@ Accept: application/json
 {
   "description": "djkqsdhqjksdk"
 }
+###
+POST http://localhost:9000/evaluation
+Accept: application/json
+Content-Type:application/json
+
+{
+  "note": 1
+}
+###
+POST http://localhost:9000/vendeur
+Accept: application/json
+Content-Type: application/json
+
+{
+  "nom": "Amadou Touré",
+  "tel": 90909080,
+  "adresse": "Sirakoro",
+  "mdp": "Kabako223"
+}
+###
+POST http://localhost:9000/categorie
+Content-Type: application/json
+Accept: application/json
+
+{
+  "nom": "Clarias",
+  "description": "Une collection de Clarias!",
+  "publier": false,
+  "vendeur": {
+    "id": 1
+  }
+}
+###
+GET http://localhost:9000/vendeur
+Accept: application/json
+Content-Type: application/json
+###
+POST http://localhost:9000/utilisateur/inscription
+Content-Type: application/json
+Accept: application/json
+
+{
+  "nom": "Amadou Touré",
+  "email": "amadouit223@gmail.com",
+  "tel": 99314045,
+  "mdp": "string",
+  "actif": true,
+  "role": {
+    "description": "ADMIN"
+  }
+}
+###
+POST http://localhost:9000/utilisatuer/connexion
+Accept: application/*+json
+Content-Type: application/*+json
+
+{
+  "username":"amadouit223@gmail.com",
+  "password": "string"
+}
+###
+GET http://localhost:9000/utilisateur/connexion
+Content-Type:application/json
+Accept: application/json

@@ -1,8 +1,6 @@
 package com.source.epoissonnerie.assembleurs;
 
-import com.source.epoissonnerie.controller.VendeurController;
 import com.source.epoissonnerie.entites.Commentaire;
-import com.source.epoissonnerie.entites.Vendeur;
 import com.source.epoissonnerie.exceptions.CommentaireIntrouvable;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.server.RepresentationModelAssembler;

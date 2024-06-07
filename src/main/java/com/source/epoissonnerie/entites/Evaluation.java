@@ -20,7 +20,6 @@ public class Evaluation {
     private Long id;
 
     @NotNull
-    @Size(min = 1,max = 5)
     private int note = 0;
 
 }

@@ -1,5 +1,7 @@
 package com.source.epoissonnerie.entites;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
@@ -28,6 +30,9 @@ public class Panier {
     private double prix_total;
 
     private int quantite;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Utilisateur utilisateur;
 
 
 }

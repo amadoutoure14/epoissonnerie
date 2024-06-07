@@ -2,14 +2,9 @@ package com.source.epoissonnerie.services;
 
 import com.source.epoissonnerie.assembleurs.PoissonModelAssembleur;
 import com.source.epoissonnerie.controller.PoissonController;
-import com.source.epoissonnerie.controller.VendeurController;
 import com.source.epoissonnerie.entites.Poisson;
 import com.source.epoissonnerie.entites.TypePoisson;
-import com.source.epoissonnerie.entites.Vendeur;
-import com.source.epoissonnerie.exceptions.CategorieIntrouvable;
-import com.source.epoissonnerie.exceptions.PanierIntrouvable;
 import com.source.epoissonnerie.exceptions.PoissonIntrouvable;
-import com.source.epoissonnerie.exceptions.VendeurIntrouvable;
 import com.source.epoissonnerie.repositories.PoissonRepo;
 import lombok.AllArgsConstructor;
 import org.springframework.hateoas.CollectionModel;
@@ -19,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -101,7 +97,7 @@ public class PoissonService {
                 (key, value) -> {
                     switch (key) {
                         case "date":
-                            poissonOptional.setDate((LocalDate) value);
+                            poissonOptional.setDate((Date) value);
                             break;
                         case "publier":
                             poissonOptional.setPublier((boolean) value);

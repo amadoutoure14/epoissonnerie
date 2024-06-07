@@ -1,17 +1,17 @@
 package com.source.epoissonnerie.entites;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import java.time.LocalDate;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 
 @Entity
 @Table(name = "Utilisateur")
@@ -36,19 +36,24 @@ public class Utilisateur implements UserDetails {
     private int tel;
 
     @NotNull
-    @Size(min = 4)
     private String mdp;
 
-    private boolean actif = false;
-
-    private LocalDate date;
+    private boolean actif = true;
 
     @OneToOne(cascade = CascadeType.ALL)
     private final Role role;
+    @JsonIgnore
+    @OneToMany(mappedBy = "utilisateur",cascade = CascadeType.ALL)
+    private List<Panier> paniers;
+    @JsonIgnore
+    @OneToMany(mappedBy = "utilisateur",fetch = FetchType.LAZY,cascade = CascadeType.ALL)
+    private List<Categorie> categories;
+
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return Collections.singletonList(new SimpleGrantedAuthority("ROLE_"+this.role.getDescription()));
+        assert this.role != null;
+        return Collections.singletonList(new SimpleGrantedAuthority("ROLE_" + this.role.getDescription()));
     }
 
     @Override

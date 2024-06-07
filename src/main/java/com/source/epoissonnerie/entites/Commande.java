@@ -13,7 +13,7 @@ import java.util.Objects;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "CommandeService")
+@Table(name = "commande")
 public class Commande {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

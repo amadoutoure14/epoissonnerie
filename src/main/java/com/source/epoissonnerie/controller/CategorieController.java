@@ -23,7 +23,7 @@ public class CategorieController {
     public EntityModel<Categorie> une(@PathVariable Long id) {
         return categorieService.une(id);
     }
-    @GetMapping
+    @GetMapping("/tout")
     public CollectionModel<EntityModel<Categorie>> liste() {
         return categorieService.liste();
     }

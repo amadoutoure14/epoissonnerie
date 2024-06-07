@@ -15,7 +15,7 @@ public class UtilisateurModelAssembleur implements RepresentationModelAssembler<
         return EntityModel
                 .of(
                         utilisateur,
-                        linkTo(methodOn(UtilisateurController.class).un()).withSelfRel(),
+                        linkTo(methodOn(UtilisateurController.class).un(utilisateur.getId())).withSelfRel(),
                         linkTo(methodOn(UtilisateurController.class).liste()).withRel("utilisateurs")
                 );
     }

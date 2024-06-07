@@ -1,6 +1,5 @@
 package com.source.epoissonnerie.controller;
 
-import com.source.epoissonnerie.entites.Categorie;
 import com.source.epoissonnerie.entites.Visiteur;
 import com.source.epoissonnerie.services.VisiteurService;
 import lombok.AllArgsConstructor;
