@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.webjars.NotFoundException;
 
 import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -88,7 +89,7 @@ public class VisiteurService {
         visiteur.forEach(
                 (key, value) -> {
                     if (key.equals("nom")) {
-                        visiteurOptional.setDate((LocalDate) value);
+                        visiteurOptional.setDate((Date) value);
                     } else {
                         throw new NotFoundException("visiteur non trouver");
                     }
