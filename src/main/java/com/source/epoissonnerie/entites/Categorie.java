@@ -24,7 +24,6 @@ public class Categorie {
     @Column(unique = true)
     private String nom;
 
-    @NotNull
     private String description;
 
     private boolean publier;
@@ -40,7 +39,8 @@ public class Categorie {
     @OneToMany
     private List<Poisson> poissons;
 
-    @ManyToOne
+    @OneToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.REFRESH})
+    @JoinColumn(name = "publication")
     private Publication publication;
 
     @PrePersist

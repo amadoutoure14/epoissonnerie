@@ -4,8 +4,10 @@ import com.source.epoissonnerie.assembleurs.CategorieModelAssembleur;
 import com.source.epoissonnerie.controller.CategorieController;
 import com.source.epoissonnerie.dto.CategorieDTO;
 import com.source.epoissonnerie.entites.Categorie;
+import com.source.epoissonnerie.entites.Publication;
 import com.source.epoissonnerie.exceptions.CategorieIntrouvable;
 import com.source.epoissonnerie.repositories.CategorieRepo;
+import com.source.epoissonnerie.repositories.PublicationRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
@@ -26,12 +28,22 @@ public class CategorieService {
 
     final private CategorieRepo categorieRepo;
     final private CategorieModelAssembleur assembleur;
-    // final private CategorieMapper mapper;
+    final private PublicationRepository publicationRepo;
 
     public ResponseEntity<?> nouvelle(Categorie categorie) {
+
+        String nom = categorie.getNom();
+        categorie.setNom(nom.toLowerCase());
+
         Categorie nouvelleCategorie = categorieRepo.save(categorie);
-        String nom = nouvelleCategorie.getNom();
-        nouvelleCategorie.setNom(nom.toLowerCase());
+
+        if (categorie.isPublier()){
+            Publication publication = new Publication();
+            publication.setVendeur(categorie.getVendeur());
+            publication.setTitre(categorie.getNom());
+            Publication save = publicationRepo.save(publication);
+        }
+
         EntityModel<CategorieDTO> entityModel = assembleur.toModel(nouvelleCategorie);
         return ResponseEntity
                 .created(

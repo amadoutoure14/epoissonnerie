@@ -1,12 +1,11 @@
 package com.source.epoissonnerie.entites;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
+import java.util.Date;
 
 @Entity
 @Data
@@ -17,10 +16,15 @@ public class Publication {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotNull
     private String titre;
 
-    @OneToMany
-    private List<Categorie> categories;
+    @OneToOne
+    @JoinColumn(name = "vendeur")
+    private Vendeur vendeur;
 
+    private Date date;
+    @PrePersist
+    private void prePersist() {
+        this.date = new Date();
+    }
 }

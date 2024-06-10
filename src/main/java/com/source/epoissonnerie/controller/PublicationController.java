@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @AllArgsConstructor
 public class PublicationController {
+
     public Class<?> une(Long id) {
         return null;
     }

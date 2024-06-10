@@ -9,6 +9,6 @@ import java.util.function.Function;
 public class PublicationMapper implements Function<Publication ,PublicationDTO> {
     @Override
     public PublicationDTO apply(Publication publication) {
-        return new PublicationDTO(publication.getId(),publication.getTitre(),publication.getCategories());
+        return new PublicationDTO(publication.getId(),publication.getTitre(),publication.getDate());
     }
 }
