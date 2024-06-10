@@ -26,10 +26,13 @@ public class Commande {
 
     @ManyToOne
     private Panier panier;
+
     @OneToOne
     private Achat achat;
+
     @OneToMany
     private List<Poisson> poissons;
+
     @PrePersist
     protected void onCreate() {
         date = new Date();

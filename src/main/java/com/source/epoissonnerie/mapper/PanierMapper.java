@@ -9,6 +9,6 @@ import java.util.function.Function;
 public class PanierMapper implements Function<Panier, PanierDTO> {
     @Override
     public PanierDTO apply(Panier panier) {
-        return new PanierDTO(panier.getId(), panier.getNom(),panier.getDescription(),panier.getPrix_total(),panier.getQuantite(),panier.getClient());
+        return new PanierDTO(panier.getId(), panier.getNom(),panier.getDescription(),panier.getPrix_total(),panier.getQuantite(),panier.getClient(),panier.getCommandes());
     }
 }

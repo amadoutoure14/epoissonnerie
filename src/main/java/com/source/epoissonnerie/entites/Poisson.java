@@ -47,14 +47,16 @@ public class Poisson {
     @ManyToOne
     private Commande commande;
 
-    @PrePersist
-    private void onCreated(){
-        date = new Date();
-    }
 
     @OneToMany
     private List<Evaluation> evaluations;
 
     @OneToMany
     private List<Commentaire> commentaires;
+
+    @PrePersist
+    private void onCreated(){
+        date = new Date();
+    }
+
 }
