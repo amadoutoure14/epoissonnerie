@@ -35,14 +35,16 @@ public class CategorieService {
         String nom = categorie.getNom();
         categorie.setNom(nom.toLowerCase());
 
-        Categorie nouvelleCategorie = categorieRepo.save(categorie);
 
         if (categorie.isPublier()){
             Publication publication = new Publication();
             publication.setVendeur(categorie.getVendeur());
             publication.setTitre(categorie.getNom());
+            categorie.setPublication(publication);
             Publication save = publicationRepo.save(publication);
         }
+
+        Categorie nouvelleCategorie = categorieRepo.save(categorie);
 
         EntityModel<CategorieDTO> entityModel = assembleur.toModel(nouvelleCategorie);
         return ResponseEntity

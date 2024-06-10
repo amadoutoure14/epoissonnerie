@@ -34,9 +34,10 @@ public class Categorie {
 
     @ManyToOne
     @NotNull
+    @JoinColumn(name = "vendeur")
     private Vendeur vendeur;
 
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL)
     private List<Poisson> poissons;
 
     @OneToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.REFRESH})
