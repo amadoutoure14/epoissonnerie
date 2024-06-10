@@ -2,6 +2,7 @@ package com.source.epoissonnerie.controller;
 
 import com.source.epoissonnerie.config.JwtService;
 import com.source.epoissonnerie.dto.AuthentificationDTO;
+import com.source.epoissonnerie.dto.UtilisateurDTO;
 import com.source.epoissonnerie.entites.Utilisateur;
 import com.source.epoissonnerie.services.UtilisateurService;
 import jakarta.validation.Valid;
@@ -23,9 +24,9 @@ import java.util.Map;
 @AllArgsConstructor
 @RequestMapping(value = "/utilisateur",consumes = MediaType.APPLICATION_JSON_VALUE)
 public class UtilisateurController {
-    private  UtilisateurService service;
-    private AuthenticationManager authentificationManager;
-    private JwtService jwtService;
+    final private  UtilisateurService service;
+    final private AuthenticationManager authentificationManager;
+    final private JwtService jwtService;
     @PostMapping(value = "/inscription")
     public ResponseEntity<Utilisateur> inscription(@Valid @RequestBody Utilisateur utilisateur){
         return service.inscription(utilisateur);
@@ -43,7 +44,7 @@ public class UtilisateurController {
         return null;
     }
     @GetMapping("/{id}")
-    public EntityModel<Utilisateur> un(@PathVariable Long id) {
+    public EntityModel<UtilisateurDTO> un(@PathVariable Long id) {
         return service.un(id);
     }
 

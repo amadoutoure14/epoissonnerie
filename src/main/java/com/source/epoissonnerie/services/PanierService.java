@@ -3,6 +3,7 @@ package com.source.epoissonnerie.services;
 import com.source.epoissonnerie.assembleurs.PanierModelAssembleur;
 import com.source.epoissonnerie.controller.PanierController;
 import com.source.epoissonnerie.controller.VendeurController;
+import com.source.epoissonnerie.dto.PanierDTO;
 import com.source.epoissonnerie.entites.Panier;
 import com.source.epoissonnerie.exceptions.CategorieIntrouvable;
 import com.source.epoissonnerie.exceptions.PanierIntrouvable;
@@ -53,7 +54,7 @@ public class PanierService {
     }
 
     public ResponseEntity<?> nouveau(Panier panier) {
-        EntityModel<Panier> entityModel = assembler.toModel(panierRepo.save(panier));
+        EntityModel<PanierDTO> entityModel = assembler.toModel(panierRepo.save(panier));
         return ResponseEntity
                 .created(entityModel.getRequiredLink(IanaLinkRelations.SELF).toUri())
                 .body(entityModel);
@@ -75,7 +76,7 @@ public class PanierService {
                             panier.setId(id);
                             return panierRepo.save(panier);
                         });
-        EntityModel<Panier> entityModel = assembler.toModel(optionalPanier);
+        EntityModel<PanierDTO> entityModel = assembler.toModel(optionalPanier);
 
         return ResponseEntity
                 .created(
@@ -106,7 +107,7 @@ public class PanierService {
                     }
                 });
 
-        EntityModel<Panier> entityModel = assembler.toModel( panierRepo.save(panierOptional));
+        EntityModel<PanierDTO> entityModel = assembler.toModel( panierRepo.save(panierOptional));
 
         return ResponseEntity.created(entityModel.getRequiredLink(IanaLinkRelations.SELF).toUri()).body(entityModel);
     }

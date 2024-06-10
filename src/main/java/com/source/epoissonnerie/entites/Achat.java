@@ -1,11 +1,12 @@
 package com.source.epoissonnerie.entites;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDate;
+import java.util.Date;
 
 @Entity
 @Data
@@ -16,9 +17,14 @@ public class Achat{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private double prix,montant;
+    private double prix;
+    private double montant;
     private int quantite;
 
-    @ManyToOne
-    private Panier panier;
+    @Temporal(TemporalType.DATE)
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy",timezone = "UTC")
+    private Date date;
+
+    @OneToOne
+    private Commande commande;
 }

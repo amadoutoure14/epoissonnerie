@@ -36,9 +36,12 @@ public class CommandeController {
     public ResponseEntity<?> modifierPartiel(@PathVariable Long id,@RequestBody Map<String, Object> commande) {
         return commandeService.modifierPartiel(id,commande);
     }
-    @DeleteMapping("/{id}")
-    public ResponseEntity<?> supprimer(@PathVariable Long id) {
-        return commandeService.supprimer(id);
+    @DeleteMapping("/commande/{id}/annuler")
+    public ResponseEntity<?> annuler(@PathVariable Long id) {
+        return commandeService.annuler(id);
     }
 
+    public ResponseEntity<?> complete(@PathVariable Long id) {
+        return commandeService.complete(id);
+    }
 }

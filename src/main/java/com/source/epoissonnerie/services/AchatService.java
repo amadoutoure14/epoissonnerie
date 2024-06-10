@@ -2,9 +2,9 @@ package com.source.epoissonnerie.services;
 
 import com.source.epoissonnerie.assembleurs.AchatModelAssembleur;
 import com.source.epoissonnerie.controller.AchatController;
+import com.source.epoissonnerie.dto.AchatDTO;
 import com.source.epoissonnerie.entites.Achat;
 import com.source.epoissonnerie.exceptions.AchatIntrouvable;
-import com.source.epoissonnerie.exceptions.CategorieIntrouvable;
 import com.source.epoissonnerie.repositories.AchatRepo;
 import lombok.AllArgsConstructor;
 import org.springframework.hateoas.CollectionModel;
@@ -25,7 +25,7 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 public class AchatService {
 
     final public AchatRepo achatRepo;
-    private final AchatModelAssembleur assembler;
+    final private AchatModelAssembleur assembler;
     public EntityModel<Achat> un(Long id){
 
         Achat achat = achatRepo
@@ -59,7 +59,8 @@ public class AchatService {
     }
 
     public ResponseEntity<?> nouveauAchat(Achat achat) {
-        EntityModel<Achat> entityModel = assembler.toModel(achatRepo.save(achat));
+
+        EntityModel<AchatDTO> entityModel = assembler.toModel(achatRepo.save(achat));
         return ResponseEntity
                 .created(entityModel.getRequiredLink(IanaLinkRelations.SELF).toUri())
                 .body(entityModel);
@@ -80,7 +81,7 @@ public class AchatService {
                             achat.setId(id);
                             return achatRepo.save(achat);
                         });
-        EntityModel<Achat> entityModel = assembler.toModel(achatOptional);
+        EntityModel<AchatDTO> entityModel = assembler.toModel(achatOptional);
 
         return ResponseEntity
                 .created(
@@ -113,7 +114,7 @@ public class AchatService {
                     }
                 });
 
-        EntityModel<Achat> entityModel = assembler.toModel( achatRepo.save(achatOptional));
+        EntityModel<AchatDTO> entityModel = assembler.toModel( achatRepo.save(achatOptional));
 
         return ResponseEntity.created(entityModel.getRequiredLink(IanaLinkRelations.SELF).toUri()).body(entityModel);
     }

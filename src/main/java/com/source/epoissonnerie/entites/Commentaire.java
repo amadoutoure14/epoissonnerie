@@ -26,4 +26,6 @@ import java.util.Date;
         @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy",timezone = "UTC")
         private Date date;
 
+        @ManyToOne
+        private Poisson poisson;
     }

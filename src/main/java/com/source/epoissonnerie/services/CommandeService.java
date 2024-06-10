@@ -3,6 +3,7 @@ package com.source.epoissonnerie.services;
 import com.source.epoissonnerie.assembleurs.CommandeModelAssembleur;
 import com.source.epoissonnerie.controller.CommandeController;
 import com.source.epoissonnerie.controller.VendeurController;
+import com.source.epoissonnerie.dto.CommandeDTO;
 import com.source.epoissonnerie.entites.Commande;
 import com.source.epoissonnerie.entites.Status;
 import com.source.epoissonnerie.exceptions.CommandeIntrouvable;
@@ -11,6 +12,10 @@ import lombok.AllArgsConstructor;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.IanaLinkRelations;
+import org.springframework.hateoas.MediaTypes;
+import org.springframework.hateoas.mediatype.problem.Problem;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -56,7 +61,8 @@ public class CommandeService {
     }
 
     public ResponseEntity<?> nouvelle(Commande commande) {
-        EntityModel<Commande> entityModel = assembler.toModel(commandeRepo.save(commande));
+        commande.setStatus(Status.EN_COURS);
+        EntityModel<CommandeDTO> entityModel = assembler.toModel(commandeRepo.save(commande));
         return ResponseEntity
                 .created(entityModel.getRequiredLink(IanaLinkRelations.SELF).toUri())
                 .body(entityModel);
@@ -76,7 +82,7 @@ public class CommandeService {
                             commande.setId(id);
                             return commandeRepo.save(commande);
                         });
-        EntityModel<Commande> entityModel = assembler.toModel(optionalCommande);
+        EntityModel<CommandeDTO> entityModel = assembler.toModel(optionalCommande);
 
         return ResponseEntity
                 .created(
@@ -105,13 +111,43 @@ public class CommandeService {
                     }
                 });
 
-        EntityModel<Commande> entityModel = assembler.toModel( commandeRepo.save(commandeOptional));
+        EntityModel<CommandeDTO> entityModel = assembler.toModel( commandeRepo.save(commandeOptional));
 
         return ResponseEntity.created(entityModel.getRequiredLink(IanaLinkRelations.SELF).toUri()).body(entityModel);
     }
 
-    public ResponseEntity<?> supprimer(Long id) {
-        commandeRepo.deleteById(id);
-        return ResponseEntity.noContent().build();
+    public ResponseEntity<?> annuler(Long id) {
+
+        Commande commande = commandeRepo.findById(id)
+                .orElseThrow(() -> new CommandeIntrouvable(id));
+
+        if (commande.getStatus() == Status.EN_COURS) {
+            commande.setStatus(Status.ANNULER);
+            return ResponseEntity.ok(assembler.toModel(commandeRepo.save(commande)));
+        }
+
+        return ResponseEntity
+                .status(HttpStatus.METHOD_NOT_ALLOWED)
+                .header(HttpHeaders.CONTENT_TYPE, MediaTypes.HTTP_PROBLEM_DETAILS_JSON_VALUE)
+                .body(Problem.create()
+                        .withTitle("Action non autorisée!")
+                        .withDetail("Vous ne pouvez pas annuler une commande étant " + commande.getStatus())
+                );
     }
+
+    public ResponseEntity<?> complete(Long id) {
+        Commande commande = commandeRepo.findById(id).orElseThrow(() -> new CommandeIntrouvable(id));
+        if (commande.getStatus() == Status.EN_COURS) {
+            commande.setStatus(Status.COMPLETE);
+            return ResponseEntity.ok(assembler.toModel(commandeRepo.save(commande)));
+        }
+        return ResponseEntity
+                .status(HttpStatus.METHOD_NOT_ALLOWED)
+                .header(HttpHeaders.CONTENT_TYPE, MediaTypes.HTTP_PROBLEM_DETAILS_JSON_VALUE)
+                .body(
+                        Problem.create()
+                        .withTitle("Action non autorisée")
+                        .withDetail("Vous ne pouvez pas effectuer une commande étant " + commande.getStatus()));
+    }
+
 }

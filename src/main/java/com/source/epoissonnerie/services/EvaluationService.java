@@ -2,6 +2,7 @@ package com.source.epoissonnerie.services;
 
 import com.source.epoissonnerie.assembleurs.EvaluationModelAssembleur;
 import com.source.epoissonnerie.controller.EvaluationController;
+import com.source.epoissonnerie.dto.EvaluationDTO;
 import com.source.epoissonnerie.entites.Evaluation;
 import com.source.epoissonnerie.exceptions.EvaluationIntrouvable;
 import com.source.epoissonnerie.repositories.EvaluationRepo;
@@ -50,7 +51,7 @@ public class EvaluationService {
     }
 
     public ResponseEntity<?> nouvelle(Evaluation evaluation) {
-        EntityModel<Evaluation> entityModel = assembler.toModel(evaluationRepo.save(evaluation));
+        EntityModel<EvaluationDTO> entityModel = assembler.toModel(evaluationRepo.save(evaluation));
         return ResponseEntity
                 .created(entityModel.getRequiredLink(IanaLinkRelations.SELF).toUri())
                 .body(entityModel);
@@ -69,7 +70,7 @@ public class EvaluationService {
                             evaluation.setId(id);
                             return evaluationRepo.save(evaluation);
                         });
-        EntityModel<Evaluation> entityModel = assembler.toModel(evaluationOptional);
+        EntityModel<EvaluationDTO> entityModel = assembler.toModel(evaluationOptional);
 
         return ResponseEntity
                 .created(

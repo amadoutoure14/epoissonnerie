@@ -52,7 +52,7 @@ Accept: application/json
   }
 }
 ###
-GET http://localhost:9000/vendeur
+GET http://localhost:9000/categorie
 Accept: application/json
 Content-Type: application/json
 ###
@@ -80,6 +80,66 @@ Content-Type: application/*+json
   "password": "string"
 }
 ###
-GET http://localhost:9000/utilisateur/connexion
-Content-Type:application/json
+POST http://localhost:9000/utilisateur/activation
 Accept: application/json
+Content-Type: application/json
+
+{
+  "code": "406768"
+}
+###
+POST http://localhost:9000/vendeur
+Content-Type: application/json
+Accept: application/json
+
+{
+  "nom": "Amadou Touré",
+  "adresse": "Daoudabougou",
+  "tel": 90203049,
+  "mdp": "kabako223"
+}
+###
+POST http://localhost:9000/categorie
+Accept: application/json
+Content-Type: application/json
+
+{
+  "nom": "Clarias",
+  "description": "Une collection de tilapia",
+  "publier": true,
+  "vendeur": {
+    "id": 1
+  }
+}
+###
+POST localhost:9000/poisson
+Accept: application/json
+Content-Type: application/json
+
+{
+
+}
+###
+
+GET http://localhost:9000/poisson/2
+Accept: application/json
+Content-Type: application/json
+###
+GET http://localhost:9000/vendeur/1
+Content-Type: application/json
+Accept: application/json
+###
+POST http://localhost:9000/poisson
+Accept: application/json
+Content-Type: application/json
+
+{
+  "type": "Clarias",
+  "description": "Un clarias male de 4 kilogrammes! 1 kilogramme à 2500 prix discutable!",
+  "quantite": 45,
+  "prix": 2500,
+  "publier": true,
+  "categorie":{
+    "id": 2
+  }
+}

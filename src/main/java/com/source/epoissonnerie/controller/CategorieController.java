@@ -1,5 +1,6 @@
 package com.source.epoissonnerie.controller;
 
+import com.source.epoissonnerie.dto.CategorieDTO;
 import com.source.epoissonnerie.entites.Categorie;
 import com.source.epoissonnerie.services.CategorieService;
 import lombok.AllArgsConstructor;
@@ -20,10 +21,10 @@ public class CategorieController {
         return categorieService.nouvelle(categorie);
     }
     @GetMapping("/{id}")
-    public EntityModel<Categorie> une(@PathVariable Long id) {
+    public EntityModel<CategorieDTO> une(@PathVariable Long id) {
         return categorieService.une(id);
     }
-    @GetMapping("/tout")
+    @GetMapping
     public CollectionModel<EntityModel<Categorie>> liste() {
         return categorieService.liste();
     }
@@ -38,5 +39,9 @@ public class CategorieController {
     @DeleteMapping("/{id}")
     public ResponseEntity<?> supprimer(@PathVariable Long id) {
         return categorieService.supprimer(id);
+    }
+    @GetMapping("/filtre")
+    public ResponseEntity<?> nomFiltre(@RequestParam String nom) {
+        return categorieService.nomFiltre(nom);
     }
 }

@@ -13,8 +13,6 @@ public record UtilisateurDTO(
         int tel,
         String mdp,
         boolean actif,
-        Role role,
-        List<Panier> paniers,
-        List<Categorie> categories
+        Role role
 ) {
 }

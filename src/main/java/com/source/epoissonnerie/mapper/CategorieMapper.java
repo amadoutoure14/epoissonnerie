@@ -10,6 +10,6 @@ import java.util.function.Function;
 public class CategorieMapper implements Function<Categorie, CategorieDTO> {
     @Override
     public CategorieDTO apply(Categorie categorie) {
-        return new CategorieDTO(categorie.getId(),categorie.getNom(),categorie.getDescription(),categorie.isPublier(),categorie.getUtilisateur(),categorie.getPoissons());
+        return new CategorieDTO(categorie.getId(),categorie.getNom(),categorie.getDescription(),categorie.isPublier(),categorie.getVendeur(), categorie.getDate(), categorie.getPoissons(),categorie.getPublication());
     }
 }

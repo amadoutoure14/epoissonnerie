@@ -3,6 +3,7 @@ package com.source.epoissonnerie.services;
 import com.source.epoissonnerie.assembleurs.CommentaireModelAssembleur;
 import com.source.epoissonnerie.controller.CommentaireController;
 import com.source.epoissonnerie.controller.VendeurController;
+import com.source.epoissonnerie.dto.CommentaireDTO;
 import com.source.epoissonnerie.entites.Commentaire;
 import com.source.epoissonnerie.exceptions.CommentaireIntrouvable;
 import com.source.epoissonnerie.repositories.CommentaireRepo;
@@ -55,7 +56,7 @@ public class CommentaireService {
     }
 
     public ResponseEntity<?> nouveau(Commentaire commentaire) {
-        EntityModel<Commentaire> entityModel = assembler
+        EntityModel<CommentaireDTO> entityModel = assembler
                 .toModel(commentaireRepo.save(commentaire));
         return ResponseEntity
                 .created(entityModel.getRequiredLink(IanaLinkRelations.SELF).toUri())
@@ -76,7 +77,7 @@ public class CommentaireService {
                             commentaire.setId(id);
                             return commentaireRepo.save(commentaire);
                         });
-        EntityModel<Commentaire> entityModel = assembler.toModel(optionalCommentaire);
+        EntityModel<CommentaireDTO> entityModel = assembler.toModel(optionalCommentaire);
 
         return ResponseEntity
                 .created(

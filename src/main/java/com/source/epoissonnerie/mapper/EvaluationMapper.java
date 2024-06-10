@@ -10,6 +10,6 @@ import java.util.function.Function;
 public class EvaluationMapper implements Function<Evaluation, EvaluationDTO> {
     @Override
     public EvaluationDTO apply(Evaluation evaluation) {
-        return new EvaluationDTO(evaluation.getId(),evaluation.getNote());
+        return new EvaluationDTO(evaluation.getId(),evaluation.getNote(),evaluation.getDate(),evaluation.getPoisson());
     }
 }

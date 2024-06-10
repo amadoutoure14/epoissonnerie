@@ -2,6 +2,7 @@ package com.source.epoissonnerie.services;
 
 import com.source.epoissonnerie.assembleurs.CategorieModelAssembleur;
 import com.source.epoissonnerie.controller.CategorieController;
+import com.source.epoissonnerie.dto.CategorieDTO;
 import com.source.epoissonnerie.entites.Categorie;
 import com.source.epoissonnerie.exceptions.CategorieIntrouvable;
 import com.source.epoissonnerie.repositories.CategorieRepo;
@@ -25,9 +26,13 @@ public class CategorieService {
 
     final private CategorieRepo categorieRepo;
     final private CategorieModelAssembleur assembleur;
+    // final private CategorieMapper mapper;
 
     public ResponseEntity<?> nouvelle(Categorie categorie) {
-        EntityModel<Categorie> entityModel = assembleur.toModel(categorieRepo.save(categorie));
+        Categorie nouvelleCategorie = categorieRepo.save(categorie);
+        String nom = nouvelleCategorie.getNom();
+        nouvelleCategorie.setNom(nom.toLowerCase());
+        EntityModel<CategorieDTO> entityModel = assembleur.toModel(nouvelleCategorie);
         return ResponseEntity
                 .created(
                         entityModel
@@ -36,7 +41,7 @@ public class CategorieService {
                 .body(entityModel);
     }
 
-    public EntityModel<Categorie> une(Long id) {
+    public EntityModel<CategorieDTO> une(Long id) {
         Categorie categorie = categorieRepo
                 .findById(id)
                 .orElseThrow(
@@ -78,7 +83,7 @@ public class CategorieService {
                     return categorieRepo.save(categorie);
                 }
         );
-        EntityModel<Categorie> categorieEntityModel = assembleur.toModel(categorieOptional);
+        EntityModel<CategorieDTO> categorieEntityModel = assembleur.toModel(categorieOptional);
         return ResponseEntity
                 .created(
                         categorieEntityModel.getRequiredLink(IanaLinkRelations.SELF).toUri()
@@ -106,12 +111,17 @@ public class CategorieService {
             }
         });
 
-        EntityModel<Categorie> categorieEntityModel = assembleur.toModel(categorieRepo.save(categorieOptional));
+        EntityModel<CategorieDTO> categorieEntityModel = assembleur.toModel(categorieRepo.save(categorieOptional));
         return ResponseEntity.created(categorieEntityModel.getRequiredLink(IanaLinkRelations.SELF).toUri()).body(categorieEntityModel);
     }
 
     public ResponseEntity<?> supprimer(Long id) {
         categorieRepo.deleteById(id);
         return ResponseEntity.noContent().build();
+    }
+    public ResponseEntity<?> nomFiltre(String nom) {
+        String nomLower = nom.toLowerCase() ;
+        Categorie categorie = categorieRepo.findByNom(nomLower).orElseThrow(() -> new RuntimeException("Le nom renseigne n'existe pas!"));
+        return ResponseEntity.ok(categorie);
     }
 }

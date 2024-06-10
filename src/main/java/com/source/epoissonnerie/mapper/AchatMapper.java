@@ -10,6 +10,6 @@ import java.util.function.Function;
 public class AchatMapper implements Function<Achat, AchatDTO> {
     @Override
     public AchatDTO apply(Achat achat) {
-        return new AchatDTO(achat.getId(), achat.getPrix(),achat.getMontant(),achat.getQuantite(),achat.getPanier());
+        return new AchatDTO(achat.getId(), achat.getPrix(),achat.getMontant(),achat.getQuantite(),achat.getDate(),achat.getCommande());
     }
 }

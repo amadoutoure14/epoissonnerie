@@ -1,8 +1,6 @@
 package com.source.epoissonnerie.entites;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
@@ -10,8 +8,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDate;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Data
@@ -42,7 +40,21 @@ public class Poisson {
     @JsonFormat(pattern = "dd/MM/yyyy",timezone = "UTC")
     private Date date;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
+    @NotNull
     private Categorie categorie;
 
+    @ManyToOne
+    private Commande commande;
+
+    @PrePersist
+    private void onCreated(){
+        date = new Date();
+    }
+
+    @OneToMany
+    private List<Evaluation> evaluations;
+
+    @OneToMany
+    private List<Commentaire> commentaires;
 }

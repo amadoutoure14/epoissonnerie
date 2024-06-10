@@ -19,7 +19,6 @@ public class Validation {
     private Long id;
     private Instant creation;
     private Instant expiration;
-    private Instant activation;
     private String code;
     @OneToOne(cascade = CascadeType.ALL)
     private Utilisateur utilisateur;

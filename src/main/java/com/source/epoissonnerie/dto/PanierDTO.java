@@ -1,16 +1,14 @@
 package com.source.epoissonnerie.dto;
 
-import com.source.epoissonnerie.entites.Utilisateur;
-import jakarta.validation.constraints.NotNull;
+import com.source.epoissonnerie.entites.Client;
 
 public record PanierDTO(
         Long id,
         String nom,
         String description,
-
         double prix_total,
         int quantite,
-        Utilisateur utilisateur
+        Client client
 ) {
 
 }

@@ -1,6 +1,5 @@
 package com.source.epoissonnerie.entites;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
@@ -11,7 +10,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 import java.util.Collections;
-import java.util.List;
 
 @Entity
 @Table(name = "Utilisateur")
@@ -42,12 +40,6 @@ public class Utilisateur implements UserDetails {
 
     @OneToOne(cascade = CascadeType.ALL)
     private final Role role;
-    @JsonIgnore
-    @OneToMany(mappedBy = "utilisateur",cascade = CascadeType.ALL)
-    private List<Panier> paniers;
-    @JsonIgnore
-    @OneToMany(mappedBy = "utilisateur",fetch = FetchType.LAZY,cascade = CascadeType.ALL)
-    private List<Categorie> categories;
 
 
     @Override

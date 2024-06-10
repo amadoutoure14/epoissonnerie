@@ -1,10 +1,13 @@
 package com.source.epoissonnerie.entites;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+
+import java.util.Date;
 
 @Entity
 @Data
@@ -25,5 +28,7 @@ public class Administrateur {
     @NotNull
     @Email
     private String email;
-
+    @Temporal(TemporalType.DATE)
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy",timezone = "UTC")
+    private Date date;
 }

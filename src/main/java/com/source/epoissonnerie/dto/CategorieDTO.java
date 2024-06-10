@@ -1,10 +1,10 @@
 package com.source.epoissonnerie.dto;
 
 import com.source.epoissonnerie.entites.Poisson;
-import com.source.epoissonnerie.entites.Utilisateur;
-import jakarta.persistence.Column;
-import jakarta.validation.constraints.NotNull;
+import com.source.epoissonnerie.entites.Publication;
+import com.source.epoissonnerie.entites.Vendeur;
 
+import java.util.Date;
 import java.util.List;
 
 public record CategorieDTO(
@@ -12,7 +12,9 @@ public record CategorieDTO(
         String nom,
         String description,
         boolean publier,
-        Utilisateur utilisateur,
-        List<Poisson> poissons
+        Vendeur vendeur,
+        Date date,
+        List<Poisson> poissons,
+        Publication publication
 ){
 }

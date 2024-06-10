@@ -1,7 +1,12 @@
 package com.source.epoissonnerie.assembleurs;
 
 import com.source.epoissonnerie.controller.PoissonController;
+
+import com.source.epoissonnerie.dto.PoissonDTO;
 import com.source.epoissonnerie.entites.Poisson;
+
+import com.source.epoissonnerie.mapper.PoissonMapper;
+import lombok.AllArgsConstructor;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.server.RepresentationModelAssembler;
 import org.springframework.stereotype.Component;
@@ -9,13 +14,16 @@ import org.springframework.stereotype.Component;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 @Component
-public class PoissonModelAssembleur implements RepresentationModelAssembler<Poisson, EntityModel<Poisson>> {
+@AllArgsConstructor
+public class PoissonModelAssembleur implements RepresentationModelAssembler<Poisson, EntityModel<PoissonDTO>> {
+    final private PoissonMapper mapper;
     @Override
-    public EntityModel<Poisson> toModel(Poisson poisson) {
+    public EntityModel<PoissonDTO> toModel(Poisson poisson) {
+        PoissonDTO poissonDTO = mapper.apply(poisson);
         return EntityModel
                 .of(
-                        poisson,
-                        linkTo(methodOn(PoissonController.class).un(poisson.getId())).withSelfRel(),
+                        poissonDTO,
+                        linkTo(methodOn(PoissonController.class).un(poissonDTO.id())).withSelfRel(),
                         linkTo(methodOn(PoissonController.class).liste()).withRel("poissons")
                 );
     }

@@ -2,6 +2,7 @@ package com.source.epoissonnerie.services;
 
 import com.source.epoissonnerie.assembleurs.PoissonModelAssembleur;
 import com.source.epoissonnerie.controller.PoissonController;
+import com.source.epoissonnerie.dto.PoissonDTO;
 import com.source.epoissonnerie.entites.Poisson;
 import com.source.epoissonnerie.entites.TypePoisson;
 import com.source.epoissonnerie.exceptions.PoissonIntrouvable;
@@ -13,7 +14,6 @@ import org.springframework.hateoas.IanaLinkRelations;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -56,7 +56,7 @@ public class PoissonService {
     }
 
     public ResponseEntity<?> nouveau(Poisson poisson) {
-        EntityModel<Poisson> entityModel = assembler.toModel(poissonRepo.save(poisson));
+        EntityModel<PoissonDTO> entityModel = assembler.toModel(poissonRepo.save(poisson));
         return ResponseEntity
                 .created(entityModel.getRequiredLink(IanaLinkRelations.SELF).toUri())
                 .body(entityModel);
@@ -79,7 +79,7 @@ public class PoissonService {
                             poisson.setId(id);
                             return poissonRepo.save(poisson);
                         });
-        EntityModel<Poisson> entityModel = assembler.toModel(optionalPoisson);
+        EntityModel<PoissonDTO> entityModel = assembler.toModel(optionalPoisson);
 
         return ResponseEntity
                 .created(
@@ -116,7 +116,7 @@ public class PoissonService {
                     }
                 });
 
-        EntityModel<Poisson> entityModel = assembler.toModel( poissonRepo.save(poissonOptional));
+        EntityModel<PoissonDTO> entityModel = assembler.toModel( poissonRepo.save(poissonOptional));
 
         return ResponseEntity.created(entityModel.getRequiredLink(IanaLinkRelations.SELF).toUri()).body(entityModel);
     }

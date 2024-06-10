@@ -26,14 +26,12 @@ public class SecurityConfig {
                 .authorizeHttpRequests(
                         authorize ->
                                 authorize
-                                        .requestMatchers(GET, "utilisateur/**").permitAll()
                                         .requestMatchers(POST, "utilisateur/inscription").permitAll()
                                         .requestMatchers(POST, "utilisateur/activation").permitAll()
-                                        .requestMatchers(POST, "utilisateur/**").permitAll()
                                         .requestMatchers(GET,"/api-docs").permitAll()
                                         .requestMatchers(GET,"/swagger-ui.html").permitAll()
                                         .requestMatchers(GET,"/swagger-ui/**").permitAll()
-                                        .anyRequest().authenticated()
+                                        .anyRequest().permitAll()
                 )
                 .build();
     }

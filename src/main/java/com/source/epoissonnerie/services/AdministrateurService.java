@@ -2,6 +2,7 @@ package com.source.epoissonnerie.services;
 
 import com.source.epoissonnerie.assembleurs.AdministrateurModelAssembleur;
 import com.source.epoissonnerie.controller.AdministrateurController;
+import com.source.epoissonnerie.dto.AdministrateurDTO;
 import com.source.epoissonnerie.entites.Administrateur;
 import com.source.epoissonnerie.exceptions.AdministrateurIntrouvable;
 import com.source.epoissonnerie.repositories.AdministrateurRepo;
@@ -55,7 +56,7 @@ public class AdministrateurService {
     public ResponseEntity<?> nouveau(Administrateur administrateur) {
         String mdp = encoder.encode(administrateur.getMdp());
         administrateur.setMdp(mdp);
-        EntityModel<Administrateur> entityModel = assembler.toModel(administrateurRepo.save(administrateur));
+        EntityModel<AdministrateurDTO> entityModel = assembler.toModel(administrateurRepo.save(administrateur));
         return ResponseEntity
                 .created(entityModel.getRequiredLink(IanaLinkRelations.SELF).toUri())
                 .body(entityModel);
@@ -80,7 +81,7 @@ public class AdministrateurService {
                             return administrateurRepo.save(administrateur);
                         });
 
-        EntityModel<Administrateur> entityModel = assembler.toModel(optionalAdministrateur);
+        EntityModel<AdministrateurDTO> entityModel = assembler.toModel(optionalAdministrateur);
 
         return ResponseEntity
                 .created(
@@ -118,7 +119,7 @@ public class AdministrateurService {
                     }
                 });
 
-        EntityModel<Administrateur> entityModel = assembler.toModel(administrateurRepo.save(AdministrateurOptional));
+        EntityModel<AdministrateurDTO> entityModel = assembler.toModel(administrateurRepo.save(AdministrateurOptional));
 
         return ResponseEntity.created(entityModel.getRequiredLink(IanaLinkRelations.SELF).toUri()).body(entityModel);
     }

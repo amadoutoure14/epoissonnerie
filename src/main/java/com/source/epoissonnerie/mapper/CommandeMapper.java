@@ -10,6 +10,6 @@ import java.util.function.Function;
 public class CommandeMapper implements Function<Commande, CommandeDTO> {
     @Override
     public CommandeDTO apply(Commande commande) {
-        return new CommandeDTO(commande.getId(), commande.getDescription(),commande.getStatus());
+        return new CommandeDTO(commande.getId(), commande.getDescription(),commande.getStatus(),commande.getDate(),commande.getPanier(),commande.getAchat(),commande.getPoissons());
     }
 }

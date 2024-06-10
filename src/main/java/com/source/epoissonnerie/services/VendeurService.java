@@ -2,6 +2,7 @@ package com.source.epoissonnerie.services;
 
 import com.source.epoissonnerie.assembleurs.VendeurModelAssembleur;
 import com.source.epoissonnerie.controller.VendeurController;
+import com.source.epoissonnerie.dto.VendeurDTO;
 import com.source.epoissonnerie.entites.Vendeur;
 import com.source.epoissonnerie.exceptions.CategorieIntrouvable;
 import com.source.epoissonnerie.exceptions.VendeurIntrouvable;
@@ -34,7 +35,10 @@ public class VendeurService {
                 .findById(id)
                 .orElseThrow(() -> new VendeurIntrouvable(id));
 
-        return EntityModel.of(vendeur,
+        //VendeurDTO vendeurDTO = mapper.apply(vendeur);
+
+        return EntityModel.of(
+                vendeur,
                 linkTo(methodOn(VendeurController.class).un(id)).withSelfRel(),
                 linkTo(methodOn(VendeurController.class).liste()).withRel("vendeurs"));
 
@@ -43,7 +47,9 @@ public class VendeurService {
         List<EntityModel<Vendeur>> vendeurs = vendeurRepository
                 .findAll()
                 .stream()
-                .map(vendeur -> EntityModel.of(vendeur,
+                .map(
+                        vendeur -> EntityModel.of(
+                                vendeur,
                         linkTo(methodOn(VendeurController.class).un(vendeur.getId())).withSelfRel(),
                         linkTo(methodOn(VendeurController.class).liste()).withRel("vendeurs")))
                 .collect(Collectors.toList());
@@ -53,7 +59,8 @@ public class VendeurService {
 
     public ResponseEntity<?> nouveauVendeur(Vendeur vendeur) {
         String mdp = encoder.encode(vendeur.getMdp());
-        EntityModel<Vendeur> entityModel = assembler.toModel(vendeurRepository.save(vendeur));
+        vendeur.setMdp(mdp);
+        EntityModel<VendeurDTO> entityModel = assembler.toModel(vendeurRepository.save(vendeur));
         return ResponseEntity
                 .created(entityModel.getRequiredLink(IanaLinkRelations.SELF).toUri())
                 .body(entityModel);
@@ -66,7 +73,7 @@ public class VendeurService {
                 .map(
                         maj -> {
                             maj.setNom(vendeur.getNom());
-                            maj.setMdp(vendeur.getMdp());
+                            maj.setMdp(mdp);
                             maj.setAdresse(vendeur.getAdresse());
                             maj.setTel(vendeur.getTel());
                             return vendeurRepository.save(maj);
@@ -76,7 +83,7 @@ public class VendeurService {
                             vendeur.setId(id);
                             return vendeurRepository.save(vendeur);
                         });
-        EntityModel<Vendeur> entityModel = assembler.toModel(optionalVendeur);
+        EntityModel<VendeurDTO> entityModel = assembler.toModel(optionalVendeur);
 
         return ResponseEntity
                 .created(
@@ -113,7 +120,7 @@ public class VendeurService {
                 }
             });
 
-            EntityModel<Vendeur> entityModel = assembler.toModel( vendeurRepository.save(vendeurOptional));
+            EntityModel<VendeurDTO> entityModel = assembler.toModel( vendeurRepository.save(vendeurOptional));
 
             return ResponseEntity.created(entityModel.getRequiredLink(IanaLinkRelations.SELF).toUri()).body(entityModel);
         }

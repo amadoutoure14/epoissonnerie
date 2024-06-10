@@ -2,6 +2,7 @@ package com.source.epoissonnerie.services;
 
 import com.source.epoissonnerie.assembleurs.UtilisateurModelAssembleur;
 import com.source.epoissonnerie.controller.UtilisateurController;
+import com.source.epoissonnerie.dto.UtilisateurDTO;
 import com.source.epoissonnerie.entites.Role;
 import com.source.epoissonnerie.entites.Utilisateur;
 import com.source.epoissonnerie.entites.Validation;
@@ -56,7 +57,7 @@ public class UtilisateurService implements UserDetailsService {
                 .orElseThrow(()->new UsernameNotFoundException("Aucun utilisateur ne correspond à " + username));
     }
 
-    public EntityModel<Utilisateur> un(Long id) {
+    public EntityModel<UtilisateurDTO> un(Long id) {
         Utilisateur entityModel = repository.findById(id).orElseThrow(
                 () -> new UtilisateurIntrouvable(id)
         );

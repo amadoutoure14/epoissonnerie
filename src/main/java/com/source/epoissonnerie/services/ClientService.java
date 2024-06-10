@@ -2,6 +2,7 @@ package com.source.epoissonnerie.services;
 
 import com.source.epoissonnerie.assembleurs.ClientModelAssembleur;
 import com.source.epoissonnerie.controller.ClientController;
+import com.source.epoissonnerie.dto.ClientDTO;
 import com.source.epoissonnerie.entites.Client;
 import com.source.epoissonnerie.exceptions.CategorieIntrouvable;
 import com.source.epoissonnerie.exceptions.ClientIntrouvable;
@@ -57,9 +58,7 @@ public class ClientService {
     public ResponseEntity<?> nouveauClient(Client client) {
         String mdp = encoder.encode(client.getMdp());
         client.setMdp(mdp);
-        EntityModel<Client> entityModel = assembler.toModel(
-                clientRepo.save(client)
-        );
+        EntityModel<ClientDTO> entityModel = assembler.toModel(clientRepo.save(client));
         return ResponseEntity
                 .created(entityModel.getRequiredLink(
                         IanaLinkRelations.SELF).toUri())
@@ -84,7 +83,7 @@ public class ClientService {
                             client.setId(id);
                             return clientRepo.save(client);
                         });
-        EntityModel<Client> entityModel = assembler.toModel(optionalClient);
+        EntityModel<ClientDTO> entityModel = assembler.toModel(optionalClient);
 
         return ResponseEntity
                 .created(
@@ -122,7 +121,7 @@ public class ClientService {
                     }
                 });
 
-        EntityModel<Client> entityModel = assembler.toModel( clientRepo.save(ClientOptional));
+        EntityModel<ClientDTO> entityModel = assembler.toModel( clientRepo.save(ClientOptional));
 
         return ResponseEntity.created(entityModel.getRequiredLink(IanaLinkRelations.SELF).toUri()).body(entityModel);
     }
