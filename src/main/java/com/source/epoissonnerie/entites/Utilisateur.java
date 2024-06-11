@@ -3,16 +3,11 @@ package com.source.epoissonnerie.entites;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import java.time.LocalDate;
 import java.util.Collection;
 import java.util.Collections;
 
@@ -20,6 +15,7 @@ import java.util.Collections;
 @Table(name = "Utilisateur")
 @Setter
 @Getter
+@Data
 @AllArgsConstructor
 @NoArgsConstructor(force = true)
 public class Utilisateur implements UserDetails {
@@ -38,19 +34,18 @@ public class Utilisateur implements UserDetails {
     private int tel;
 
     @NotNull
-    @Size(min = 4)
     private String mdp;
 
-    private boolean actif = false;
-
-    private LocalDate date;
+    private boolean actif = true;
 
     @OneToOne(cascade = CascadeType.ALL)
     private final Role role;
 
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return Collections.singletonList(new SimpleGrantedAuthority("ROLE_"+this.role.getDescription()));
+        assert this.role != null;
+        return Collections.singletonList(new SimpleGrantedAuthority("ROLE_" + this.role.getDescription()));
     }
 
     @Override

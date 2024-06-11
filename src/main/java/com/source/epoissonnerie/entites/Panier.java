@@ -1,9 +1,7 @@
 package com.source.epoissonnerie.entites;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -24,11 +22,14 @@ public class Panier {
     private String nom;
 
     private String description;
-
-    @Column(nullable = false)
+    
     private double prix_total;
 
     private int quantite;
+    @ManyToOne
+    private Client client;
 
+    @OneToMany
+    List<Commande> commandes;
 
 }

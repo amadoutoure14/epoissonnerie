@@ -2,8 +2,11 @@ package com.source.epoissonnerie.services;
 
 import com.source.epoissonnerie.assembleurs.VendeurModelAssembleur;
 import com.source.epoissonnerie.controller.VendeurController;
+import com.source.epoissonnerie.dto.VendeurDTO;
 import com.source.epoissonnerie.entites.Vendeur;
-import com.source.epoissonnerie.exceptions.VendeurNonTrouver;
+import com.source.epoissonnerie.exceptions.CategorieIntrouvable;
+import com.source.epoissonnerie.exceptions.VendeurIntrouvable;
+import com.source.epoissonnerie.repositories.VendeurRepo;
 import lombok.AllArgsConstructor;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
@@ -11,7 +14,6 @@ import org.springframework.hateoas.IanaLinkRelations;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.webjars.NotFoundException;
 
 import java.util.List;
 import java.util.Map;
@@ -22,7 +24,7 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.*;
 @AllArgsConstructor
 public class VendeurService {
 
-    final public com.source.epoissonnerie.repository.vendeurRepository vendeurRepository;
+    final public VendeurRepo vendeurRepository;
     final public BCryptPasswordEncoder encoder;
     private final VendeurModelAssembleur assembler;
 
@@ -31,26 +33,34 @@ public class VendeurService {
 
         Vendeur vendeur = vendeurRepository
                 .findById(id)
-                .orElseThrow(() -> new NotFoundException("Vendeur non trouvé!"));
+                .orElseThrow(() -> new VendeurIntrouvable(id));
 
-        return EntityModel.of(vendeur,
+        //VendeurDTO vendeurDTO = mapper.apply(vendeur);
+
+        return EntityModel.of(
+                vendeur,
                 linkTo(methodOn(VendeurController.class).un(id)).withSelfRel(),
-                linkTo(methodOn(VendeurController.class).tout()).withRel("vendeurs"));
+                linkTo(methodOn(VendeurController.class).liste()).withRel("vendeurs"));
 
     }
     public CollectionModel<EntityModel<Vendeur>> tout(){
-        List<EntityModel<Vendeur>> employees = vendeurRepository.findAll().stream()
-                .map(vendeur -> EntityModel.of(vendeur,
+        List<EntityModel<Vendeur>> vendeurs = vendeurRepository
+                .findAll()
+                .stream()
+                .map(
+                        vendeur -> EntityModel.of(
+                                vendeur,
                         linkTo(methodOn(VendeurController.class).un(vendeur.getId())).withSelfRel(),
-                        linkTo(methodOn(VendeurController.class).tout()).withRel("vendeurs")))
+                        linkTo(methodOn(VendeurController.class).liste()).withRel("vendeurs")))
                 .collect(Collectors.toList());
 
-        return CollectionModel.of(employees, linkTo(methodOn(VendeurController.class).tout()).withSelfRel());
+        return CollectionModel.of(vendeurs, linkTo(methodOn(VendeurController.class).liste()).withSelfRel());
     }
 
     public ResponseEntity<?> nouveauVendeur(Vendeur vendeur) {
         String mdp = encoder.encode(vendeur.getMdp());
-        EntityModel<Vendeur> entityModel = assembler.toModel(vendeurRepository.save(vendeur));
+        vendeur.setMdp(mdp);
+        EntityModel<VendeurDTO> entityModel = assembler.toModel(vendeurRepository.save(vendeur));
         return ResponseEntity
                 .created(entityModel.getRequiredLink(IanaLinkRelations.SELF).toUri())
                 .body(entityModel);
@@ -63,7 +73,7 @@ public class VendeurService {
                 .map(
                         maj -> {
                             maj.setNom(vendeur.getNom());
-                            maj.setMdp(vendeur.getMdp());
+                            maj.setMdp(mdp);
                             maj.setAdresse(vendeur.getAdresse());
                             maj.setTel(vendeur.getTel());
                             return vendeurRepository.save(maj);
@@ -73,7 +83,7 @@ public class VendeurService {
                             vendeur.setId(id);
                             return vendeurRepository.save(vendeur);
                         });
-        EntityModel<Vendeur> entityModel = assembler.toModel(optionalVendeur);
+        EntityModel<VendeurDTO> entityModel = assembler.toModel(optionalVendeur);
 
         return ResponseEntity
                 .created(
@@ -86,9 +96,9 @@ public class VendeurService {
         public ResponseEntity<?> modifierPartiel(Long id, Map<String, Object> vendeur) {
             Vendeur vendeurOptional = vendeurRepository
                     .findById(id)
-                    .orElseThrow(() -> new VendeurNonTrouver(id));
-
-            vendeur.forEach((key, value) -> {
+                    .orElseThrow(() -> new VendeurIntrouvable(id));
+            vendeur.forEach(
+                    (key, value) -> {
                 switch (key) {
                     case "nom":
                         vendeurOptional.setNom((String) value);
@@ -106,11 +116,11 @@ public class VendeurService {
                         vendeurOptional.setAdresse((String) value);
                         break;
                     default:
-                        throw new IllegalArgumentException("Champ invalide : " + key);
+                        throw new CategorieIntrouvable( id);
                 }
             });
 
-            EntityModel<Vendeur> entityModel = assembler.toModel( vendeurRepository.save(vendeurOptional));
+            EntityModel<VendeurDTO> entityModel = assembler.toModel( vendeurRepository.save(vendeurOptional));
 
             return ResponseEntity.created(entityModel.getRequiredLink(IanaLinkRelations.SELF).toUri()).body(entityModel);
         }

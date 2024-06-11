@@ -1,13 +1,13 @@
 package com.source.epoissonnerie.entites;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
+import java.util.Date;
 
 @Entity
 @Data
@@ -20,7 +20,16 @@ public class Evaluation {
     private Long id;
 
     @NotNull
-    @Size(min = 1,max = 5)
     private int note = 0;
+    @Temporal(TemporalType.DATE)
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy",timezone = "UTC")
+    private Date date;
 
+    @OneToOne
+    @JoinColumn(name = "poisson")
+    private Poisson poisson;
+
+    @OneToOne
+    @JoinColumn(name = "client")
+    private Client client;
 }

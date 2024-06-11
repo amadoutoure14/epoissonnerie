@@ -28,9 +28,9 @@ public class SecurityConfig {
                                 authorize
                                         .requestMatchers(POST, "utilisateur/inscription").permitAll()
                                         .requestMatchers(POST, "utilisateur/activation").permitAll()
-                                        .requestMatchers(POST, "utilisateur/connexion").permitAll()
                                         .requestMatchers(GET,"/api-docs").permitAll()
-                                        .requestMatchers(GET,"/swagger").permitAll()
+                                        .requestMatchers(GET,"/swagger-ui.html").permitAll()
+                                        .requestMatchers(GET,"/swagger-ui/**").permitAll()
                                         .anyRequest().permitAll()
                 )
                 .build();

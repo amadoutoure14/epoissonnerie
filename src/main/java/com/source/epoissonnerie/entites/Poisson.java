@@ -8,7 +8,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDate;
+import java.util.Date;
+import java.util.List;
 
 @Entity
 @Data
@@ -31,12 +32,33 @@ public class Poisson {
 
     @NotNull
     @Column(nullable = false)
-    private double prix_unitaire;
+    private double prix;
 
-    private boolean publier = false;
+    private boolean publier;
 
     @Temporal(TemporalType.DATE)
     @JsonFormat(pattern = "dd/MM/yyyy",timezone = "UTC")
-    private LocalDate date;
+    private Date date;
+
+    @ManyToOne
+    @NotNull
+    private Categorie categorie;
+
+    @ManyToOne
+    @JoinColumn(name = "commande")
+    private Commande commande;
+
+    @OneToOne
+    @JoinColumn(name = "evaluation")
+    private Evaluation evaluation;
+
+    @OneToOne
+    @JoinColumn(name = "commentaire")
+    private Commentaire commentaire;
+
+    @PrePersist
+    private void onCreated(){
+        date = new Date();
+    }
 
 }

@@ -1,0 +1,205 @@
+POST http://localhost:9000/categorie
+Content-Type: application/json
+Accept: application/json
+
+{
+  "nom": "Les Clarias",
+  "description": "Une collection de tilapia",
+  "publier": true
+}
+###
+GET http://localhost:9000/categorie
+Accept: application/json
+Content-Type: application/json
+###
+PATCH http://localhost:9000/categorie/1
+Content-Type: application/json
+Accept: application/json
+
+{
+  "description": "djkqsdhqjksdk"
+}
+###
+POST http://localhost:9000/evaluation
+Accept: application/json
+Content-Type:application/json
+
+{
+  "note": 1
+}
+###
+POST http://localhost:9000/vendeur
+Accept: application/json
+Content-Type: application/json
+
+{
+  "nom": "Amadou Touré",
+  "tel": 90909080,
+  "adresse": "Sirakoro",
+  "mdp": "Kabako223"
+}
+###
+POST http://localhost:9000/categorie
+Content-Type: application/json
+Accept: application/json
+
+{
+  "nom": "Clarias",
+  "description": "Une collection de Clarias!",
+  "publier": false,
+  "vendeur": {
+    "id": 1
+  }
+}
+###
+GET http://localhost:9000/categorie
+Accept: application/json
+Content-Type: application/json
+###
+POST http://localhost:9000/utilisateur/inscription
+Content-Type: application/json
+Accept: application/json
+
+{
+  "nom": "Amadou Touré",
+  "email": "amadouit223@gmail.com",
+  "tel": 99314045,
+  "mdp": "string",
+  "actif": true,
+  "role": {
+    "description": "ADMIN"
+  }
+}
+###
+POST http://localhost:9000/utilisatuer/connexion
+Accept: application/*+json
+Content-Type: application/*+json
+
+{
+  "username":"amadouit223@gmail.com",
+  "password": "string"
+}
+###
+POST http://localhost:9000/utilisateur/activation
+Accept: application/json
+Content-Type: application/json
+
+{
+  "code": "406768"
+}
+###
+POST http://localhost:9000/vendeur
+Content-Type: application/json
+Accept: application/json
+
+{
+  "nom": "Amadou Touré",
+  "adresse": "Daoudabougou",
+  "tel": 99314045,
+  "mdp": "kabako223"
+}
+###
+POST http://localhost:9000/categorie
+Accept: application/json
+Content-Type: application/json
+
+{
+  "nom": "Tilapia",
+  "description": "Une collection de tilapia",
+  "publier": false,
+  "vendeur": {
+    "id": 1
+  }
+}
+###
+PATCH http://localhost:9000/categorie/1
+Accept: application/json
+Content-Type: application/json
+
+{
+  "publier": true
+}
+###
+POST http://localhost:9000/categorie
+Accept: application/json
+Content-Type: application/json
+
+{
+  "nom": "Clarias",
+  "description": "Une collection de Clarias",
+  "publier": true,
+  "vendeur": {
+    "id": 1
+  }
+}
+###
+POST localhost:9000/poisson
+Accept: application/json
+Content-Type: application/json
+
+{
+
+}
+###
+
+GET http://localhost:9000/poisson/2
+Accept: application/json
+Content-Type: application/json
+###
+GET http://localhost:9000/vendeur/1
+Content-Type: application/json
+Accept: application/json
+###
+POST http://localhost:9000/poisson
+Accept: application/json
+Content-Type: application/json
+
+{
+  "type": "Clarias",
+  "description": "Un clarias male de 4 kilogrammes! 1 kilogramme à 2500 prix discutable!",
+  "quantite": 45,
+  "prix": 2500,
+  "publier": true,
+  "categorie":{
+    "id": 2
+  }
+}
+####
+POST http://localhost:9000/categorie
+Content-Type: application/json
+Accept: application/json
+
+{
+  "nom": "string",
+  "description": "string",
+  "publier": true,
+  "vendeur": {
+    "id": 1
+  }
+}
+###
+PUT http://localhost:9000/categorie/1
+Content-Type: application/json
+Accept: application/json
+
+{
+  "nom": "Clarias",
+  "description": "Une collection de Clarias",
+  "publier": false,
+  "vendeur": {
+    "id": 1
+  }
+}
+###
+PUT http://localhost:9000/categorie/1
+Content-Type: application/json
+Accept: application/json
+
+{
+  "nom": "Tilapia",
+  "description": "Une collection de Tilapia",
+  "publier": true,
+  "vendeur": {
+    "id": 1
+  }
+}

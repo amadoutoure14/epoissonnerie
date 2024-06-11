@@ -24,7 +24,7 @@ public class JwtService {
 
     private Map<String, String> generateJwt(Utilisateur utilisateur) {
         Map<String, String> claims = Map.of(
-                "nom_complet",utilisateur.getNom(),
+                "nom",utilisateur.getNom(),
                 "email", utilisateur.getEmail()
         );
         final long current = System.currentTimeMillis();
