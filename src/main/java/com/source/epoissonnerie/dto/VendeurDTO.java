@@ -11,8 +11,8 @@ public record VendeurDTO(
         String adresse,
         int tel,
         String mdp,
-        Date date,
-        List<Categorie> categories
+        List<Categorie> categories,
+        Date date
 ) {
 
 }

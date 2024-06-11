@@ -112,6 +112,14 @@ Content-Type: application/json
   }
 }
 ###
+PATCH http://localhost:9000/categorie/1
+Accept: application/json
+Content-Type: application/json
+
+{
+  "publier": true
+}
+###
 POST http://localhost:9000/categorie
 Accept: application/json
 Content-Type: application/json
@@ -164,6 +172,32 @@ Accept: application/json
 {
   "nom": "string",
   "description": "string",
+  "publier": true,
+  "vendeur": {
+    "id": 1
+  }
+}
+###
+PUT http://localhost:9000/categorie/1
+Content-Type: application/json
+Accept: application/json
+
+{
+  "nom": "Clarias",
+  "description": "Une collection de Clarias",
+  "publier": false,
+  "vendeur": {
+    "id": 1
+  }
+}
+###
+PUT http://localhost:9000/categorie/1
+Content-Type: application/json
+Accept: application/json
+
+{
+  "nom": "Tilapia",
+  "description": "Une collection de Tilapia",
   "publier": true,
   "vendeur": {
     "id": 1

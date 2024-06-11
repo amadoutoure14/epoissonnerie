@@ -26,5 +26,7 @@ public class Achat{
     private Date date;
 
     @OneToOne
+    @JoinColumn(name = "commande")
     private Commande commande;
+
 }

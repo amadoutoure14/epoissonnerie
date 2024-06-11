@@ -22,17 +22,30 @@ public class Client {
 
     @NotNull
     private String nom;
+
     @NotNull
     private String mdp;
+
     private String adresse;
+
     @NotNull
     @Column(unique = true,length = 8)
     private int tel;
+
     @Temporal(TemporalType.DATE)
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy",timezone = "UTC")
     private Date date;
 
     @OneToMany
     List<Panier> paniers;
+
+    @OneToOne
+    @JoinColumn(name = "commentaire")
+    private Commentaire commentaire;
+
+    @OneToOne
+    @JoinColumn(name = "evaluation")
+    private Evaluation evaluation;
+
 
 }

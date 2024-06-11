@@ -15,7 +15,7 @@ public record PoissonDTO(
          Date date,
          Categorie categorie,
          Commande commande,
-         List<Evaluation> evaluations,
-         List<Commentaire> commentaires
+         Evaluation evaluation,
+         Commentaire commentaire
 ) {
 }

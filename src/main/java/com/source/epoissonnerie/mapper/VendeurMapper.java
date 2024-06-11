@@ -9,6 +9,6 @@ import java.util.function.Function;
 public class VendeurMapper implements Function<Vendeur, VendeurDTO> {
     @Override
     public VendeurDTO apply(Vendeur vendeur) {
-        return new VendeurDTO(vendeur.getId(),vendeur.getNom(),vendeur.getAdresse(),vendeur.getTel(),vendeur.getMdp(),vendeur.getDate(),vendeur.getCategories());
+        return new VendeurDTO(vendeur.getId(),vendeur.getNom(),vendeur.getAdresse(),vendeur.getTel(),vendeur.getMdp(), vendeur.getCategories(), vendeur.getDate());
     }
 }

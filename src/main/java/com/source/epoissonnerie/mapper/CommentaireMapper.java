@@ -9,6 +9,6 @@ import java.util.function.Function;
 public class CommentaireMapper implements Function<Commentaire, CommentaireDTO> {
     @Override
     public CommentaireDTO apply(Commentaire commentaire) {
-        return new CommentaireDTO(commentaire.getId(),commentaire.getContenu(),commentaire.getDate(),commentaire.getPoisson());
+        return new CommentaireDTO(commentaire.getId(),commentaire.getContenu(),commentaire.getDate(),commentaire.getPoisson(),commentaire.getClient());
     }
 }

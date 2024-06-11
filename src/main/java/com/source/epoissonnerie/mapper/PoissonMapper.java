@@ -9,6 +9,6 @@ import java.util.function.Function;
 public class PoissonMapper implements Function<Poisson, PoissonDTO> {
     @Override
     public PoissonDTO apply(Poisson poisson) {
-        return new PoissonDTO(poisson.getId(),poisson.getType(),poisson.getDescription(),poisson.getQuantite(),poisson.getPrix(),poisson.isPublier(),poisson.getDate(),poisson.getCategorie(),poisson.getCommande(),poisson.getEvaluations(),poisson.getCommentaires());
+        return new PoissonDTO(poisson.getId(),poisson.getType(),poisson.getDescription(),poisson.getQuantite(),poisson.getPrix(),poisson.isPublier(),poisson.getDate(),poisson.getCategorie(),poisson.getCommande(),poisson.getEvaluation(),poisson.getCommentaire());
     }
 }

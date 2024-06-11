@@ -24,6 +24,12 @@ public class Evaluation {
     @Temporal(TemporalType.DATE)
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy",timezone = "UTC")
     private Date date;
-    @ManyToOne
+
+    @OneToOne
+    @JoinColumn(name = "poisson")
     private Poisson poisson;
+
+    @OneToOne
+    @JoinColumn(name = "client")
+    private Client client;
 }

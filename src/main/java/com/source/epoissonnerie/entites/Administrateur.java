@@ -19,7 +19,8 @@ public class Administrateur {
     private Long id;
 
     @NotNull
-    private String nom,mdp;
+    private String nom;
+    private String mdp;
 
     @NotNull
     @Column(unique = true, length = 8)
@@ -28,7 +29,9 @@ public class Administrateur {
     @NotNull
     @Email
     private String email;
+
     @Temporal(TemporalType.DATE)
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy",timezone = "UTC")
     private Date date;
+
 }

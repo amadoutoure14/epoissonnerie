@@ -18,11 +18,16 @@ public class Publication {
 
     private String titre;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "vendeur")
     private Vendeur vendeur;
 
+    @OneToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.REFRESH})
+    @JoinColumn(name = "categorie")
+    private Categorie categorie;
+
     private Date date;
+
     @PrePersist
     private void prePersist() {
         this.date = new Date();

@@ -8,6 +8,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Data
@@ -26,6 +27,11 @@ import java.util.Date;
         @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy",timezone = "UTC")
         private Date date;
 
-        @ManyToOne
+        @OneToOne
+        @JoinColumn(name = "poisson")
         private Poisson poisson;
+
+        @OneToOne
+        @JoinColumn(name = "client")
+        private Client client;
     }

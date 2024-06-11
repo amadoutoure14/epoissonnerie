@@ -88,8 +88,23 @@ public class CategorieService {
                             maj.setNom(categorie.getNom());
                             maj.setDescription(categorie.getDescription());
                             maj.setPublier(categorie.isPublier());
+
+                            Publication publication = categorie.getPublication();
+                            Long idPublication = publication.getId();
+                            if (!categorie.isPublier()) {
+                                publicationRepo.deleteById(idPublication);
+                            }
+                            else {
+                                publication.setVendeur(maj.getVendeur());
+                                publication.setTitre(maj.getNom());
+                                maj.setPublication(publication);
+                                Publication save = publicationRepo.save(publication);
+
+                            }
+
                             return categorieRepo.save(maj);
                         }
+
                 )
                 .orElseGet(
                 () -> {
@@ -97,6 +112,7 @@ public class CategorieService {
                     return categorieRepo.save(categorie);
                 }
         );
+
         EntityModel<CategorieDTO> categorieEntityModel = assembleur.toModel(categorieOptional);
         return ResponseEntity
                 .created(
@@ -108,7 +124,8 @@ public class CategorieService {
     public ResponseEntity<?> modifierPartiel(Long id, Map<String, Object> categorie) {
         Categorie categorieOptional = categorieRepo
                 .findById(id)
-                .orElseThrow(() -> new CategorieIntrouvable(id));
+                .orElseThrow(
+                        () -> new CategorieIntrouvable(id));
         categorie.forEach(
                 (key, valeur) -> {
             switch (key){
@@ -120,6 +137,17 @@ public class CategorieService {
                     break;
                 case "publier":
                     categorieOptional.setPublier((boolean) valeur);
+                    Publication publication = categorieOptional.getPublication();
+                    if (!categorieOptional.isPublier()){
+                        publicationRepo.deleteById(publication.getId());
+                    }
+                    else {
+                        Publication nouvellePublication = new Publication();
+                        nouvellePublication.setDate(categorieOptional.getDate());
+                        nouvellePublication.setTitre(categorieOptional.getNom());
+                        nouvellePublication.setVendeur(categorieOptional.getVendeur());
+                        publicationRepo.save(nouvellePublication);
+                    }
                 default:
                     throw new CategorieIntrouvable(id);
             }
@@ -133,6 +161,7 @@ public class CategorieService {
         categorieRepo.deleteById(id);
         return ResponseEntity.noContent().build();
     }
+
     public ResponseEntity<?> nomFiltre(String nom) {
         String nomLower = nom.toLowerCase() ;
         Categorie categorie = categorieRepo.findByNom(nomLower).orElseThrow(() -> new RuntimeException("Le nom renseigne n'existe pas!"));

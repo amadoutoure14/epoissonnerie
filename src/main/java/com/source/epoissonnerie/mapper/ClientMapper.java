@@ -11,6 +11,6 @@ import java.util.function.Function;
 public class ClientMapper implements Function<Client, ClientDTO> {
     @Override
     public ClientDTO apply(Client client) {
-        return new ClientDTO(client.getId(),client.getNom(),client.getMdp(),client.getAdresse(),client.getTel(),client.getPaniers());
+        return new ClientDTO(client.getId(),client.getNom(),client.getMdp(),client.getAdresse(),client.getTel(),client.getDate(),client.getPaniers(),client.getCommentaire(),client.getEvaluation());
     }
 }

@@ -18,16 +18,21 @@ public class Commande {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     private String description;
+
     private Status status;
+
     @Temporal(TemporalType.DATE)
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy",timezone = "UTC")
     private Date date;
 
     @ManyToOne
+    @JoinColumn(name = "panier")
     private Panier panier;
 
     @OneToOne
+    @JoinColumn(name = "achat")
     private Achat achat;
 
     @OneToMany

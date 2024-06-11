@@ -45,14 +45,16 @@ public class Poisson {
     private Categorie categorie;
 
     @ManyToOne
+    @JoinColumn(name = "commande")
     private Commande commande;
 
+    @OneToOne
+    @JoinColumn(name = "evaluation")
+    private Evaluation evaluation;
 
-    @OneToMany
-    private List<Evaluation> evaluations;
-
-    @OneToMany
-    private List<Commentaire> commentaires;
+    @OneToOne
+    @JoinColumn(name = "commentaire")
+    private Commentaire commentaire;
 
     @PrePersist
     private void onCreated(){

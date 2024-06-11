@@ -1,7 +1,10 @@
 package com.source.epoissonnerie.dto;
 
+import com.source.epoissonnerie.entites.Commentaire;
+import com.source.epoissonnerie.entites.Evaluation;
 import com.source.epoissonnerie.entites.Panier;
 
+import java.util.Date;
 import java.util.List;
 
 public record ClientDTO(
@@ -10,6 +13,9 @@ public record ClientDTO(
         String mdp,
         String adresse,
         int tel,
-        List<Panier> paniers
+        Date date,
+        List<Panier> paniers,
+        Commentaire commentaire,
+        Evaluation evaluation
 ) {
 }

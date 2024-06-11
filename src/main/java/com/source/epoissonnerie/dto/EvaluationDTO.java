@@ -1,5 +1,6 @@
 package com.source.epoissonnerie.dto;
 
+import com.source.epoissonnerie.entites.Client;
 import com.source.epoissonnerie.entites.Poisson;
 
 import javax.xml.crypto.Data;
@@ -9,6 +10,7 @@ public record EvaluationDTO(
         Long id,
         int note,
         Date date,
-        Poisson poisson
+        Poisson poisson,
+        Client client
 ) {
 }
